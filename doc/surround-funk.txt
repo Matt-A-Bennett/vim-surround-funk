@@ -1,4 +1,4 @@
-*surround-funk.txt*  Pairs of handy bracket mappings
+*surround-funk.txt* delete, change, yank, and paste the 'surrounding function'
 
 License: Same terms as Vim itself (see |license|)
 
@@ -6,6 +6,6 @@ This plugin is only available if 'compatible' is not set.
 
 INTRODUCTION                                    *surround-funk*
 
-This was inspired by tpope's |:surround| and allows you to delete, change,
+This was inspired by tpope's |surround| and allows you to delete, change,
 yank, and paste the 'surrounding function':
 
