@@ -1,4 +1,5 @@
-*surround-funk.txt* delete, change, yank, and paste the 'surrounding function'
+*surround-funk.txt* delete, change, yank, and paste the surrounding function
+and its arguments
 
 License: Same terms as Vim itself (see |license|)
 
@@ -7,20 +8,63 @@ This plugin is only available if 'compatible' is not set.
 INTRODUCTION                                    *surround-funk*
 
 This was inspired by tpope's |surround| plugin and allows you to delete,
-change, yank, and paste the 'surrounding function':
+change, yank, and paste the surrounding function and its arguments.
 
-                  np.outerfunc(arg1, arg2, arg3)
-                     **********                *
-                                      sf
+WHAT IS A SURROUNDING FUNCTION?
+
+Below, the * symbols show what would be deleted (or yanked) with the |dsf| (or
+|ysf|) command. The ^ symbols show where the cursor can be when issuing the
+command:
+
+
+sf                      Where the name of the function (e.g. outerfunc) is a 
+                        standard Vim |word|.
+
+                           **********                *
+                        np.outerfunc(arg1, arg2, arg3)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
   
-                  np.outerfunc(innerfunc(arg1), arg2, arg3)
-                     **********               *************
-                                      sf
+                           **********               *************
+                        np.outerfunc(innerfunc(arg1), arg2, arg3)
+                           ^^^^^^^^^^               ^^^^^^^^^^^^^
   
-                  np.outerfunc(arg1, arg2, arg3)
-                  *************                *
-                                      sF
+sf                      Where the name of the function (e.g. outerfunc) is 
+                        similar to a Vim |WORD|, but in addition to
+                        whitespaces, includes commas, semicolons and opening
+                        parentheses.
+
+                        *************                *
+                        np.outerfunc(arg1, arg2, arg3)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   
-                  np.outerfunc(innerfunc(arg1), arg2, arg3)
-                  *************               *************
-                                      sF
+                        *************               *************
+                        np.outerfunc(innerfunc(arg1), arg2, arg3)
+                        ^^^^^^^^^^^^^               ^^^^^^^^^^^^^
+
+
+DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION
+
+                                                *dsf*
+dsf                     Delete surrounding function (standard word)
+
+                                                *dsF*
+dsF                     Delete surrounding function (big WORD)
+
+                                                *csf*
+csf                     Change surrounding function (standard word)
+
+                                                *csF*
+csF                     Change surrounding function (big WORD)
+
+                                                *ysf*
+ysf                     Yank surrounding function (standard word)
+
+                                                *ysF*
+ysF                     Yank surrounding function (big WORD)
+
+
+PASTING A SURROUNDING FUNCTION AROUND ANOTHER FUNCTION
+
+                                                *gsf*
+gsf                     Paste (mnemonic: grip) a previously deleted/changed/ 
+                        yanked function around a different function 
