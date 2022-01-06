@@ -129,10 +129,7 @@ endfunction
 "     let @" = l:unnamed_reg
 " endfunction
 
-nnoremap <silent> <Plug>Dsurround :<C-U>call <SID>delete_surrounding_function("small")<CR>
-nmap dsf  <Plug>Dsurround
-
-" nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>delete_surrounding_function("small")<CR>
+nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>delete_surrounding_function("small")<CR>
 " nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>delete_surrounding_function("big")<CR>
 " nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>change_surrounding_function("small")<CR>
 " nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>change_surrounding_function("big")<CR>
@@ -143,7 +140,7 @@ nmap dsf  <Plug>Dsurround
 " nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>paste_function_aroundWord("small")<CR>
 " nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>paste_function_aroundWord("big")<CR>
 
-" nmap dsf <Plug> DeleteSurroundingFunction
+nmap dsf <Plug>DeleteSurroundingFunction
 " nmap dsF <Plug> DeleteSurroundingFUNCTION
 " nmap csf <Plug> ChangeSurroundingFunction
 " nmap csF <Plug> ChangeSurroundingFUNCTION
