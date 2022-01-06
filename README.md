@@ -1,5 +1,5 @@
-# surround-funk.vim
-This was inspired by [tpope's surround.vim](https://github.com/tpope/vim-surround) 
+# surround-funk.vim (version 0.0.1)
+This was inspired by tpope's [surround.vim](https://github.com/tpope/vim-surround) 
 and allows you to delete, change, yank, and paste the 'surrounding function':
 
 ```python
