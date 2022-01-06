@@ -9,18 +9,18 @@ INTRODUCTION                                    *surround-funk*
 This was inspired by tpope's |surround| and allows you to delete, change,
 yank, and paste the 'surrounding function':
 
-    np.outerfunc(arg1, arg2, arg3)
-       **********                *
-                        sf
-
-    np.outerfunc(innerfunc(arg1), arg2, arg3)
-       **********               *************
-                        sf
-
-    np.outerfunc(arg1, arg2, arg3)
-    *************                *
-                        sF
-
-    np.outerfunc(innerfunc(arg1), arg2, arg3)
-    *************               *************
-                        sF
+                  np.outerfunc(arg1, arg2, arg3)
+                     **********                *
+                                      sf
+  
+                  np.outerfunc(innerfunc(arg1), arg2, arg3)
+                     **********               *************
+                                      sf
+  
+                  np.outerfunc(arg1, arg2, arg3)
+                  *************                *
+                                      sF
+  
+                  np.outerfunc(innerfunc(arg1), arg2, arg3)
+                  *************               *************
+                                       sF
