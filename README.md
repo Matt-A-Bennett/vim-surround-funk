@@ -5,25 +5,20 @@ and allows you to delete, change, yank, and paste the 'surrounding function':
 ```python
 
 np.outerfunc(arg1, arg2, arg3)
-   ----------                -
-            |________________|
-                    sf
+ **********                *
+                  sf
 
 np.outerfunc(innerfunc(arg1), arg2, arg3)
-   ----------               -------------
-            |_______________|
-                    sf
+ **********               *************
+                  sf
 
 np.outerfunc(arg1, arg2, arg3)
--------------                -
-            |________________|
-                    sF
+*************                *
+                  sF
 
 np.outerfunc(innerfunc(arg1), arg2, arg3)
--------------               -------------
-            |_______________|
-                    sF
-
+*************               *************
+                   sF
 ```
 
 ## Installation
