@@ -63,4 +63,8 @@ function! s:delete_surrounding_function(word_size)
     let @f = l:freg
 endfunction
 
-nnoremap dsf :call s:DeleteSurroundingFunction("small")<CR>
+nnoremap dsf1 :call s:delete_surrounding_function("small")<CR>
+nnoremap dsf2 s:delete_surrounding_function("small")<CR>
+nnoremap dsf3 s:delete_surrounding_function("small")
+nnoremap dsf4 <SID>delete_surrounding_function("small")
+nnoremap dsf5 <SID>delete_surrounding_function("small")<CR>
