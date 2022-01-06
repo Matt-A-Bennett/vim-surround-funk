@@ -28,7 +28,7 @@ sf                      Where the name of the function (e.g. outerfunc) is a
                         np.outerfunc(innerfunc(arg1), arg2, arg3)
                            ^^^^^^^^^^               ^^^^^^^^^^^^^
   
-sf                      Where the name of the function (e.g. outerfunc) is 
+sF                      Where the name of the function (e.g. outerfunc) is 
                         similar to a Vim |WORD|, but in addition to
                         whitespaces, includes commas, semicolons and opening
                         parentheses.
