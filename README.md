@@ -2,23 +2,34 @@
 This was inspired by tpope's [surround.vim](https://github.com/tpope/vim-surround) 
 and allows you to delete, change, yank, and paste the 'surrounding function':
 
-```python
+## What is a surrounding function?
 
-np.outerfunc(arg1, arg2, arg3)
+Below, the * symbols show what would be deleted (or yanked) with the `dsf` (or
+`ysf`) command. The ^ symbols show where the cursor can be when issuing the
+command:
+
+```vim
+sf: Where the name of the function (e.g. outerfunc) is a standard Vim word.
+
    **********                *
-                  sf
-
-np.outerfunc(innerfunc(arg1), arg2, arg3)
-   **********               *************
-                  sf
-
 np.outerfunc(arg1, arg2, arg3)
-*************                *
-                  sF
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+   **********               *************
 np.outerfunc(innerfunc(arg1), arg2, arg3)
+   ^^^^^^^^^^               ^^^^^^^^^^^^^
+
+sF: Where the name of the function (e.g. outerfunc) is similar to a Vim WORD, 
+    but in addition to whitespaces, includes commas, semicolons and opening
+    parentheses.
+
+*************                *
+np.outerfunc(arg1, arg2, arg3)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 *************               *************
-                   sF
+np.outerfunc(innerfunc(arg1), arg2, arg3)
+^^^^^^^^^^^^^               ^^^^^^^^^^^^^
 ```
 
 ## Installation
