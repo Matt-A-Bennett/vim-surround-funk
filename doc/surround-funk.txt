@@ -6,8 +6,8 @@ This plugin is only available if 'compatible' is not set.
 
 INTRODUCTION                                    *surround-funk*
 
-This was inspired by tpope's |surround| and allows you to delete, change,
-yank, and paste the 'surrounding function':
+This was inspired by tpope's |surround| plugin and allows you to delete,
+change, yank, and paste the 'surrounding function':
 
                   np.outerfunc(arg1, arg2, arg3)
                      **********                *
