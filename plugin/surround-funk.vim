@@ -150,5 +150,3 @@ nmap gsf <Plug>PasteFunctionAroundFunction
 nmap gsF <Plug>PasteFunctionAroundFUNCTION
 nmap gsw <Plug>PasteFunctionAroundWord
 nmap gsW <Plug>PasteFunctionAroundWORD
-
-" test(mean(this), he)
