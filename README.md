@@ -45,7 +45,7 @@ Use your favorite plugin manager.
 - [Vundle][vundle]
 
     ```vim
-    Bundle 'Matt-A-Bennett/surround-funk.vim'
+    Plugin 'Matt-A-Bennett/surround-funk.vim'
     ```
 
 - [Pathogen][pathogen]
