@@ -63,7 +63,92 @@ function! s:delete_surrounding_function(word_size)
     let @f = l:freg
 endfunction
 
-nnoremap <silent> <Plug>Dsurround :<C-U>call <SID>delete_surrounding_function("small")<CR>
-nmap dsf  <Plug>Dsurround
+function! s:change_surrounding_function(word_size)
+    call s:delete_surrounding_function(a:word_size)
+    startinsert
+endfunction
 
-" test(this)
+function! s:yank_surrounding_function(word_size)
+    " store the current line
+    silent! execute 'normal! "lyy'
+    call s:delete_surrounding_function(a:word_size)
+    " restore the current line to original state
+    silent! execute 'normal! "_dd"lP'
+endfunction
+
+function! s:paste_function_around_function(word_size)
+    " we'll restore the unnamed register later so it isn't clobbered here
+    let l:unnamed_reg = @"
+    call s:move_to_start_of_function(a:word_size, 0)
+    " paste just behind existing function
+    silent! execute 'normal! P'
+    " mark closing parenthesis
+    silent! execute 'normal! f(%mc'
+    " move back onto start of function name
+    call s:move_to_start_of_function(a:word_size, 1)
+    " delete the whole function (including last parenthesis)
+    silent! execute 'normal! d`c"_x'
+    " if we're not already on a last parenthesis, move back to it
+    call search(')', 'bc', line('.'))
+    " move to opening surrounding paren and paste original function, then add
+    " surrounding parenthesis back in
+    silent! execute 'normal! %pa)'
+    " leave the cursor on the opening parenthesis of the surrounding function
+    silent! execute 'normal! `c%'
+    " restore unnamed register
+    let @" = l:unnamed_reg
+endfunction
+
+function! s:paste_function_around_word(word_size)
+    " we'll restore the unnamed register later so it isn't clobbered here
+    let l:unnamed_reg = @"
+    if a:word_size ==# 'small'
+        " get onto start of the word
+        silent! execute 'normal! lb'
+        " paste the function behind and move back to the word
+        silent! execute 'normal! Pl'
+        " delete the word
+        silent! execute 'normal! diw'
+    elseif a:word_size ==# 'big'
+        " find first boundary before function that we don't want to cross
+        call search(' \|,\|;\|(\|^', 'b', line('.'))
+        " If we're not at the start of the line, or if we're on whitespace
+        if col('.') > 1 || s:get_char_under_cursor() ==# ' '
+            silent! execute 'normal! l'
+        endif
+        " paste the function behind and move back to the word
+        silent! execute 'normal! Pl'
+        " delete WORD
+        silent! execute 'normal! dW'
+    endif
+    " if we're not already on a last parenthesis, move back to it
+    call search(')', 'bc', line('.'))
+    " move to start of funtion and mark it, paste the word, move back to start
+    silent! execute 'normal! %mop`o'
+    " restore unnamed register
+    let @" = l:unnamed_reg
+endfunction
+
+nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>DeleteSurroundingFunction("small")<CR>
+nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>DeleteSurroundingFunction("big")<CR>
+nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>ChangeSurroundingFunction("small")<CR>
+nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>ChangeSurroundingFunction("big")<CR>
+nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>(function("YankSurroundingFunction", ["small"]), 1)<CR>
+nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>(function("YankSurroundingFunction", ["big"]), 1)<CR>
+nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>PasteFunctionAroundFunction("small")<CR>
+nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>PasteFunctionAroundFunction("big")<CR>
+nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>PasteFunctionAroundWord("small")<CR>
+nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>PasteFunctionAroundWord("big")<CR>
+
+nmap dsf <Plug> DeleteSurroundingFunction
+nmap dsF <Plug> DeleteSurroundingFUNCTION
+nmap csf <Plug> ChangeSurroundingFunction
+nmap csF <Plug> ChangeSurroundingFUNCTION
+nmap ysf <Plug> YankSurroundingFunction
+nmap ysF <Plug> YankSurroundingFUNCTION
+nmap gsf <Plug> PasteFunctionAroundFunction
+nmap gsF <Plug> PasteFunctionAroundFUNCTION
+nmap gsw <Plug> PasteFunctionAroundWord
+nmap gsW <Plug> PasteFunctionAroundWORD
+
+" test(mean(this), he)
