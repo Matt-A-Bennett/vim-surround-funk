@@ -133,8 +133,8 @@ nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>delete_surroun
 nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>delete_surrounding_function("big")<CR>
 nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>change_surrounding_function("small")<CR>
 nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>change_surrounding_function("big")<CR>
-" nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>(function("yank_surrounding_function", ["small"]), 1)<CR>
-" nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>(function("yank_surrounding_function", ["big"]), 1)<CR>
+nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>yank_surrounding_function("small")<CR>
+nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>yank_surrounding_function("big")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>paste_function_around_function("small")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>paste_function_around_function("big")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>paste_function_aroundWord("small")<CR>
@@ -144,8 +144,8 @@ nmap dsf <Plug>DeleteSurroundingFunction
 nmap dsF <Plug>DeleteSurroundingFUNCTION
 nmap csf <Plug>ChangeSurroundingFunction
 nmap csF <Plug>ChangeSurroundingFUNCTION
-" nmap ysf <Plug>YankSurroundingFunction
-" nmap ysF <Plug>YankSurroundingFUNCTION
+nmap ysf <Plug>YankSurroundingFunction
+nmap ysF <Plug>YankSurroundingFUNCTION
 nmap gsf <Plug>PasteFunctionAroundFunction
 nmap gsF <Plug>PasteFunctionAroundFUNCTION
 nmap gsw <Plug>PasteFunctionAroundWord
