@@ -23,4 +23,4 @@ yank, and paste the 'surrounding function':
   
                   np.outerfunc(innerfunc(arg1), arg2, arg3)
                   *************               *************
-                                       sF
+                                      sF
