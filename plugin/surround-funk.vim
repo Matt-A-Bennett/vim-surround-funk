@@ -63,5 +63,7 @@ function! s:delete_surrounding_function(word_size)
     let @f = l:freg
 endfunction
 
-nnoremap <Plug>Dsurround <SID>delete_surrounding_function("small")
+nnoremap <expr> <Plug>Dsurround <SID>delete_surrounding_function("small")
 nmap dsf  <Plug>Dsurround
+
+" test(this)
