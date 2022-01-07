@@ -33,8 +33,8 @@ np.outerfunc(arg1, arg2, arg3)
    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 sF: Where the name of the function (e.g. np.outerfunc) is similar to a Vim
-WORD, but is additionally delimited by commas, semicolons and opening
-parentheses.
+    WORD, but is additionally delimited by commas, semicolons and opening
+    parentheses.
 
 *************               *
 np.outerfunc(innerfunc(arg1))
@@ -56,37 +56,37 @@ np.outerfunc(arg1, arg2, arg3)
 ### Deleting, changing and yanking a surrounding function
 
 ```
-'dsf': Delete surrounding function (standard word)
+dsf: Delete surrounding function (standard word)
 
-'dsF': Like 'dsf', but the function name is delimited by whitespaces, commas,
-       semicolons and opening parentheses.
+dsF: Like 'dsf', but the function name is delimited by whitespaces, commas,
+     semicolons and opening parentheses.
 
-'csf': Like 'dsf' but start instert mode where the opening parenthesis of the
-       changed function was
+csf: Like 'dsf' but start instert mode where the opening parenthesis of the
+     changed function was
 
-'csF': Like 'csf', but the function name is delimited by whitespaces, commas,
-       semicolons and opening parentheses.
+csF: Like 'csf', but the function name is delimited by whitespaces, commas,
+     semicolons and opening parentheses.
 
-'ysf': Yank surrounding function (standard word)
+ysf: Yank surrounding function (standard word)
 
-'ysF': Like 'ysf', but the function name is delimited by whitespaces, commas,
-       semicolons and opening parentheses.
+ysF: Like 'ysf', but the function name is delimited by whitespaces, commas,
+     semicolons and opening parentheses.
 ```
 
 ### Gripping a surrounding function around a word or another function
 
 ```
-'gsf': Grip (i.e wrap/encompass) a function in the unnamed register around
-       another function.
+gsf: Grip (i.e wrap/encompass) a function in the unnamed register around
+     another function.
 
-'gsF': Like 'gsf', but the function name is delimited by whitespaces, commas,
-       semicolons and opening parentheses.
+gsF: Like 'gsf', but the function name is delimited by whitespaces, commas,
+     semicolons and opening parentheses.
 
-'gsw': Grip (i.e wrap/encompass) a function in the unnamed register around a
-       word.
+gsw: Grip (i.e wrap/encompass) a function in the unnamed register around a
+     word.
 
-'gsW': Like 'gsw', but the word name is delimited by whitespaces, commas,
-       semicolons and opening parentheses.
+gsW: Like 'gsw', but the word name is delimited by whitespaces, commas,
+     semicolons and opening parentheses.
 ```
 
 ## Installation
