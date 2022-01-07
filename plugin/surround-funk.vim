@@ -81,7 +81,7 @@ function! s:delete_surrounding_function(word_size)
         " move to matching paren and delete everthing up to the closing paren
         " of the original function (remark closing paren)
         silent! execute 'normal! %l"Fd`cmc'
-    end
+    endif
     " delete the closing and opening parens (put the closing one into register)
     silent! execute 'normal! `c"Fx`ox'
     " paste the function into unamed register
