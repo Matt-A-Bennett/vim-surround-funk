@@ -58,7 +58,7 @@ np.outerfunc(arg1, arg2, arg3)
 ### Deleting, changing and yanking a surrounding function
 
 ```
-dsf: Delete surrounding function (standard word)
+dsf: Delete surrounding function
 
 dsF: Like 'dsf', but the function name is delimited by whitespaces, commas,
      semicolons and opening parentheses.
@@ -69,7 +69,7 @@ csf: Like 'dsf' but start instert mode where the opening parenthesis of the
 csF: Like 'csf', but the function name is delimited by whitespaces, commas,
      semicolons and opening parentheses.
 
-ysf: Yank surrounding function (standard word)
+ysf: Yank surrounding function
 
 ysF: Like 'ysf', but the function name is delimited by whitespaces, commas,
      semicolons and opening parentheses.

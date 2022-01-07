@@ -66,7 +66,7 @@ sF                      Where the name of the function (e.g. np.outerfunc) is
 DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION
 
                                                 *dsf*
-dsf                     Delete surrounding function (standard word)
+dsf                     Delete surrounding function
 
                                                 *dsF*
 dsF                     Like |dsf|, but the function name is delimited by
@@ -83,7 +83,7 @@ csF                     Like |csf|, but the function name is delimited by
                         parentheses.
 
                                                 *ysf*
-ysf                     Yank surrounding function (standard word)
+ysf                     Yank surrounding function
 
                                                 *ysF*
 ysF                     Like |ysf|, but the function name is delimited by
