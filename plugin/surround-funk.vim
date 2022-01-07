@@ -106,7 +106,7 @@ endfunction
 function! s:paste_function_around_function(word_size)
     " we'll restore the unnamed register later so it isn't clobbered here
     let l:unnamed_reg = @"
-    " if s:is_cursor_on_function()
+    if s:is_cursor_on_function()
         call s:move_to_start_of_function(a:word_size, 0)
         " paste just behind existing function
         silent! execute 'normal! P'
@@ -125,10 +125,10 @@ function! s:paste_function_around_function(word_size)
         silent! execute 'normal! `c%'
         " restore unnamed register
         let @" = l:unnamed_reg
-    " elseif
-    "     " we're on a word, not a function
-    "     call s:paste_function_around_word(a:word_size)
-    " endif
+    else
+        " we're on a word, not a function
+        call s:paste_function_around_word(a:word_size)
+    endif
 endfunction
 
 function! s:paste_function_around_word(word_size)
@@ -169,9 +169,6 @@ nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>yank_surrounding
 nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>yank_surrounding_function("big")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>paste_function_around_function("small")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>paste_function_around_function("big")<CR>
-
-nnoremap <silent> <Plug>TEST :<C-U>call <SID>is_cursor_on_function()<CR>
-nmap gst <Plug>TEST
 
 nmap dsf <Plug>DeleteSurroundingFunction
 nmap dsF <Plug>DeleteSurroundingFUNCTION
