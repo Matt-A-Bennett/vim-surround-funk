@@ -1,4 +1,4 @@
-# surround-funk.vim (version 0.1.0)
+# surround-funk.vim (version 0.2.0)
 This was inspired by tpope's [surround.vim](https://github.com/tpope/vim-surround) 
 and allows you to delete, change, yank, and paste the 'surrounding function':
 
