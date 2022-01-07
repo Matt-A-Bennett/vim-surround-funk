@@ -13,7 +13,17 @@ function! s:get_char_under_cursor()
      return getline(".")[col(".")-1]
 endfunction
 
-function! s:get
+function! s:get_func_open_paren_column()
+    " move forward to one of function's parentheses (unless already on one)
+    call search('(\|)', 'c', line('.'))
+    " if we're on the closing parenthsis, move to other side
+    if s:get_char_under_cursor() ==# ')'
+        call searchpair('(','',')', 'b')
+    endif
+    return = col('.')
+endfunction
+
+function! s:move_to_func_open_paren()
     call cursor('.', s:get_func_open_paren_column())
 endfunction
 
@@ -36,6 +46,9 @@ function! s:get_func_name(word_size)
     let c1 = s:get_start_of_func_column(a:word_size)
     let c2 = s:get_func_open_paren_column(a:word_size)
     return [range(c1, c2-2), chars[c1-1:c2-2]]
+endfunction
+
+function! s:get_end_of_func()
 endfunction
 
 function! s:searchpair2(start, middle, end, flag)
@@ -126,7 +139,7 @@ endfunction
 function! s:paste_func_around_func(word_size)
     " we'll restore the unnamed register later so it isn't clobbered here
     let l:unnamed_reg = @"
-    if s:is_cursor_on_func()
+    if s:is_cursor_on_function()
         call s:move_to_start_of_func(a:word_size)
         " paste just behind existing function
         silent! execute 'normal! P'
