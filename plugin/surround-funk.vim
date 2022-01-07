@@ -6,6 +6,10 @@ if exists("g:loaded_surround_funk") || &cp || v:version < 700
 endif
 let g:loaded_surround_funk = 1
 
+let s:legal_func_name_chars = ['\w', '\d', '\.', '_']
+
+let s:legal_func_name_chars = join(s:legal_func_name_chars, '\|')
+
 function! s:get_char_under_cursor()
      return getline(".")[col(".")-1]
 endfunction
@@ -32,15 +36,14 @@ function! s:is_cursor_on_function()
     if s:get_char_under_cursor() =~ '(\|)'
         return 1
     endif
-    let legal_func_name_chars = '\w\|\d\|\.\|_\|('
     let str = getline(".")
     let chars = split(str, '.\zs\ze.')
     let right = chars[col("."):]
-    let on_func_name = s:get_char_under_cursor() =~ legal_func_name_chars
+    let on_func_name = s:get_char_under_cursor() =~ s:legal_func_name_chars.'\|('
     let open_paren_count = 0
     let close_paren_count = 0
     for char in right
-        if on_func_name && char !~ legal_func_name_chars
+        if on_func_name && char !~ legal_func_name_chars.'\|('
             let on_func_name = 0
         endif
         if char ==# '('
@@ -71,8 +74,7 @@ function! s:move_to_start_of_function(word_size)
     if a:word_size ==# 'small'
         call search('\<', 'b', line('.'))
     else
-        let legal_func_name_chars = '\(\w\|\d\|\.\|_\)'
-        call search(legal_func_name_chars.'\@<!', 'b', line('.'))
+        call search('\('.legal_func_name_chars.'\)\@<!', 'b', line('.'))
     endif
 endfunction
 
