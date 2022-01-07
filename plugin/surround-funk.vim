@@ -10,6 +10,24 @@ function! s:get_char_under_cursor()
      return getline(".")[col(".")-1]
 endfunction
 
+function! s:searchpair2(start, middle, end, flag)
+    if a:flag ==# 'b'
+        let f1 = 'b'
+        let f2 = ''
+    else
+        let f1 = ''
+        let f2 = 'b'
+    endif
+    call searchpair(a:start, '', a:end, f1)
+    let end_c = col(".")
+    call searchpair(a:start, '', a:end, f2)
+    if search(a:middle, f1, line(".")) && col('.') < end_c
+        return 1
+    else
+        return 0
+    endif
+endfunction
+
 function! s:is_cursor_on_function()
     if s:get_char_under_cursor() =~ '(\|)'
         return 1
