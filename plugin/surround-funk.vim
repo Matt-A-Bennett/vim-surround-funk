@@ -1,5 +1,5 @@
 " Author:       Matthew Bennett
-" Version:      0.3.0
+" Version:      0.3.1
 
 if exists("g:loaded_surround_funk") || &cp || v:version < 700
   finish
@@ -39,28 +39,19 @@ function! s:is_cursor_on_function()
 endfunction
 
 function! s:move_to_start_of_function(word_size, pasting)
-        " move forward to one of function's parentheses (unless already on one)
-        call search('(\|)', 'c', line('.'))
-        " if we're on the closing parenthsis, move to other side
-        if s:get_char_under_cursor() ==# ')'
-            silent! execute 'normal! %'
-        endif
-        " move onto function name 
-        silent! execute 'normal! b'
-        if a:word_size ==# 'big'
-            " if we've pasted in a function, then there will be a ')' right before
-            " the one we need to move inside - so we can go to the start easily
-            if a:pasting
-                silent! execute 'normal! F)l'
-            else
-                " find first boundary before function that we don't want to cross
-                call search(' \|,\|;\|(\|^', 'b', line('.'))
-                " If we're not at the start of the line, or if we're on whitespace
-                if col('.') > 1 || s:get_char_under_cursor() ==# ' '
-                    silent! execute 'normal! l'
-                endif
-            endif
-        endif
+    " move forward to one of function's parentheses (unless already on one)
+    call search('(\|)', 'c', line('.'))
+    " if we're on the closing parenthsis, move to other side
+    if s:get_char_under_cursor() ==# ')'
+        call searchpair('(','',')', 'b')
+    endif
+    " move onto function name 
+    if a:word_size ==# 'small'
+        call search('\<', 'b', line('.'))
+    else
+        let legal_func_name_chars = '\(\w\|\d\|\.\|_\)'
+        call search(legal_func_name_chars.'\@<!', 'b', line('.'))
+    endif
 endfunction
 
 function! s:delete_surrounding_function(word_size)
