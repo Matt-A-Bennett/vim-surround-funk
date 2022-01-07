@@ -75,17 +75,17 @@ ysF: Like 'ysf', but the function name is delimited by whitespaces, commas,
      semicolons and opening parentheses.
 ```
 
-### Gripping a surrounding function around a word or another function
+### Gripping a word or another function
 
 ```
-gsf: Grip (i.e wrap/encompass) a function in the unnamed register around
-     another function.
+gsf: Grip (i.e wrap/encompass) another function with the function in the
+     unnamed register.
 
 gsF: Like 'gsf', but the function name is delimited by whitespaces, commas,
      semicolons and opening parentheses.
 
-gsw: Grip (i.e wrap/encompass) a function in the unnamed register around a
-     word.
+gsw: Grip (i.e wrap/encompass) a word with the function in the unnamed 
+     register.
 
 gsW: Like 'gsw', but the word name is delimited by whitespaces, commas,
      semicolons and opening parentheses.
