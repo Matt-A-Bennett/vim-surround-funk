@@ -12,7 +12,7 @@ endfunction
 
 function! s:is_cursor_on_function()
     let str = getline(".")
-    let legal_func_chars = '\w\|\d\|\.\|_'
+    let legal_func_chars = '\w\|\d\|\.\|_\|('
     if s:get_char_under_cursor() =~ '(\|)'
         return 1
     endif
@@ -22,7 +22,7 @@ function! s:is_cursor_on_function()
     let open = 0
     let close = 0
     for char in right
-        if name && char ==# ' '
+        if name && char !~ legal_func_chars
             let name = 0
         endif
         if char ==# ')'
@@ -160,18 +160,6 @@ function! s:paste_function_around_word(word_size)
     " restore unnamed register
     let @" = l:unnamed_reg
 endfunction
-
-function! s:silly()
-    if s:is_cursor_on_function()
-        call setline('.', 'yes')
-        echo 'yes'
-    else
-        call setline('.', 'no')
-        echo 'no'
-    endif
-endfunction
-nnoremap <silent> <Plug>Silly :<C-U>call <SID>silly()<CR>
-nmap gsw <Plug>Silly
 
 nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>delete_surrounding_function("small")<CR>
 nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>delete_surrounding_function("big")<CR>
