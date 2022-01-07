@@ -170,6 +170,8 @@ nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>yank_surrounding
 nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>yank_surrounding_function("big")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>paste_function_around_function("small")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>paste_function_around_function("big")<CR>
+nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>paste_function_around_word("small")<CR>
+nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>paste_function_around_word("big")<CR>
 
 nmap dsf <Plug>DeleteSurroundingFunction
 nmap dsF <Plug>DeleteSurroundingFUNCTION
@@ -179,3 +181,5 @@ nmap ysf <Plug>YankSurroundingFunction
 nmap ysF <Plug>YankSurroundingFUNCTION
 nmap gsf <Plug>PasteFunctionAroundFunction
 nmap gsF <Plug>PasteFunctionAroundFUNCTION
+nmap gsw <Plug>PasteFunctionAroundWord
+nmap gsW <Plug>PasteFunctionAroundWORD
