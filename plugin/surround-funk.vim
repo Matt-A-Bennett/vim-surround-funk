@@ -18,20 +18,20 @@ function! s:is_cursor_on_function()
     endif
     let chars = split(str, '.\zs\ze.')
     let right = chars[col("."):]
-    " let name = s:get_char_under_cursor() =~ legal_func_chars
+    let name = s:get_char_under_cursor() =~ legal_func_chars
     let open = 0
     let close = 0
     for char in right
-        " if name && char =~ legal_func_chars
-        "     let name = 1
-        " endif
+        if name && char ==# ' '
+            let name = 0
+        endif
         if char ==# ')'
             let close+=1
         elseif char ==# '('
             let open+=1
-            " if name
-            "     return 1
-            " endif
+            if name
+                return 1
+            endif
         endif
     endfor
     return close > open
@@ -164,8 +164,10 @@ endfunction
 function! s:silly()
     if s:is_cursor_on_function()
         call setline('.', 'yes')
+        echo 'yes'
     else
         call setline('.', 'no')
+        echo 'no'
     endif
 endfunction
 nnoremap <silent> <Plug>Silly :<C-U>call <SID>silly()<CR>
