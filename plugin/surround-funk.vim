@@ -13,6 +13,35 @@ function! s:get_char_under_cursor()
      return getline(".")[col(".")-1]
 endfunction
 
+funtion! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
+    if a:greater_or_lesser ==# '>'
+        return a:v1 > a:v2
+    else
+        return a:v1 < a:v2
+    end
+endfunction
+
+function! s:searchpair2(start, middle, end, flag, type)
+    if a:flag ==# 'b'
+        let f1 = 'b'
+        let f2 = ''
+        let g_or_l = '>'
+    else
+        let f1 = ''
+        let f2 = 'b'
+        let g_or_l = '<'
+    endif
+    call searchpair(a:start, '', a:end, f1)
+    let end_c = col(".")
+    call searchpair(a:start, '', a:end, f2)
+    if search(a:middle, f1, line(".")) 
+                \&& s:is_greater_or_lesser(col('.'), end_c, g_or_l)
+        return 1
+    else
+        return 0
+    endif
+endfunction
+
 function! s:get_func_open_paren_column()
     " move forward to one of function's parentheses (unless already on one)
     call search('(\|)', 'c', line('.'))
@@ -41,32 +70,24 @@ function! s:move_to_start_of_func(word_size)
     call cursor('.', s:get_start_of_func_column(a:word_size))
 endfunction
 
-function! s:get_func_name(word_size)
-    let chars = s:current_line2list()
-    let c1 = s:get_start_of_func_column(a:word_size)
-    let c2 = s:get_func_open_paren_column(a:word_size)
-    return [range(c1, c2-2), chars[c1-1:c2-2]]
+function! s:get_end_of_func_column()
+    call s:move_to_func_open_paren()
+    let [_, c] searchpairpos('(','',')')
+    return c
+endfunction
+
+function! s:move_to_end_of_func()
+    call cursor('.', s:get_end_of_func_column())
 endfunction
 
 function! s:get_end_of_func()
 endfunction
 
-function! s:searchpair2(start, middle, end, flag)
-    if a:flag ==# 'b'
-        let f1 = 'b'
-        let f2 = ''
-    else
-        let f1 = ''
-        let f2 = 'b'
-    endif
-    call searchpair(a:start, '', a:end, f1)
-    let end_c = col(".")
-    call searchpair(a:start, '', a:end, f2)
-    if search(a:middle, f1, line(".")) && col('.') < end_c
-        return 1
-    else
-        return 0
-    endif
+function! s:get_func_name(word_size)
+    let chars = s:current_line2list()
+    let c1 = s:get_start_of_func_column(a:word_size)
+    let c2 = s:get_func_open_paren_column(a:word_size)
+    return [range(c1, c2-2), chars[c1-1:c2-2]]
 endfunction
 
 function! s:is_cursor_on_func()
