@@ -11,11 +11,11 @@ function! s:get_char_under_cursor()
 endfunction
 
 function! s:is_cursor_on_function()
-    let str = getline(".")
-    let legal_func_chars = '\w\|\d\|\.\|_\|('
     if s:get_char_under_cursor() =~ '(\|)'
         return 1
     endif
+    let str = getline(".")
+    let legal_func_chars = '\w\|\d\|\.\|_\|('
     let chars = split(str, '.\zs\ze.')
     let right = chars[col("."):]
     let name = s:get_char_under_cursor() =~ legal_func_chars
