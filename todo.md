@@ -1,13 +1,21 @@
 # Todo list
 ## Major
-- [ ] integrate with repeat.vim
+- [ ] Integrate with repeat.vim
+- [ ] Have `gs` commands operation on any motion (constrained to a single line)
+- [ ] Fix major bugs 1
 
 ## Minor
-- [ ] let users provide a list of legal function name characters
-- [ ] allow users to define their own maps
+- [ ] Let users provide a list of legal function name characters
+- [ ] Allow users to define their own maps
 
 ## Patches
-- [ ] Fix bug 1
+- [ ] Fix minor bug 1
 
 # Bugs
-1. ysf and ysF remove a line above if applied to function on last line of file 
+## Major Bugs
+1. `gs` commands mess up sometimes: see testing.vim
+
+## Minor Bugs
+1. `ysf` and `ysF` remove a line above if applied to function on last line of
+   file 
+
