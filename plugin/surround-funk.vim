@@ -77,13 +77,6 @@ function! s:move_to_start_of_function(word_size)
     endif
 endfunction
 
-function! s:get_surrounding_function_name(word_size)
-    call s:move_to_start_of_function(a:word_size)
-    let str = getline(".")
-    let chars = split(str, '.\zs\ze.')
-    call search('(', )
-endfunction
-
 function! s:delete_surrounding_function(word_size)
     " we'll restore the f register later so it isn't clobbered here
     let l:freg = @f
