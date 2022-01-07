@@ -4,9 +4,9 @@ and allows you to delete, change, yank, and paste the 'surrounding function':
 
 ## What is a surrounding function?
 
-Below, the * symbols show what would be deleted (or yanked) with the `dsf` (or
-`ysf`) command. The ^ symbols show where the cursor can be when issuing the
-command:
+Below, the `*` symbols show what would be deleted (or yanked) with the `dsf`
+(or `ysf`) command. The `^` symbols show where the cursor can be when issuing
+the command:
 
 ```
 sf: Where the name of the function (e.g. outerfunc) is a standard Vim word.
