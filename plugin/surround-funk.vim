@@ -25,13 +25,13 @@ function! s:is_cursor_on_function()
         if on_func_name && char !~ legal_func_name_chars
             let on_func_name = 0
         endif
-        if char ==# ')'
-            let close_paren_count+=1
-        elseif char ==# '('
-            let open_paren_count+=1
+        if char ==# '('
             if on_func_name
                 return 1
             endif
+            let open_paren_count+=1
+        elseif char ==# '('
+            let close_paren_count+=1
         endif
     endfor
     return close_paren_count > open_paren_count
