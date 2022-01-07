@@ -31,7 +31,9 @@ np.outerfunc(arg1)
    **********                *
 np.outerfunc(arg1, arg2, arg3)
    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+```
 
+```
 sF: Where the name of the function (e.g. np.outerfunc) is similar to a Vim
     WORD, but is additionally delimited by commas, semicolons and opening
     parentheses.
