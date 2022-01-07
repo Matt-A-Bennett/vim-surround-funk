@@ -172,7 +172,7 @@ nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>paste_functi
 nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>paste_function_around_function("big")<CR>
 
 nnoremap <silent> <Plug>TEST :<C-U>call <SID>is_cursor_on_function<CR>
-nmap gsF <Plug>TEST
+nmap gst <Plug>TEST
 
 nmap dsf <Plug>DeleteSurroundingFunction
 nmap dsF <Plug>DeleteSurroundingFUNCTION
