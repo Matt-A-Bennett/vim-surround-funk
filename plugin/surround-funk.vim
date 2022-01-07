@@ -162,6 +162,9 @@ function! s:paste_function_around_word(word_size)
     let @" = l:unnamed_reg
 endfunction
 
+" this should cause issues
+aasdfasd fd f
+
 nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>delete_surrounding_function("small")<CR>
 nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>delete_surrounding_function("big")<CR>
 nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>change_surrounding_function("small")<CR>
@@ -183,3 +186,4 @@ nmap gsf <Plug>PasteFunctionAroundFunction
 nmap gsF <Plug>PasteFunctionAroundFUNCTION
 nmap gsw <Plug>PasteFunctionAroundWord
 nmap gsW <Plug>PasteFunctionAroundWORD
+
