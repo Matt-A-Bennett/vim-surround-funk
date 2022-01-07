@@ -21,7 +21,7 @@ funtion! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
     end
 endfunction
 
-function! s:searchpair2(start, middle, end, flag, type)
+function! s:searchpair2(start, middle, end, flag)
     if a:flag ==# 'b'
         let f1 = 'b'
         let f2 = ''
