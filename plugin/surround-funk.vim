@@ -7,7 +7,6 @@ endif
 let g:loaded_surround_funk = 1
 
 let s:legal_func_name_chars = ['\w', '\d', '\.', '_']
-
 let s:legal_func_name_chars = join(s:legal_func_name_chars, '\|')
 
 function! s:get_char_under_cursor()
@@ -76,6 +75,13 @@ function! s:move_to_start_of_function(word_size)
     else
         call search('\('.legal_func_name_chars.'\)\@<!', 'b', line('.'))
     endif
+endfunction
+
+function! s:get_surrounding_function_name(word_size)
+    call s:move_to_start_of_function(a:word_size)
+    let str = getline(".")
+    let chars = split(str, '.\zs\ze.')
+    call search('(', )
 endfunction
 
 function! s:delete_surrounding_function(word_size)
