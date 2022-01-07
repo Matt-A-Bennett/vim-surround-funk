@@ -14,15 +14,15 @@ function! s:is_cursor_on_function()
     if s:get_char_under_cursor() =~ '(\|)'
         return 1
     endif
-    let legal_func_chars = '\w\|\d\|\.\|_\|('
+    let legal_func_name_chars = '\w\|\d\|\.\|_\|('
     let str = getline(".")
     let chars = split(str, '.\zs\ze.')
     let right = chars[col("."):]
-    let on_func_name = s:get_char_under_cursor() =~ legal_func_chars
+    let on_func_name = s:get_char_under_cursor() =~ legal_func_name_chars
     let open_paren_count = 0
     let close_paren_count = 0
     for char in right
-        if on_func_name && char !~ legal_func_chars
+        if on_func_name && char !~ legal_func_name_chars
             let on_func_name = 0
         endif
         if char ==# ')'
