@@ -104,8 +104,10 @@ function! s:yank_surrounding_function(word_size)
 endfunction
 
 if s:is_cursor_on_function()
-    echo s:is_cursor_on_function()
+    echomsg s:is_cursor_on_function()
 endif
+
+herse
 
 function! s:paste_function_around_function(word_size)
     " we'll restore the unnamed register later so it isn't clobbered here
