@@ -106,9 +106,7 @@ endfunction
 function! s:paste_function_around_function(word_size)
     " we'll restore the unnamed register later so it isn't clobbered here
     let l:unnamed_reg = @"
-    let is_on_function = s:is_cursor_on_function()
-    echo is_on_function
-    if is_on_function
+    if s:is_cursor_on_function()
         call s:move_to_start_of_function(a:word_size, 0)
         " paste just behind existing function
         silent! execute 'normal! P'
@@ -162,6 +160,16 @@ function! s:paste_function_around_word(word_size)
     " restore unnamed register
     let @" = l:unnamed_reg
 endfunction
+
+function! s:silly()
+    if s:is_cursor_on_function()
+        call setline('.', 'yes')
+    else
+        call setline('.', 'no')
+    endif
+endfunction
+nnoremap <silent> <Plug>Silly :<C-U>call <SID>silly()<CR>
+nmap gsw <Plug>Silly
 
 nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>delete_surrounding_function("small")<CR>
 nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>delete_surrounding_function("big")<CR>
