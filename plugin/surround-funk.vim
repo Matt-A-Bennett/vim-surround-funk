@@ -22,8 +22,8 @@ function! s:is_cursor_on_function()
     let open = 0
     let close = 0
     for char in right
-        if name && char !~ legal_func_chars
-            let name = 0
+        if name && char =~ legal_func_chars
+            let name = 1
         endif
         if char ==# ')'
             let close+=1
