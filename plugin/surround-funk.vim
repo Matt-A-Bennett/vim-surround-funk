@@ -13,6 +13,11 @@ function! s:get_char_under_cursor()
      return getline(".")[col(".")-1]
 endfunction
 
+function! s:current_line2list()
+    let str = getline(".")
+    return split(str, '.\zs\ze.')
+endfunction
+
 function! s:searchpair2(start, middle, end, flag)
     if a:flag ==# 'b'
         let f1 = 'b'
@@ -35,8 +40,7 @@ function! s:is_cursor_on_function()
     if s:get_char_under_cursor() =~ '(\|)'
         return 1
     endif
-    let str = getline(".")
-    let chars = split(str, '.\zs\ze.')
+    let chars = s:current_line2list()
     let right = chars[col("."):]
     let on_func_name = s:get_char_under_cursor() =~ s:legal_func_name_chars.'\|('
     let open_paren_count = 0
