@@ -81,11 +81,21 @@ function! s:move_to_start_of_function(word_size)
     endif
 endfunction
 
-function! s:get_surrounding_function_name(word_size)
+function! s:get_start_of_function_column(word_size)
     call s:move_to_start_of_function(a:word_size)
+    return = col('.')
+endfunction
+
+function! s:get_function_opening_paren_column(word_size)
+    cursor('.', s:get_start_of_function_column(a:word_size))
+    let [_, c] = searchpos('(')
+    return c
+endfunction
+
+function! s:get_surrounding_function_name(word_size)
     let chars = s:current_line2list()
-    let c1 = col('.')
-    let [_, c2] = searchpos('(')
+    let c1 = s:get_start_of_function_column(a:word_size)
+    let c2 = s:get_function_opening_paren_column(a:word_size)
     return [range(c1, c2-2), chars[c1-1:c2-2]]
 endfunction
 
