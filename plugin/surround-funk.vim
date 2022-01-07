@@ -81,6 +81,14 @@ function! s:move_to_start_of_function(word_size)
     endif
 endfunction
 
+function! s:get_surrounding_function_name(word_size)
+    call s:move_to_start_of_function(a:word_size)
+    let chars = s:current_line2list()
+    let c1 = col('.')
+    let [_, c2] = searchpos('(')
+    return [range(c1, c2-2), chars[c1-1:c2-2]]
+endfunction
+
 function! s:delete_surrounding_function(word_size)
     " we'll restore the f register later so it isn't clobbered here
     let l:freg = @f
