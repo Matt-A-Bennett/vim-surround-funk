@@ -29,6 +29,7 @@ function! s:is_cursor_on_function()
             if on_func_name
                 return 1
             endif
+            " I could jump to the matching ')' at this point to speed things up
             let open_paren_count+=1
         elseif char ==# '('
             let close_paren_count+=1
