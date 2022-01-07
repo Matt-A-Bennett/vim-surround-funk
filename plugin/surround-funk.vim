@@ -46,8 +46,9 @@ function! s:move_to_start_of_function(word_size, pasting)
         call searchpair('(','',')', 'b')
     endif
     " move onto function name 
-    call search('\<', 'b', line('.'))
-    if a:word_size ==# 'big'
+    if a:word_size ==# 'small'
+        call search('\<', 'b', line('.'))
+    else
         let legal_func_name_chars = '\(\w\|\d\|\.\|_\)'
         call search(legal_func_name_chars.'\@<!', 'b', line('.'))
     endif
@@ -173,4 +174,3 @@ nmap gsf <Plug>PasteFunctionAroundFunction
 nmap gsF <Plug>PasteFunctionAroundFUNCTION
 nmap gsw <Plug>PasteFunctionAroundWord
 nmap gsW <Plug>PasteFunctionAroundWORD
-
