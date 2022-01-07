@@ -1,8 +1,13 @@
-# surround-funk.vim (version 0.2.0)
+# surround-funk.vim (version 0.3.0)
 This was inspired by tpope's [surround.vim](https://github.com/tpope/vim-surround) 
-and allows you to delete, change, yank, and paste the 'surrounding function':
+and allows you to delete, change and yank a surrounding function along with its additional arguments.
+With the surrounding function in the unnamed register, you can 'grip' a word or
+another function with it. 'Gripping' will wrap/encompass a word or function
+with the one you have in the unnamed register (see below).
 
-## What is a surrounding function?
+## Usage
+
+### What is a surrounding function?
 
 Below, the `*` symbols show what would be deleted (or yanked) with the `dsf`
 (or `ysf`) command. The `^` symbols show where the cursor can be when issuing
@@ -11,25 +16,77 @@ the command:
 ```
 sf: Where the name of the function (e.g. outerfunc) is a standard Vim word.
 
-   **********                *
-np.outerfunc(arg1, arg2, arg3)
-   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   **********               *
+np.outerfunc(innerfunc(arg1))
+   ^^^^^^^^^^               ^
 
    **********               *************
 np.outerfunc(innerfunc(arg1), arg2, arg3)
    ^^^^^^^^^^               ^^^^^^^^^^^^^
 
-sF: Where the name of the function (e.g. outerfunc) is similar to a Vim WORD, 
-    but in addition to whitespaces, includes commas, semicolons and opening
-    parentheses.
+   **********    *
+np.outerfunc(arg1)
+   ^^^^^^^^^^^^^^^
 
-*************                *
+   **********                *
 np.outerfunc(arg1, arg2, arg3)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sF: Where the name of the function (e.g. np.outerfunc) is similar to a Vim
+WORD, but is additionally delimited by commas, semicolons and opening
+parentheses.
+
+*************               *
+np.outerfunc(innerfunc(arg1))
+^^^^^^^^^^^^^               ^
 
 *************               *************
 np.outerfunc(innerfunc(arg1), arg2, arg3)
 ^^^^^^^^^^^^^               ^^^^^^^^^^^^^
+
+*************    *
+np.outerfunc(arg1)
+^^^^^^^^^^^^^^^^^^
+
+*************                *
+np.outerfunc(arg1, arg2, arg3)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+```
+
+### Deleting, changing and yanking a surrounding function
+
+```
+'dsf': Delete surrounding function (standard word)
+
+'dsF': Like 'dsf', but the function name is delimited by whitespaces, commas,
+       semicolons and opening parentheses.
+
+'csf': Like 'dsf' but start instert mode where the opening parenthesis of the
+       changed function was
+
+'csF': Like 'csf', but the function name is delimited by whitespaces, commas,
+       semicolons and opening parentheses.
+
+'ysf': Yank surrounding function (standard word)
+
+'ysF': Like 'ysf', but the function name is delimited by whitespaces, commas,
+       semicolons and opening parentheses.
+```
+
+### Gripping a surrounding function around a word or another function
+
+```
+'gsf': Grip (i.e wrap/encompass) a function in the unnamed register around
+       another function.
+
+'gsF': Like 'gsf', but the function name is delimited by whitespaces, commas,
+       semicolons and opening parentheses.
+
+'gsw': Grip (i.e wrap/encompass) a function in the unnamed register around a
+       word.
+
+'gsW': Like 'gsw', but the word name is delimited by whitespaces, commas,
+       semicolons and opening parentheses.
 ```
 
 ## Installation

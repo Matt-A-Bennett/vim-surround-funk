@@ -1,5 +1,6 @@
-*surround-funk.txt* delete, change, yank, and paste the surrounding function
-and its arguments
+*surround-funk.txt* Delete, change and yank a surrounding function
+along with its additional arguments. Then 'grip' a word or function with the
+surrounding function.
 
 License: Same terms as Vim itself (see |license|)
 
@@ -8,7 +9,12 @@ This plugin is only available if 'compatible' is not set.
 INTRODUCTION                                    *surround-funk*
 
 This was inspired by tpope's |surround| plugin and allows you to delete,
-change, yank, and paste the surrounding function and its arguments.
+change and yank a surrounding function along with its additional arguments.
+With the surrounding function in the unnamed register, you can 'grip' a word or
+another function with it. 'Gripping' will wrap/encompass a word or function
+with the one you have in the unnamed register (see below).
+
+USAGE
 
 WHAT IS A SURROUNDING FUNCTION?
 
@@ -20,27 +26,42 @@ command:
 sf                      Where the name of the function (e.g. outerfunc) is a 
                         standard Vim |word|.
 
-                           **********                *
-                        np.outerfunc(arg1, arg2, arg3)
-                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                           **********               *
+                        np.outerfunc(innerfunc(arg1))
+                           ^^^^^^^^^^               ^
   
                            **********               *************
                         np.outerfunc(innerfunc(arg1), arg2, arg3)
                            ^^^^^^^^^^               ^^^^^^^^^^^^^
   
-sF                      Where the name of the function (e.g. outerfunc) is 
-                        similar to a Vim |WORD|, but in addition to
-                        whitespaces, includes commas, semicolons and opening
-                        parentheses.
-
-                        *************                *
-                        np.outerfunc(arg1, arg2, arg3)
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                           **********    *
+                        np.outerfunc(arg1)
+                           ^^^^^^^^^^^^^^^
   
+                           **********                *
+                        np.outerfunc(arg1, arg2, arg3)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  
+sF                      Where the name of the function (e.g. np.outerfunc) is 
+                        similar to a Vim |WORD|, but is additionally delimited
+                        by commas, semicolons and opening parentheses.
+
+                        *************               *
+                        np.outerfunc(innerfunc(arg1))
+                        ^^^^^^^^^^^^^               ^
+
                         *************               *************
                         np.outerfunc(innerfunc(arg1), arg2, arg3)
                         ^^^^^^^^^^^^^               ^^^^^^^^^^^^^
 
+                        *************    *
+                        np.outerfunc(arg1)
+                        ^^^^^^^^^^^^^^^^^^
+  
+                        *************                *
+                        np.outerfunc(arg1, arg2, arg3)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  
 
 DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION
 
@@ -48,23 +69,44 @@ DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION
 dsf                     Delete surrounding function (standard word)
 
                                                 *dsF*
-dsF                     Delete surrounding function (big WORD)
+dsF                     Like |dsf|, but the function name is delimited by
+                        whitespaces, commas, semicolons and opening
+                        parentheses.
 
                                                 *csf*
-csf                     Change surrounding function (standard word)
+csf                     Like |dsf| but start instert mode where the opening
+                        parenthesis of the changed function was
 
                                                 *csF*
-csF                     Change surrounding function (big WORD)
+csF                     Like |csf|, but the function name is delimited by
+                        whitespaces, commas, semicolons and opening
+                        parentheses.
 
                                                 *ysf*
 ysf                     Yank surrounding function (standard word)
 
                                                 *ysF*
-ysF                     Yank surrounding function (big WORD)
+ysF                     Like |ysf|, but the function name is delimited by
+                        whitespaces, commas, semicolons and opening
+                        parentheses.
 
 
-PASTING A SURROUNDING FUNCTION AROUND ANOTHER FUNCTION
+GRIPPING A SURROUNDING FUNCTION AROUND A WORD OR ANOTHER FUNCTION
 
                                                 *gsf*
-gsf                     Paste (mnemonic: grip) a previously deleted/changed/ 
-                        yanked function around a different function 
+gsf                     Grip (i.e wrap/encompass) a function in the unnamed
+                        register around another function.
+
+                                                *gsF*
+gsF                     Like |gsf|, but the function name is delimited by
+                        whitespaces, commas, semicolons and opening
+                        parentheses.
+
+                                                *gsw*
+gsw                     Grip (i.e wrap/encompass) a function in the unnamed
+                        register around a word.
+
+                                                *gsW*
+gsW                     Like |gsw|, but the word name is delimited by
+                        whitespaces, commas, semicolons and opening
+                        parentheses.
