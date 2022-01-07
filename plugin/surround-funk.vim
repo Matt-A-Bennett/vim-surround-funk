@@ -56,13 +56,17 @@ function! s:is_cursor_on_function()
     return close_paren_count > open_paren_count
 endfunction
 
-function! s:move_to_start_of_function(word_size, pasting)
+function! s:move_to_function_opening_paren()
     " move forward to one of function's parentheses (unless already on one)
     call search('(\|)', 'c', line('.'))
     " if we're on the closing parenthsis, move to other side
     if s:get_char_under_cursor() ==# ')'
         call searchpair('(','',')', 'b')
     endif
+endfunction
+
+function! s:move_to_start_of_function(word_size)
+    call s:move_to_function_opening_paren()
     " move onto function name 
     if a:word_size ==# 'small'
         call search('\<', 'b', line('.'))
@@ -75,7 +79,7 @@ endfunction
 function! s:delete_surrounding_function(word_size)
     " we'll restore the f register later so it isn't clobbered here
     let l:freg = @f
-    call s:move_to_start_of_function(a:word_size, 0)
+    call s:move_to_start_of_function(a:word_size)
     " delete function name into the f register and mark opening parenthesis 
     silent! execute 'normal! "fdt(mo'
     " yank opening parenthesis into f register
@@ -117,13 +121,13 @@ function! s:paste_function_around_function(word_size)
     " we'll restore the unnamed register later so it isn't clobbered here
     let l:unnamed_reg = @"
     if s:is_cursor_on_function()
-        call s:move_to_start_of_function(a:word_size, 0)
+        call s:move_to_start_of_function(a:word_size)
         " paste just behind existing function
         silent! execute 'normal! P'
         " mark closing parenthesis
         silent! execute 'normal! f(%mc'
         " move back onto start of function name
-        call s:move_to_start_of_function(a:word_size, 1)
+        call s:move_to_start_of_function(a:word_size)
         " delete the whole function (including last parenthesis)
         silent! execute 'normal! d`c"_x'
         " if we're not already on a last parenthesis, move back to it
