@@ -13,9 +13,29 @@ function! s:get_char_under_cursor()
      return getline(".")[col(".")-1]
 endfunction
 
-function! s:current_line2list()
-    let str = getline(".")
-    return split(str, '.\zs\ze.')
+function! s:get
+    call cursor('.', s:get_func_open_paren_column())
+endfunction
+
+function! s:get_start_of_func_column(word_size)
+    call s:move_to_func_open_paren()
+    if a:word_size ==# 'small'
+        let [_, c] = searchpos('\<', 'b', line('.'))
+    else
+        let [_, c] = searchpos('\('.legal_func_name_chars.'\)\@<!', 'b', line('.'))
+    endif
+    return c
+endfunction
+
+function! s:move_to_start_of_func(word_size)
+    call cursor('.', s:get_start_of_func_column(a:word_size))
+endfunction
+
+function! s:get_func_name(word_size)
+    let chars = s:current_line2list()
+    let c1 = s:get_start_of_func_column(a:word_size)
+    let c2 = s:get_func_open_paren_column(a:word_size)
+    return [range(c1, c2-2), chars[c1-1:c2-2]]
 endfunction
 
 function! s:searchpair2(start, middle, end, flag)
@@ -36,7 +56,7 @@ function! s:searchpair2(start, middle, end, flag)
     endif
 endfunction
 
-function! s:is_cursor_on_function()
+function! s:is_cursor_on_func()
     if s:get_char_under_cursor() =~ '(\|)'
         return 1
     endif
@@ -62,47 +82,10 @@ function! s:is_cursor_on_function()
     return close_paren_count > open_paren_count
 endfunction
 
-function! s:move_to_function_opening_paren()
-    " move forward to one of function's parentheses (unless already on one)
-    call search('(\|)', 'c', line('.'))
-    " if we're on the closing parenthsis, move to other side
-    if s:get_char_under_cursor() ==# ')'
-        call searchpair('(','',')', 'b')
-    endif
-endfunction
-
-function! s:move_to_start_of_function(word_size)
-    call s:move_to_function_opening_paren()
-    " move onto function name 
-    if a:word_size ==# 'small'
-        call search('\<', 'b', line('.'))
-    else
-        call search('\('.legal_func_name_chars.'\)\@<!', 'b', line('.'))
-    endif
-endfunction
-
-function! s:get_start_of_function_column(word_size)
-    call s:move_to_start_of_function(a:word_size)
-    return = col('.')
-endfunction
-
-function! s:get_function_opening_paren_column(word_size)
-    cursor('.', s:get_start_of_function_column(a:word_size))
-    let [_, c] = searchpos('(')
-    return c
-endfunction
-
-function! s:get_surrounding_function_name(word_size)
-    let chars = s:current_line2list()
-    let c1 = s:get_start_of_function_column(a:word_size)
-    let c2 = s:get_function_opening_paren_column(a:word_size)
-    return [range(c1, c2-2), chars[c1-1:c2-2]]
-endfunction
-
-function! s:delete_surrounding_function(word_size)
+function! s:delete_surrounding_func(word_size)
     " we'll restore the f register later so it isn't clobbered here
     let l:freg = @f
-    call s:move_to_start_of_function(a:word_size)
+    call s:move_to_start_of_func(a:word_size)
     " delete function name into the f register and mark opening parenthesis 
     silent! execute 'normal! "fdt(mo'
     " yank opening parenthesis into f register
@@ -127,30 +110,30 @@ function! s:delete_surrounding_function(word_size)
     let @f = l:freg
 endfunction
 
-function! s:change_surrounding_function(word_size)
-    call s:delete_surrounding_function(a:word_size)
+function! s:change_surrounding_func(word_size)
+    call s:delete_surrounding_func(a:word_size)
     startinsert
 endfunction
 
-function! s:yank_surrounding_function(word_size)
+function! s:yank_surrounding_func(word_size)
     " store the current line
     silent! execute 'normal! "lyy'
-    call s:delete_surrounding_function(a:word_size)
+    call s:delete_surrounding_func(a:word_size)
     " restore the current line to original state
     silent! execute 'normal! "_dd"lP'
 endfunction
 
-function! s:paste_function_around_function(word_size)
+function! s:paste_func_around_func(word_size)
     " we'll restore the unnamed register later so it isn't clobbered here
     let l:unnamed_reg = @"
-    if s:is_cursor_on_function()
-        call s:move_to_start_of_function(a:word_size)
+    if s:is_cursor_on_func()
+        call s:move_to_start_of_func(a:word_size)
         " paste just behind existing function
         silent! execute 'normal! P'
         " mark closing parenthesis
         silent! execute 'normal! f(%mc'
         " move back onto start of function name
-        call s:move_to_start_of_function(a:word_size)
+        call s:move_to_start_of_func(a:word_size)
         " delete the whole function (including last parenthesis)
         silent! execute 'normal! d`c"_x'
         " if we're not already on a last parenthesis, move back to it
@@ -164,11 +147,11 @@ function! s:paste_function_around_function(word_size)
         let @" = l:unnamed_reg
     else
         " we're on a word, not a function
-        call s:paste_function_around_word(a:word_size)
+        call s:paste_func_around_word(a:word_size)
     endif
 endfunction
 
-function! s:paste_function_around_word(word_size)
+function! s:paste_func_around_word(word_size)
     " we'll restore the unnamed register later so it isn't clobbered here
     let l:unnamed_reg = @"
     if a:word_size ==# 'small'
