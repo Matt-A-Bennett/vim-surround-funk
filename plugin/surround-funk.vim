@@ -14,27 +14,27 @@ function! s:is_cursor_on_function()
     if s:get_char_under_cursor() =~ '(\|)'
         return 1
     endif
-    let str = getline(".")
     let legal_func_chars = '\w\|\d\|\.\|_\|('
+    let str = getline(".")
     let chars = split(str, '.\zs\ze.')
     let right = chars[col("."):]
-    let name = s:get_char_under_cursor() =~ legal_func_chars
-    let open = 0
-    let close = 0
+    let on_func_name = s:get_char_under_cursor() =~ legal_func_chars
+    let open_paren_count = 0
+    let close_paren_count = 0
     for char in right
-        if name && char !~ legal_func_chars
-            let name = 0
+        if on_func_name && char !~ legal_func_chars
+            let on_func_name = 0
         endif
         if char ==# ')'
-            let close+=1
+            let close_paren_count+=1
         elseif char ==# '('
-            let open+=1
-            if name
+            let open_paren_count+=1
+            if on_func_name
                 return 1
             endif
         endif
     endfor
-    return close > open
+    return close_paren_count > open_paren_count
 endfunction
 
 function! s:move_to_start_of_function(word_size, pasting)
