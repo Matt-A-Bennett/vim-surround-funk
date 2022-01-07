@@ -1,5 +1,5 @@
 " Author:       Matthew Bennett
-" Version:      0.3.0
+" Version:      0.3.1
 
 if exists("g:loaded_surround_funk") || &cp || v:version < 700
   finish
