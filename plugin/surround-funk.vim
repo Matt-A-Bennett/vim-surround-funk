@@ -1,5 +1,5 @@
 " Author:       Matthew Bennett
-" Version:      0.3.1
+" Version:      0.4.0
 "
 " The following column indices are found in the current line:
 "
@@ -138,6 +138,9 @@ function! s:remove_substring(str, c1, c2)
     return [join(chars, ''), join(removed, '')]
 endfunction
 
+" this isn't used, but could allow me to switch to from 'dsf' to 'dsw' if 'dsf'
+" was called with the cursor not on a function (or to gracfully do nothing
+" instead of clobbering the line)...
 function! s:is_cursor_on_func()
     let [_, _, c_orig, _] = getpos('.')
     if s:get_char_under_cursor() =~ '(\|)'
