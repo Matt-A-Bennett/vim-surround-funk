@@ -3,7 +3,7 @@
 "
 " The following column indices are found in the current line:
 "
-"    np.outerfunc(np.innerfunc(arg1), arg2)
+0
 "    ^  ^        ^                  ^     ^
 "    1a 1b       2                  3     4
 "
@@ -60,7 +60,8 @@ function! s:get_char_under_cursor()
 endfunction
 
 function! s:string2list(str)
-    if a:str ==# '.'
+    let str = a:str
+    if str ==# '.'
         let str = getline('.')
     endif
     return split(str, '\zs')
