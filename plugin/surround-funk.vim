@@ -3,7 +3,7 @@
 "
 " The following column indices are found in the current line:
 "
-"    np.outerfunc(np.innerfunc(arg1), arg2)
+"    np.outer(os.inner(arg1), arg2)
 "    ^  ^        ^                  ^     ^
 "    1a 1b       2                  3     4
 "
@@ -204,6 +204,7 @@ function! s:paste_func_around_func(word_size)
     call extend(chars, [s:surroundfunk_func_parts[3]], fclose+1)
     let chars = join(chars, '')
     call setline('.', chars)
+    call cursor('.', fstart)
 endfunction
 
 function! s:get_word_markers(word_size)
@@ -224,6 +225,7 @@ function! s:paste_func_around_word(word_size)
     call extend(chars, [s:surroundfunk_func_parts[3]], wclose+1)
     let chars = join(chars, '')
     call setline('.', chars)
+    call cursor('.', wstart)
 endfunction
 
 nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "delete")<CR>
