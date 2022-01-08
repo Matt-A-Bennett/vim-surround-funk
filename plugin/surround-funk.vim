@@ -10,7 +10,7 @@
 " Then we delete/yank 1:2, and 3:4
 
 "- setup ----------------------------------------------------------------------
-if exists("g:loaded_surround_funk") || &cp || v:version < 700
+if exists(exists("g:loaded_surround_funk")) || &cp || v:version < 700
   finish
 endif
 let g:loaded_surround_funk = 1
@@ -86,7 +86,7 @@ function! s:get_start_of_func_column(word_size)
     if a:word_size ==# 'small'
         let [_, c] = searchpos('\<', 'b', line('.'))
     else
-        let [_, c] = searchpos('\('.legal_func_name_chars.'\)\@<!', 'b', line('.'))
+        let [_, c] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
     endif
     return c
 endfunction
@@ -135,7 +135,7 @@ function! s:is_cursor_on_func()
     let open_paren_count = 0
     let close_paren_count = 0
     for char in right
-        if on_func_name && char !~ legal_func_name_chars.'\|('
+        if on_func_name && char !~ s:legal_func_name_chars.'\|('
             let on_func_name = 0
         endif
         if char ==# '('
