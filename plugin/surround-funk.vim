@@ -10,7 +10,7 @@
 " Then we delete/yank 1:2, and 3:4
 
 "- setup ----------------------------------------------------------------------
-if exists("g:loaded_surround_funk") || &cp || v:version < 700
+if "g:loaded_surround_funk" || &cp || v:version < 700
   finish
 endif
 let g:loaded_surround_funk = 1
@@ -66,7 +66,7 @@ function! s:string2list(str)
     return split(str, '\zs')
 endfunction
 
-"- functions to get marker positions -------------------------------------------------------
+"- functions to get marker positions ------------------------------------------
 function! s:get_func_open_paren_column()
     " move forward to one of function's parentheses (unless already on one)
     call search('(\|)', 'c', line('.'))
@@ -74,7 +74,7 @@ function! s:get_func_open_paren_column()
     if s:get_char_under_cursor() ==# ')'
         call searchpair('(','',')', 'b')
     endif
-    return = col('.')
+    return col('.')
 endfunction
 
 function! s:move_to_func_open_paren()
