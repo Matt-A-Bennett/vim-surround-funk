@@ -3,7 +3,7 @@
 "
 " The following column indices are found in the current line:
 "
-0
+"    np.outerfunc(np.innerfunc(arg1), arg2)
 "    ^  ^        ^                  ^     ^
 "    1a 1b       2                  3     4
 "
@@ -28,6 +28,7 @@ function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
 endfunction
 
 function! s:searchpairpos2(start, middle, end, flag)
+    let [_, _ c, _] = getpos('.')
     if a:flag ==# 'b'
         let f1 = 'b'
         let f2 = ''
@@ -46,6 +47,7 @@ function! s:searchpairpos2(start, middle, end, flag)
     else
         return 0
     endif
+    call cursor('.', c)
 endfunction
 
 function! s:searchpair2(start, middle, end, flag)
@@ -69,12 +71,14 @@ endfunction
 
 "- functions to get marker positions ------------------------------------------
 function! s:get_func_open_paren_column()
+    let [_, _ c, _] = getpos('.')
     " move forward to one of function's parentheses (unless already on one)
     call search('(\|)', 'c', line('.'))
     " if we're on the closing parenthsis, move to other side
     if s:get_char_under_cursor() ==# ')'
         call searchpair('(','',')', 'b')
     endif
+    call cursor('.', c)
     return col('.')
 endfunction
 
@@ -83,12 +87,14 @@ function! s:move_to_func_open_paren()
 endfunction
 
 function! s:get_start_of_func_column(word_size)
+    let [_, _ c, _] = getpos('.')
     call s:move_to_func_open_paren()
     if a:word_size ==# 'small'
         let [_, c] = searchpos('\<', 'b', line('.'))
     else
         let [_, c] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
     endif
+    call cursor('.', c)
     return c
 endfunction
 
@@ -97,8 +103,10 @@ function! s:move_to_start_of_func(word_size)
 endfunction
 
 function! s:get_end_of_func_column()
+    let [_, _ c, _] = getpos('.')
     call s:move_to_func_open_paren()
     let [_, c] = searchpairpos('(','',')')
+    call cursor('.', c)
     return c
 endfunction
 
@@ -107,8 +115,10 @@ function! s:move_to_end_of_func()
 endfunction
 
 function! s:get_start_of_trailing_args_column()
+    let [_, _ c, _] = getpos('.')
     call s:move_to_func_open_paren()
     let c = s:searchpairpos2('(', ')', ')', '')
+    call cursor('.', c)
     if c > 0
         return c
     else
@@ -128,6 +138,7 @@ function! s:remove_substring(str, c1, c2)
 endfunction
 
 function! s:is_cursor_on_func()
+    let [_, _ c, _] = getpos('.')
     if s:get_char_under_cursor() =~ '(\|)'
         return 1
     endif
@@ -142,6 +153,7 @@ function! s:is_cursor_on_func()
         endif
         if char ==# '('
             if on_func_name
+                call cursor('.', c)
                 return 1
             endif
             " I could jump to the matching ')' at this point to speed things up
@@ -150,6 +162,7 @@ function! s:is_cursor_on_func()
             let close_paren_count+=1
         endif
     endfor
+    call cursor('.', c)
     return close_paren_count > open_paren_count
 endfunction
 
