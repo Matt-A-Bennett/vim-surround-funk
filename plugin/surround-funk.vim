@@ -24,7 +24,7 @@ function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
         return a:v1 > a:v2
     else
         return a:v1 < a:v2
-    end
+    endif
 endfunction
 
 function! s:searchpairpos2(start, middle, end, flag)
@@ -107,11 +107,12 @@ endfunction
 
 function! s:get_start_of_trailing_args_column()
     call s:move_to_func_open_paren()
-    let c = searchpairpos2('(', ')', ')', '')
+    let c = s:searchpairpos2('(', ')', ')', '')
     if c > 0
         return c
     else
         return s:get_end_of_func_column()
+    endif
 endfunction
 
 function! s:get_substring(str, c1, c2)
