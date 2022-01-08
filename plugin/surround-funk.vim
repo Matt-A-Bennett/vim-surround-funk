@@ -114,12 +114,12 @@ function! s:get_start_of_trailing_args_column()
         return s:get_end_of_func_column()
 endfunction
 
-funtion! s:get_substring(str, c1, c2)
+function! s:get_substring(str, c1, c2)
     let chars = s:string2list('.')
     return join(chars[c1-1:c2-2], '')
 endfunction
 
-funtion! s:remove_substring(str, c1, c2)
+function! s:remove_substring(str, c1, c2)
     let chars = s:string2list('.')
     call remove(chars, c1-1, c2)
     return join(chars, '')
@@ -250,7 +250,7 @@ function! s:paste_func_around_word(word_size)
     endif
     " if we're not already on a last parenthesis, move back to it
     call search(')', 'bc', line('.'))
-    " move to start of funtion and mark it, paste the word, move back to start
+    " move to start of function and mark it, paste the word, move back to start
     silent! execute 'normal! %mop`o'
     " restore unnamed register
     let @" = l:unnamed_reg
