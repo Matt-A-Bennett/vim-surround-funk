@@ -15,11 +15,11 @@ if exists("g:loaded_surround_funk") || &cp || v:version < 700
 endif
 let g:loaded_surround_funk = 1
 
-let s:legal_func_name_chars = ['\w', '\d', '\.', '_']
-let s:legal_func_name_chars = join(s:legal_func_name_chars, '\|')
+let g:legal_func_name_chars = ['\w', '\d', '\.', '_']
+let g:legal_func_name_chars = join(g:legal_func_name_chars, '\|')
 
 "- helper functions -----------------------------------------------------------
-function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
+function! Is_greater_or_lesser(v1, v2, greater_or_lesser)
     if a:greater_or_lesser ==# '>'
         return a:v1 > a:v2
     else
@@ -27,8 +27,8 @@ function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
     endif
 endfunction
 
-function! s:searchpairpos2(start, middle, end, flag)
-    let [_, _, c, _] = getpos('.')
+function! Searchpairpos2(start, middle, end, flag)
+    let [_, _, c_orig, _] = getpos('.')
     if a:flag ==# 'b'
         let f1 = 'b'
         let f2 = ''
@@ -42,26 +42,26 @@ function! s:searchpairpos2(start, middle, end, flag)
     let end_c = col(".")
     call searchpair(a:start, '', a:end, f2)
     let [_, c] = searchpos(a:middle, f1, line(".")) 
-    if s:is_greater_or_lesser(c, end_c, g_or_l)
+    call cursor('.', c_orig)
+    if Is_greater_or_lesser(c, end_c, g_or_l)
         return c
     else
         return 0
     endif
-    call cursor('.', c)
 endfunction
 
-function! s:searchpair2(start, middle, end, flag)
-     let c = s:searchpair2(a:start, a:middle, a:end, a:flag)
+function! Searchpair2(start, middle, end, flag)
+     let c = Searchpairpos2(a:start, a:middle, a:end, a:flag)
      if c > 0
          call cursor('.', c)
      endif
 endfunction
 
-function! s:get_char_under_cursor()
+function! Get_char_under_cursor()
      return getline(".")[col(".")-1]
 endfunction
 
-function! s:string2list(str)
+function! String2list(str)
     let str = a:str
     if str ==# '.'
         let str = getline('.')
@@ -70,85 +70,86 @@ function! s:string2list(str)
 endfunction
 
 "- functions to get marker positions ------------------------------------------
-function! s:get_func_open_paren_column()
-    let [_, _, c, _] = getpos('.')
+function! Get_func_open_paren_column()
+    let [_, _, c_orig, _] = getpos('.')
     " move forward to one of function's parentheses (unless already on one)
     call search('(\|)', 'c', line('.'))
     " if we're on the closing parenthsis, move to other side
-    if s:get_char_under_cursor() ==# ')'
+    if Get_char_under_cursor() ==# ')'
         call searchpair('(','',')', 'b')
     endif
-    call cursor('.', c)
-    return col('.')
+    let c = col('.')
+    call cursor('.', c_orig)
+    return c
 endfunction
 
-function! s:move_to_func_open_paren()
-    call cursor('.', s:get_func_open_paren_column())
+function! Move_to_func_open_paren()
+    call cursor('.', Get_func_open_paren_column())
 endfunction
 
-function! s:get_start_of_func_column(word_size)
-    let [_, _, c, _] = getpos('.')
-    call s:move_to_func_open_paren()
+function! Get_start_of_func_column(word_size)
+    let [_, _, c_orig, _] = getpos('.')
+    call Move_to_func_open_paren()
     if a:word_size ==# 'small'
         let [_, c] = searchpos('\<', 'b', line('.'))
     else
-        let [_, c] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
+        let [_, c] = searchpos('\('.g:legal_func_name_chars.'\)\@<!', 'b', line('.'))
     endif
-    call cursor('.', c)
+    call cursor('.', c_orig)
     return c
 endfunction
 
-function! s:move_to_start_of_func(word_size)
-    call cursor('.', s:get_start_of_func_column(a:word_size))
+function! Move_to_start_of_func(word_size)
+    call cursor('.', Get_start_of_func_column(a:word_size))
 endfunction
 
-function! s:get_end_of_func_column()
-    let [_, _, c, _] = getpos('.')
-    call s:move_to_func_open_paren()
+function! Get_end_of_func_column()
+    let [_, _, c_orig, _] = getpos('.')
+    call Move_to_func_open_paren()
     let [_, c] = searchpairpos('(','',')')
-    call cursor('.', c)
+    call cursor('.', c_orig)
     return c
 endfunction
 
-function! s:move_to_end_of_func()
-    call cursor('.', s:get_end_of_func_column())
+function! Move_to_end_of_func()
+    call cursor('.', Get_end_of_func_column())
 endfunction
 
-function! s:get_start_of_trailing_args_column()
-    let [_, _, c, _] = getpos('.')
-    call s:move_to_func_open_paren()
-    let c = s:searchpairpos2('(', ')', ')', '')
-    call cursor('.', c)
+function! Get_start_of_trailing_args_column()
+    let [_, _, c_orig, _] = getpos('.')
+    call Move_to_func_open_paren()
+    let c = Searchpairpos2('(', ')', ')', '')
+    call cursor('.', c_orig)
     if c > 0
-        return c
+        return c+1
     else
-        return s:get_end_of_func_column()
+        return Get_end_of_func_column()
     endif
 endfunction
 
-function! s:get_substring(str, c1, c2)
-    let chars = s:string2list(a:str)
-    return join(chars[a:c1-1:a:c2-2], '')
+function! Get_substring(str, c1, c2)
+    let chars = String2list(a:str)
+    return join(chars[a:c1-1:a:c2-1], '')
 endfunction
 
-function! s:remove_substring(str, c1, c2)
-    let chars = s:string2list(a:str)
-    call remove(chars, a:c1-1, a:c2)
-    return join(chars, '')
+function! Remove_substring(str, c1, c2)
+    let chars = String2list(a:str)
+    let removed = remove(chars, a:c1-1, a:c2-1)
+    return [join(chars, ''), join(removed, '')]
 endfunction
 
-function! s:is_cursor_on_func()
-    let [_, _, c, _] = getpos('.')
-    if s:get_char_under_cursor() =~ '(\|)'
+function! Is_cursor_on_func()
+    T [_, _, c, _] = getpos('.')
+    if Get_char_under_cursor() =~ '(\|)'
         return 1
     endif
-    let chars = s:string2list('.')
+    let chars = String2list('.')
     let right = chars[col("."):]
-    let on_func_name = s:get_char_under_cursor() =~ s:legal_func_name_chars.'\|('
+    let on_func_name = Get_char_under_cursor() =~ g:legal_func_name_chars.'\|('
     let open_paren_count = 0
     let close_paren_count = 0
     for char in right
-        if on_func_name && char !~ s:legal_func_name_chars.'\|('
+        if on_func_name && char !~ g:legal_func_name_chars.'\|('
             let on_func_name = 0
         endif
         if char ==# '('
@@ -166,67 +167,28 @@ function! s:is_cursor_on_func()
     return close_paren_count > open_paren_count
 endfunction
 
-function! s:get_func_markers(word_size)
-    let fstart = s:get_start_of_func_column(a:word_size)
-    let fopen = s:get_func_open_paren_column()
-    let ftrail = s:get_start_of_trailing_args_column()
-    let fclose = s:get_end_of_func_column()
+function! Get_func_markers(word_size)
+    let fstart = Get_start_of_func_column(a:word_size)
+    let fopen = Get_func_open_paren_column()
+    let ftrail = Get_start_of_trailing_args_column()
+    let fclose = Get_end_of_func_column()
     return [fstart, fopen, ftrail, fclose]
 endfunction
 
-"    np.outerfunc(np.innerfunc(arg1), arg2)
-"    ^  ^        ^                  ^     ^
-"    1a 1b       2                  3     4
-"
-" Then we delete/yank 1:2, and 3:4
-
-function! s:delete_surrounding_func(word_size)
-    let [fstart, fopen, ftrail, fclose] = s:get_func_markers(a:word_size)
+function! Operate_on_surrounding_func(word_size, operation)
+    let [fstart, fopen, ftrail, fclose] = Get_func_markers(a:word_size)
     let str = getline('.')
-    let str = s:remove_substring(str, fstart, fopen) 
-    call setline('.', str)
-    echo 'TEST'
-endfunction
-
-" function! s:delete_surrounding_func(word_size)
-"     " we'll restore the f register later so it isn't clobbered here
-"     let l:freg = @f
-"     call s:move_to_start_of_func(a:word_size)
-"     " delete function name into the f register and mark opening parenthesis 
-"     silent! execute 'normal! "fdt(mo'
-"     " yank opening parenthesis into f register
-"     silent! execute 'normal! "Fyl'
-"     " mark closing parenthesis
-"     silent! execute 'normal! %mc'
-"     " note where the function ends
-"     let close = col('.')
-"     " move back to opening paranthesis
-"     silent! execute 'normal! %'
-"     " search on the same line for an opening paren before the closing paren 
-"     if search("(", '', line('.')) && col('.') < close
-"         " move to matching paren and delete everthing up to the closing paren
-"         " of the original function (remark closing paren)
-"         silent! execute 'normal! %l"Fd`cmc'
-"     endif
-"     " delete the closing and opening parens (put the closing one into register)
-"     silent! execute 'normal! `c"Fx`ox'
-"     " paste the function into unamed register
-"     let @"=@f
-"     " restore the f register
-"     let @f = l:freg
-" endfunction
-
-function! s:change_surrounding_func(word_size)
-    call s:delete_surrounding_func(a:word_size)
-    startinsert
-endfunction
-
-function! s:yank_surrounding_func(word_size)
-    " store the current line
-    silent! execute 'normal! "lyy'
-    call s:delete_surrounding_func(a:word_size)
-    " restore the current line to original state
-    silent! execute 'normal! "_dd"lP'
+    let offset = fopen-fstart+1
+    let [str1, rm1] = Remove_substring(str, fstart, fopen) 
+    let [str2, rm2] = Remove_substring(str1, ftrail-offset, fclose-offset) 
+    call setreg('"', rm1.rm2)
+    call cursor('.', fstart)
+    if a:operation =~ 'delete\|change'
+        call setline('.', str2)
+    endif
+    if a:operation =~ 'change'
+        startinsert
+    endif
 endfunction
 
 function! s:paste_func_around_func(word_size)
