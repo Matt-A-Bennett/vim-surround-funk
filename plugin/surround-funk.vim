@@ -201,7 +201,7 @@ endfunction
 function! s:paste_func_around_func(word_size)
     " we'll restore the unnamed register later so it isn't clobbered here
     let l:unnamed_reg = @"
-    if s:is_cursor_on_function()
+    if s:is_cursor_on_func()
         call s:move_to_start_of_func(a:word_size)
         " paste just behind existing function
         silent! execute 'normal! P'
