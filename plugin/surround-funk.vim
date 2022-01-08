@@ -28,7 +28,7 @@ function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
 endfunction
 
 function! s:searchpairpos2(start, middle, end, flag)
-    let [_, _ c, _] = getpos('.')
+    let [_, _, c, _] = getpos('.')
     if a:flag ==# 'b'
         let f1 = 'b'
         let f2 = ''
@@ -71,7 +71,7 @@ endfunction
 
 "- functions to get marker positions ------------------------------------------
 function! s:get_func_open_paren_column()
-    let [_, _ c, _] = getpos('.')
+    let [_, _, c, _] = getpos('.')
     " move forward to one of function's parentheses (unless already on one)
     call search('(\|)', 'c', line('.'))
     " if we're on the closing parenthsis, move to other side
@@ -87,7 +87,7 @@ function! s:move_to_func_open_paren()
 endfunction
 
 function! s:get_start_of_func_column(word_size)
-    let [_, _ c, _] = getpos('.')
+    let [_, _, c, _] = getpos('.')
     call s:move_to_func_open_paren()
     if a:word_size ==# 'small'
         let [_, c] = searchpos('\<', 'b', line('.'))
@@ -103,7 +103,7 @@ function! s:move_to_start_of_func(word_size)
 endfunction
 
 function! s:get_end_of_func_column()
-    let [_, _ c, _] = getpos('.')
+    let [_, _, c, _] = getpos('.')
     call s:move_to_func_open_paren()
     let [_, c] = searchpairpos('(','',')')
     call cursor('.', c)
@@ -115,7 +115,7 @@ function! s:move_to_end_of_func()
 endfunction
 
 function! s:get_start_of_trailing_args_column()
-    let [_, _ c, _] = getpos('.')
+    let [_, _, c, _] = getpos('.')
     call s:move_to_func_open_paren()
     let c = s:searchpairpos2('(', ')', ')', '')
     call cursor('.', c)
@@ -138,7 +138,7 @@ function! s:remove_substring(str, c1, c2)
 endfunction
 
 function! s:is_cursor_on_func()
-    let [_, _ c, _] = getpos('.')
+    let [_, _, c, _] = getpos('.')
     if s:get_char_under_cursor() =~ '(\|)'
         return 1
     endif
