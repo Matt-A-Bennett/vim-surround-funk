@@ -1,10 +1,20 @@
+let positions = [7, 7]
+let tests = ['dsf', 'dsF']
 
-Major Bugs: 
-a. with gsw on hello in case 3:
-a. with gsW on np.hello in case 2:
-a. with gsf on hello in case 1:
-a. with gsF on hello in case 1:
+let failure = '^.\+$\n^.\+$\n^.\+$'
 
-1. np.mean(np.hello())
-2. np.std(np.hello )
-3. np.boot(np.hello)
+call cursor(1,1)
+let test_count = 0
+for test in tests
+    call search('test'.string(test_count))
+    execute "normal j"
+    call cursor('.', positions[test_count])
+    execute "normal ".test
+    :.,+!uniq
+    let test_count += 1
+endfor
+call cursor(1,1)
+
+call search(failure)
+call setreg("/", failure)
+set hlsearch
