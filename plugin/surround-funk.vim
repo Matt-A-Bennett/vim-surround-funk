@@ -116,13 +116,13 @@ function! s:get_start_of_trailing_args_column()
 endfunction
 
 function! s:get_substring(str, c1, c2)
-    let chars = s:string2list('.')
-    return join(chars[c1-1:c2-2], '')
+    let chars = s:string2list(a:str)
+    return join(chars[a:c1-1:a:c2-2], '')
 endfunction
 
 function! s:remove_substring(str, c1, c2)
-    let chars = s:string2list('.')
-    call remove(chars, c1-1, c2)
+    let chars = s:string2list(a:str)
+    call remove(chars, a:c1-1, a:c2)
     return join(chars, '')
 endfunction
 
