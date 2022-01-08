@@ -1,6 +1,15 @@
 " Author:       Matthew Bennett
 " Version:      0.3.1
+"
+" The following column indices are found in the current line:
+"
+"    np.outerfunc(np.innerfunc(arg1), arg2)
+"    ^  ^        ^                  ^     ^
+"    1a 1b       2                  3     4
+"
+" Then we delete/yank 1:2, and 3:4
 
+"- setup ----------------------------------------------------------------------
 if exists("g:loaded_surround_funk") || &cp || v:version < 700
   finish
 endif
@@ -9,10 +18,7 @@ let g:loaded_surround_funk = 1
 let s:legal_func_name_chars = ['\w', '\d', '\.', '_']
 let s:legal_func_name_chars = join(s:legal_func_name_chars, '\|')
 
-function! s:get_char_under_cursor()
-     return getline(".")[col(".")-1]
-endfunction
-
+"- helper functions -----------------------------------------------------------
 funtion! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
     if a:greater_or_lesser ==# '>'
         return a:v1 > a:v2
@@ -21,7 +27,7 @@ funtion! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
     end
 endfunction
 
-function! s:searchpair2(start, middle, end, flag)
+function! s:searchpairpos2(start, middle, end, flag)
     if a:flag ==# 'b'
         let f1 = 'b'
         let f2 = ''
@@ -34,14 +40,33 @@ function! s:searchpair2(start, middle, end, flag)
     call searchpair(a:start, '', a:end, f1)
     let end_c = col(".")
     call searchpair(a:start, '', a:end, f2)
-    if search(a:middle, f1, line(".")) 
-                \&& s:is_greater_or_lesser(col('.'), end_c, g_or_l)
-        return 1
+    let [_, c] = searchpos(a:middle, f1, line(".")) 
+    if s:is_greater_or_lesser(c, end_c, g_or_l)
+        return c
     else
         return 0
     endif
 endfunction
 
+function! s:searchpair2(start, middle, end, flag)
+     let c = s:searchpair2(a:start, a:middle, a:end, a:flag)
+     if c > 0
+         call cursor('.', c)
+     endif
+endfunction
+
+function! s:get_char_under_cursor()
+     return getline(".")[col(".")-1]
+endfunction
+
+function! s:string2list(str)
+    if a:str ==# '.'
+        let str = getline('.')
+    endif
+    return split(str, '\zs')
+endfunction
+
+"- functions to get marker positions -------------------------------------------------------
 function! s:get_func_open_paren_column()
     " move forward to one of function's parentheses (unless already on one)
     call search('(\|)', 'c', line('.'))
@@ -80,21 +105,31 @@ function! s:move_to_end_of_func()
     call cursor('.', s:get_end_of_func_column())
 endfunction
 
-function! s:get_end_of_func()
+function! s:get_start_of_trailing_args_column()
+    call s:move_to_func_open_paren()
+    let c = searchpairpos2('(', ')', ')', '')
+    if c > 0
+        return c
+    else
+        return s:get_end_of_func_column()
 endfunction
 
-function! s:get_func_name(word_size)
-    let chars = s:current_line2list()
-    let c1 = s:get_start_of_func_column(a:word_size)
-    let c2 = s:get_func_open_paren_column(a:word_size)
-    return [range(c1, c2-2), chars[c1-1:c2-2]]
+funtion! s:get_substring(str, c1, c2)
+    let chars = s:string2list('.')
+    return join(chars[c1-1:c2-2], '')
+endfunction
+
+funtion! s:remove_substring(str, c1, c2)
+    let chars = s:string2list('.')
+    call remove(chars, c1-1, c2)
+    return join(chars, '')
 endfunction
 
 function! s:is_cursor_on_func()
     if s:get_char_under_cursor() =~ '(\|)'
         return 1
     endif
-    let chars = s:current_line2list()
+    let chars = s:string2list('.')
     let right = chars[col("."):]
     let on_func_name = s:get_char_under_cursor() =~ s:legal_func_name_chars.'\|('
     let open_paren_count = 0
@@ -115,6 +150,12 @@ function! s:is_cursor_on_func()
     endfor
     return close_paren_count > open_paren_count
 endfunction
+
+"    np.outerfunc(np.innerfunc(arg1), arg2)
+"    ^  ^        ^                  ^     ^
+"    1a 1b       2                  3     4
+"
+" Then we delete/yank 1:2, and 3:4
 
 function! s:delete_surrounding_func(word_size)
     " we'll restore the f register later so it isn't clobbered here
