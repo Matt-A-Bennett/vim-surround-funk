@@ -15,7 +15,7 @@ if exists("g:loaded_surround_funk") || &cp || v:version < 700
 endif
 let g:loaded_surround_funk = 1
 
-let g:legal_func_name_chars = ['\w', '\d', '\.', '_']
+" let g:legal_func_name_chars = ['\w', '\d', '\.', '_']
 let s:legal_func_name_chars = join(g:legal_func_name_chars, '\|')
 
 "- helper functions -----------------------------------------------------------
