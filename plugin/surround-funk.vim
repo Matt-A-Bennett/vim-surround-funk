@@ -10,7 +10,7 @@
 " Then we delete/yank 1:2, and 3:4
 
 "- setup ----------------------------------------------------------------------
-if exists(exists("g:loaded_surround_funk")) || &cp || v:version < 700
+if exists("g:loaded_surround_funk") || &cp || v:version < 700
   finish
 endif
 let g:loaded_surround_funk = 1
