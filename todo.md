@@ -2,14 +2,15 @@
 ## Major
 - [ ] Integrate with repeat.vim
 - [ ] Have `gs` commands operation on any motion (constrained to a single line)
-- [ ] Fix major bugs 1
+- [x] Fix major bugs 1
 
 ## Minor
 - [ ] Let users provide a list of legal function name characters
 - [ ] Allow users to define their own maps
+- [x] Rewrite so we don't rely on tons of `exe norm!` commands
 
 ## Patches
-- [ ] Fix minor bug 1
+- [x] Fix minor bug 1
 
 # Bugs
 ## Major Bugs

@@ -1,6 +1,5 @@
-# surround-funk.vim (version 0.3.1)
-*This plugin is currently in an initial testing phase - there are currently
-some major bugs with the `gs` commands.*
+# surround-funk.vim (version 0.4.0)
+***This plugin is currently in an initial testing phase***
 
 This was inspired by tpope's
 [surround.vim](https://github.com/tpope/vim-surround) and allows you to delete,
