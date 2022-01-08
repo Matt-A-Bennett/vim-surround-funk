@@ -151,8 +151,8 @@ function! s:is_cursor_on_func()
     return close_paren_count > open_paren_count
 endfunction
 
-function! s:get_func_markers()
-    let fstart = s:get_start_of_func_column()
+function! s:get_func_markers(word_size)
+    let fstart = s:get_start_of_func_column(a:word_size)
     let fopen = s:get_func_open_paren_column()
     let ftrail = s:get_start_of_trailing_args_column()
     let fclose = s:get_end_of_func_column()
@@ -166,7 +166,7 @@ endfunction
 " Then we delete/yank 1:2, and 3:4
 
 function! s:delete_surrounding_func(word_size)
-    let [fstart, fopen, ftrail, fclose] = get_func_markers()
+    let [fstart, fopen, ftrail, fclose] = s:get_func_markers(a:word_size)
     let str = getline('.')
     let str = s:remove_substring(str, fstart, fopen) 
     call setline('.', str)
