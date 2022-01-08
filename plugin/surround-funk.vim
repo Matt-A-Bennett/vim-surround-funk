@@ -16,7 +16,7 @@ endif
 let g:loaded_surround_funk = 1
 
 let g:legal_func_name_chars = ['\w', '\d', '\.', '_']
-let g:legal_func_name_chars = join(g:legal_func_name_chars, '\|')
+let s:legal_func_name_chars = join(s:legal_func_name_chars, '\|')
 
 "- helper functions -----------------------------------------------------------
 function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
@@ -93,7 +93,7 @@ function! s:get_start_of_func_column(word_size)
     if a:word_size ==# 'small'
         let [_, c] = searchpos('\<', 'b', line('.'))
     else
-        let [_, c] = searchpos('\('.g:legal_func_name_chars.'\)\@<!', 'b', line('.'))
+        let [_, c] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
     endif
     call cursor('.', c_orig)
     return c
@@ -145,11 +145,11 @@ function! s:is_cursor_on_func()
     endif
     let chars = s:string2list('.')
     let right = chars[col("."):]
-    let on_func_name = s:get_char_under_cursor() =~ g:legal_func_name_chars.'\|('
+    let on_func_name = s:get_char_under_cursor() =~ s:legal_func_name_chars.'\|('
     let open_paren_count = 0
     let close_paren_count = 0
     for char in right
-        if on_func_name && char !~ g:legal_func_name_chars.'\|('
+        if on_func_name && char !~ s:legal_func_name_chars.'\|('
             let on_func_name = 0
         endif
         if char ==# '('
@@ -181,7 +181,7 @@ function! s:extract_func_parts(word_size)
     let offset = fopen-fstart+1
     let [tmp, rm1] = s:remove_substring(str, fstart, fopen) 
     let [result, rm2] = s:remove_substring(tmp, ftrail-offset, fclose-offset) 
-    let g:surroundfunk_func_parts = [fstart, result, rm1, rm2]
+    let s:surroundfunk_func_parts = [fstart, result, rm1, rm2]
     return [fstart, result, rm1, rm2]
 endfunction
 
@@ -200,8 +200,8 @@ endfunction
 function! s:paste_func_around_func(word_size)
     let [fstart, _, _, fclose] = s:get_func_markers(a:word_size)
     let chars = s:string2list('.')
-    call extend(chars, [g:surroundfunk_func_parts[2]], fstart-1)
-    call extend(chars, [g:surroundfunk_func_parts[3]], fclose+1)
+    call extend(chars, [s:surroundfunk_func_parts[2]], fstart-1)
+    call extend(chars, [s:surroundfunk_func_parts[3]], fclose+1)
     let chars = join(chars, '')
     call setline('.', chars)
 endfunction
@@ -211,8 +211,8 @@ function! s:get_word_markers(word_size)
         let [_, wstart] = searchpos('\<', 'b', line('.'))
         let [_, wclose] = searchpos('\>', '', line('.'))
     else
-        let [_, wstart] = searchpos('\('.g:legal_func_name_chars.'\)\@<!', 'b', line('.'))
-        let [_, wclose] = searchpos('\('.g:legal_func_name_chars.'\)\@<!\|$', '', line('.'))
+        let [_, wstart] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
+        let [_, wclose] = searchpos('\('.s:legal_func_name_chars.'\)\@<!\|$', '', line('.'))
     endif
     return [wstart, wclose-1]
 endfunction
@@ -220,8 +220,8 @@ endfunction
 function! s:paste_func_around_word(word_size)
     let [wstart, wclose] = s:get_word_markers(a:word_size)
     let chars = s:string2list('.')
-    call extend(chars, [g:surroundfunk_func_parts[2]], wstart-1)
-    call extend(chars, [g:surroundfunk_func_parts[3]], wclose+1)
+    call extend(chars, [s:surroundfunk_func_parts[2]], wstart-1)
+    call extend(chars, [s:surroundfunk_func_parts[3]], wclose+1)
     let chars = join(chars, '')
     call setline('.', chars)
 endfunction
