@@ -151,6 +151,14 @@ function! s:is_cursor_on_func()
     return close_paren_count > open_paren_count
 endfunction
 
+function! s:get_func_markers()
+    let fstart = s:get_start_of_func_column()
+    let fopen = s:get_func_open_paren_column()
+    let ftrail = s:get_start_of_trailing_args_column()
+    let fclose = s:get_end_of_func_column()
+    return [fstart, fopen, ftrail, fclose]
+endfunction
+
 "    np.outerfunc(np.innerfunc(arg1), arg2)
 "    ^  ^        ^                  ^     ^
 "    1a 1b       2                  3     4
@@ -158,32 +166,39 @@ endfunction
 " Then we delete/yank 1:2, and 3:4
 
 function! s:delete_surrounding_func(word_size)
-    " we'll restore the f register later so it isn't clobbered here
-    let l:freg = @f
-    call s:move_to_start_of_func(a:word_size)
-    " delete function name into the f register and mark opening parenthesis 
-    silent! execute 'normal! "fdt(mo'
-    " yank opening parenthesis into f register
-    silent! execute 'normal! "Fyl'
-    " mark closing parenthesis
-    silent! execute 'normal! %mc'
-    " note where the function ends
-    let close = col('.')
-    " move back to opening paranthesis
-    silent! execute 'normal! %'
-    " search on the same line for an opening paren before the closing paren 
-    if search("(", '', line('.')) && col('.') < close
-        " move to matching paren and delete everthing up to the closing paren
-        " of the original function (remark closing paren)
-        silent! execute 'normal! %l"Fd`cmc'
-    endif
-    " delete the closing and opening parens (put the closing one into register)
-    silent! execute 'normal! `c"Fx`ox'
-    " paste the function into unamed register
-    let @"=@f
-    " restore the f register
-    let @f = l:freg
+    let [fstart, fopen, ftrail, fclose] = get_func_markers()
+    let str = getline('.')
+    let str = s:remove_substring(str, fstart, fopen) 
+    call setline('.', str)
 endfunction
+
+" function! s:delete_surrounding_func(word_size)
+"     " we'll restore the f register later so it isn't clobbered here
+"     let l:freg = @f
+"     call s:move_to_start_of_func(a:word_size)
+"     " delete function name into the f register and mark opening parenthesis 
+"     silent! execute 'normal! "fdt(mo'
+"     " yank opening parenthesis into f register
+"     silent! execute 'normal! "Fyl'
+"     " mark closing parenthesis
+"     silent! execute 'normal! %mc'
+"     " note where the function ends
+"     let close = col('.')
+"     " move back to opening paranthesis
+"     silent! execute 'normal! %'
+"     " search on the same line for an opening paren before the closing paren 
+"     if search("(", '', line('.')) && col('.') < close
+"         " move to matching paren and delete everthing up to the closing paren
+"         " of the original function (remark closing paren)
+"         silent! execute 'normal! %l"Fd`cmc'
+"     endif
+"     " delete the closing and opening parens (put the closing one into register)
+"     silent! execute 'normal! `c"Fx`ox'
+"     " paste the function into unamed register
+"     let @"=@f
+"     " restore the f register
+"     let @f = l:freg
+" endfunction
 
 function! s:change_surrounding_func(word_size)
     call s:delete_surrounding_func(a:word_size)
