@@ -2,7 +2,7 @@
 " Version:      0.4.0
 "
 " The following column indices are found in the current line:
-"
+"      
 "    np.outer(os.inner(arg1), arg2)
 "    ^  ^        ^                  ^     ^
 "    1a 1b       2                  3     4
@@ -15,8 +15,12 @@ if exists("g:loaded_surround_funk") || &cp || v:version < 700
 endif
 let g:loaded_surround_funk = 1
 
-" let g:legal_func_name_chars = ['\w', '\d', '\.', '_']
-let s:legal_func_name_chars = join(g:legal_func_name_chars, '\|')
+" use defaults if not defined by user
+if ! exists("g:surround_funk_legal_func_name_chars")
+    let g:surround_funk_legal_func_name_chars = ['\w', '\.']
+endif
+
+let s:legal_func_name_chars = join(g:surround_funk_legal_func_name_chars, '\|')
 
 "- helper functions -----------------------------------------------------------
 function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
