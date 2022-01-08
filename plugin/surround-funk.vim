@@ -97,7 +97,7 @@ endfunction
 
 function! s:get_end_of_func_column()
     call s:move_to_func_open_paren()
-    let [_, c] searchpairpos('(','',')')
+    let [_, c] = searchpairpos('(','',')')
     return c
 endfunction
 
