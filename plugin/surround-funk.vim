@@ -19,7 +19,7 @@ let s:legal_func_name_chars = ['\w', '\d', '\.', '_']
 let s:legal_func_name_chars = join(s:legal_func_name_chars, '\|')
 
 "- helper functions -----------------------------------------------------------
-funtion! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
+function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
     if a:greater_or_lesser ==# '>'
         return a:v1 > a:v2
     else
