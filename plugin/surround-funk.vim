@@ -16,7 +16,7 @@ endif
 let g:loaded_surround_funk = 1
 
 let g:legal_func_name_chars = ['\w', '\d', '\.', '_']
-let s:legal_func_name_chars = join(s:legal_func_name_chars, '\|')
+let s:legal_func_name_chars = join(g:legal_func_name_chars, '\|')
 
 "- helper functions -----------------------------------------------------------
 function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
