@@ -185,6 +185,7 @@ function! s:delete_surrounding_func(word_size)
     let str = getline('.')
     let str = s:remove_substring(str, fstart, fopen) 
     call setline('.', str)
+    echo 'TEST'
 endfunction
 
 " function! s:delete_surrounding_func(word_size)
