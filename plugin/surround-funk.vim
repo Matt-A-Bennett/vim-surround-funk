@@ -202,6 +202,7 @@ function! s:operate_on_surrounding_func(word_size, operation)
     if a:operation =~ 'change'
         startinsert
     endif
+    silent! call repeat#set("\<Plug>DeleteSurroundingFunction", v:count)
 endfunction
 
 function! s:paste_func_around_func(word_size)
@@ -245,8 +246,6 @@ nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>paste_func_a
 nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>paste_func_around_func("big")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>paste_func_around_word("small")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>paste_func_around_word("big")<CR>
-
-silent! call repeat#set("\<Plug>DeleteSurroundingFunction", v:count)
 
 nmap dsf <Plug>DeleteSurroundingFunction
 nmap dsF <Plug>DeleteSurroundingFUNCTION
