@@ -1,6 +1,6 @@
-*surround-funk.txt* Delete, change and yank a surrounding function
-along with its additional arguments. Then 'grip' a word or function with the
-surrounding function.
+*surround-funk.txt* (Version 0.6.0) Delete, change and yank a surrounding
+function along with its additional arguments. Then 'grip' a word or function
+with the surrounding function.
 
 License: Same terms as Vim itself (see |license|)
 
@@ -67,6 +67,9 @@ sF                      Where the name of the function (e.g. np.outerfunc) is
 
 DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION
 
+If you have tpope's excellent repeat.vim plugin, then the |dsf| and |dsF|
+commands are repeatable with the dot command (see |repeat.txt|).
+
                                                 *dsf*
 dsf                     Delete surrounding function
 
@@ -91,6 +94,9 @@ ysF                     Like |ysf|, but the function name is delimited by
 
 
 GRIPPING A WORD OR ANOTHER FUNCTION
+
+If you have tpope's excellent repeat.vim plugin, then the following commands
+are repeatable with the dot command (see |repeat.txt|).
 
                                                 *gsf*
 gsf                     Grip (i.e wrap/encompass) another function with the
