@@ -68,7 +68,7 @@ sF                      Where the name of the function (e.g. np.outerfunc) is
 DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION
 
 If you have tpope's excellent repeat.vim plugin, then the |dsf| and |dsF|
-commands are repeatable with the dot command (see |repeat.txt|).
+commands are repeatable with the dot command (see |single-repeat|).
 
                                                 *dsf*
 dsf                     Delete surrounding function
@@ -96,7 +96,7 @@ ysF                     Like |ysf|, but the function name is delimited by
 GRIPPING A WORD OR ANOTHER FUNCTION
 
 If you have tpope's excellent repeat.vim plugin, then the following commands
-are repeatable with the dot command (see |repeat.txt|).
+are repeatable with the dot command (see |single-repeat|).
 
                                                 *gsf*
 gsf                     Grip (i.e wrap/encompass) another function with the
