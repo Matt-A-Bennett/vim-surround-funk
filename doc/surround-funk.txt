@@ -67,9 +67,8 @@ sF                      Where the name of the function (e.g. np.outerfunc) is
 
 DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION
 
-If you have tpope's excellent repeat.vim plugin,
-then the |dsf| and |dsF| commands are repeatable with the dot command (see
-|single-repeat|).
+If you have tpope's excellent repeat.vim plugin, then the |dsf| and |dsF|
+commands are repeatable with the dot command (see |single-repeat|).
 
 To prevent these mappings from being generated, and define your own see
 |g:surround_funk_create_mappings| below.
