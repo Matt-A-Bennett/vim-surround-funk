@@ -11,7 +11,7 @@
 
 "- setup ----------------------------------------------------------------------
 if exists("g:loaded_surround_funk") || &cp || v:version < 700
-  finish
+    finish
 endif
 let g:loaded_surround_funk = 1
 
