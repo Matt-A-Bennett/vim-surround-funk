@@ -252,13 +252,15 @@ nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>repeatable_p
 nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>repeatable_paste("small", "word", "PasteFunctionAroundWord")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>repeatable_paste("big", "word", "PasteFunctionAroundWORD")<CR>
 
-nmap dsf <Plug>DeleteSurroundingFunction
-nmap dsF <Plug>DeleteSurroundingFUNCTION
-nmap csf <Plug>ChangeSurroundingFunction
-nmap csF <Plug>ChangeSurroundingFUNCTION
-nmap ysf <Plug>YankSurroundingFunction
-nmap ysF <Plug>YankSurroundingFUNCTION
-nmap gsf <Plug>PasteFunctionAroundFunction
-nmap gsF <Plug>PasteFunctionAroundFUNCTION
-nmap gsw <Plug>PasteFunctionAroundWord
-nmap gsW <Plug>PasteFunctionAroundWORD
+if !exists("g:surround_funk_no_mappings") || ! g:surround_funk_no_mappings
+    nmap dsf <Plug>DeleteSurroundingFunction
+    nmap dsF <Plug>DeleteSurroundingFUNCTION
+    nmap csf <Plug>ChangeSurroundingFunction
+    nmap csF <Plug>ChangeSurroundingFUNCTION
+    nmap ysf <Plug>YankSurroundingFunction
+    nmap ysF <Plug>YankSurroundingFUNCTION
+    nmap gsf <Plug>PasteFunctionAroundFunction
+    nmap gsF <Plug>PasteFunctionAroundFUNCTION
+    nmap gsw <Plug>PasteFunctionAroundWord
+    nmap gsW <Plug>PasteFunctionAroundWORD
+endif
