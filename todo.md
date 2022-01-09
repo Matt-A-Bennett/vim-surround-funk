@@ -1,6 +1,7 @@
 # Todo list
 ## Major
 - [x] Integrate with repeat.vim
+- [ ] Allow multi-line functions
 - [ ] Have `gs` commands operate on any motion (constrained to a single line)
 
 ## Minor
