@@ -164,8 +164,8 @@ endfunction
 function! s:extract_func_parts(word_size)
     let [fstart, fopen, ftrail, fclose] = s:get_func_markers(a:word_size)
     let str = getline('.')
-    let offset = fopen-fstart+1
     let [tmp, rm1] = s:remove_substring(str, fstart, fopen) 
+    let offset = fopen-fstart+1
     let [result, rm2] = s:remove_substring(tmp, ftrail-offset, fclose-offset) 
     let s:surroundfunk_func_parts = [fstart, result, rm1, rm2]
     return [fstart, result, rm1, rm2]
