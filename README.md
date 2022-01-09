@@ -73,7 +73,7 @@ dsF: Like `dsf`, but the function name is delimited by any contiguous sequence
      of 'g:legal_func_name_chars' (see below)
 
 csf: Like `dsf` but start instert mode where the opening parenthesis of the
-     changed function was
+     changed function used to be
 
 csF: Like `csf`, but the function name is delimited by any contiguous sequence
      of 'g:legal_func_name_chars' (see below)
@@ -104,6 +104,7 @@ gsw: Grip (i.e wrap/encompass) a word with the function in the unnamed
 
 gsW: Like 'gsw', but the function name is delimited by any contiguous sequence
      of 'g:legal_func_name_chars' (see below)
+```
 
 In the example below, with the cursor anywhere with a `^` symbol, you can do
 `ysF` to 'yank the surrounding function' (which is all the stuff with `*` above

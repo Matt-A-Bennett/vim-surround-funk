@@ -83,7 +83,7 @@ dsF                     Like |dsf|, but the function name is delimited by
 
                                                 *csf*
 csf                     Like |dsf| but start instert mode where the opening
-                        parenthesis of the changed function was
+                        parenthesis of the changed function used to be.
 
                                                 *csF*
 csF                     Like |csf|, but the function name is delimited by
