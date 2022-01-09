@@ -152,7 +152,7 @@ You could then move to a word:
     ^^^^^^
 
 
-and grip/surround it with `gsw`:
+and grip/surround it with |gsw|:
 
     *************      *************
     np.outerfunc(MeNext, arg2, arg3)
