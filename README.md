@@ -70,16 +70,17 @@ To prevent these mappings from being generated, and define your own see
 dsf: Delete surrounding function
 
 dsF: Like `dsf`, but the function name is delimited by any contiguous sequence
-     of `g:legal_func_name_chars`
+     of 'g:legal_func_name_chars' (see below)
 
 csf: Like `dsf` but start instert mode where the opening parenthesis of the
      changed function was
 
 csF: Like `csf`, but the function name is delimited by any contiguous sequence
-     of `g:legal_func_name_chars`
+     of 'g:legal_func_name_chars' (see below)
 
 ysf: Yank surrounding function ysF: Like `ysf`, but the function name is
-     delimited by any contiguous sequence of `g:legal_func_name_chars`
+     delimited by any contiguous sequence of 'g:legal_func_name_chars' (see
+     below)
 ```
 
 ### Gripping a word or another function
@@ -95,15 +96,14 @@ To prevent these mappings from being generated, and define your own see
 gsf: Grip (i.e wrap/encompass) another function with the function in the
      unnamed register.
 
-gsF: Like 'gsf', but the function name is delimited by whitespaces, commas,
-     semicolons and opening parentheses.
+gsF: Like 'gsf', but the function name is delimited by any contiguous sequence
+     of 'g:legal_func_name_chars' (see below)
 
 gsw: Grip (i.e wrap/encompass) a word with the function in the unnamed 
      register.
 
-gsW: Like 'gsw', but the word name is delimited by whitespaces, commas,
-     semicolons and opening parentheses.
-```
+gsW: Like 'gsw', but the function name is delimited by any contiguous sequence
+     of 'g:legal_func_name_chars' (see below)
 
 In the example below, with the cursor anywhere with a `^` symbol, you can do
 `ysF` to 'yank the surrounding function' (which is all the stuff with `*` above
