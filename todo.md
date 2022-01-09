@@ -1,6 +1,6 @@
 # Todo list
 ## Major
-- [ ] Allow users to define their own maps
+- [x] Allow users to define their own maps
 - [ ] Have `gs` commands operate on any motion (constrained to a single line)
 - [x] Fix major bug 1
 

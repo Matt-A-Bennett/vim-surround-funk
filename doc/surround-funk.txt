@@ -1,4 +1,4 @@
-*surround-funk.txt* (Version 0.6.0) Delete, change and yank a surrounding
+*surround-funk.txt* (Version 1.0.0) Delete, change and yank a surrounding
 function along with its additional arguments. Then 'grip' a word or function
 with the surrounding function.
 
@@ -67,8 +67,12 @@ sF                      Where the name of the function (e.g. np.outerfunc) is
 
 DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION
 
-If you have tpope's excellent repeat.vim plugin, then the |dsf| and |dsF|
-commands are repeatable with the dot command (see |single-repeat|).
+If you have tpope's excellent repeat.vim plugin,
+then the |dsf| and |dsF| commands are repeatable with the dot command (see
+|single-repeat|).
+
+To prevent these mappings from being generated, and define your own see
+|g:surround_funk_create_mappings| below.
 
                                                 *dsf*
 dsf                     Delete surrounding function
@@ -98,6 +102,9 @@ GRIPPING A WORD OR ANOTHER FUNCTION
 If you have tpope's excellent repeat.vim plugin, then the following commands
 are repeatable with the dot command (see |single-repeat|).
 
+To prevent these mappings from being generated, and define your own see
+|g:surround_funk_create_mappings| below.
+
                                                 *gsf*
 gsf                     Grip (i.e wrap/encompass) another function with the
                         function in the  unnamed register.
@@ -116,6 +123,35 @@ gsW                     Like |gsw|, but the word is delimited by any contiguous
 
 
 SETTINGS
+
+
+
+                                   *g:surround_funk_create_mappings*
+By default |surround-funk| creates the above normal mode mappings. If you would
+rather it didn't do this (for instance if you already have those key
+combinations mapped to something else) you can turn them off with:
+
+    let g:surround_funk_create_mappings = 0
+
+And map them to something different with:
+
+    nmap <your map here> <Plug><OperationToMap>
+
+For reference, the default mappings are as follows:
+
+    nmap dsf <Plug>DeleteSurroundingFunction
+    nmap dsF <Plug>DeleteSurroundingFUNCTION
+    nmap csf <Plug>ChangeSurroundingFunction
+    nmap csF <Plug>ChangeSurroundingFUNCTION
+    nmap ysf <Plug>YankSurroundingFunction
+    nmap ysF <Plug>YankSurroundingFUNCTION
+    nmap gsf <Plug>PasteFunctionAroundFunction
+    nmap gsF <Plug>PasteFunctionAroundFUNCTION
+    nmap gsw <Plug>PasteFunctionAroundWord
+    nmap gsW <Plug>PasteFunctionAroundWORD
+
+
+
 
                                        *g:legal_func_name_chars*
 By default the |surround-funk| plugin defines any vim word character

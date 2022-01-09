@@ -1,5 +1,4 @@
-# surround-funk.vim (version 0.6.0)
-***This plugin is currently in an initial testing phase***
+# surround-funk.vim (version 1.0.0)
 
 This was inspired by tpope's
 [surround.vim](https://github.com/tpope/vim-surround) and allows you to delete,
@@ -103,6 +102,39 @@ gsW: Like 'gsw', but the word name is delimited by whitespaces, commas,
 ```
 
 ### Settings
+
+#### Turn off automatic creation of normal mode mappings
+
+By default surround-funk creates the above normal mode mappings. If you would
+rather it didn't do this (for instance if you already have those key
+combinations mapped to something else) you can turn them off with:
+
+```
+let g:surround_funk_create_mappings = 0
+```
+
+And map them to something different with:
+
+```
+nmap <your map here> <Plug><OperationToMap>
+```
+
+For reference, the default mappings are as follows:
+
+```
+nmap dsf <Plug>DeleteSurroundingFunction
+nmap dsF <Plug>DeleteSurroundingFUNCTION
+nmap csf <Plug>ChangeSurroundingFunction
+nmap csF <Plug>ChangeSurroundingFUNCTION
+nmap ysf <Plug>YankSurroundingFunction
+nmap ysF <Plug>YankSurroundingFUNCTION
+nmap gsf <Plug>PasteFunctionAroundFunction
+nmap gsF <Plug>PasteFunctionAroundFUNCTION
+nmap gsw <Plug>PasteFunctionAroundWord
+nmap gsW <Plug>PasteFunctionAroundWORD
+```
+
+#### Specify what characters are allowed in a function name
 
 By default the 'surround-funk' plugin defines any vim word character
 (`[0-9A-Za-z_]`) and any period symbols as valid parts of a functions name.
