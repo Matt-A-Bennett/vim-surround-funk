@@ -4,8 +4,8 @@
 " The following column indices are found in the current line:
 "      
 "    np.outer(os.inner(arg1), arg2)
-"    ^  ^        ^                  ^     ^
-"    1a 1b       2                  3     4
+"    ^  ^    ^              ^     ^
+"    1a 1b   2              3     4
 "
 " Then we delete/yank 1:2, and 3:4
 
@@ -73,7 +73,7 @@ function! s:string2list(str)
     return split(str, '\zs')
 endfunction
 
-"- functions to get marker positions ------------------------------------------
+"- get marker positions -------------------------------------------------------
 function! s:get_func_open_paren_column()
     let [_, _, c_orig, _] = getpos('.')
     " move forward to one of function's parentheses (unless already on one)
@@ -142,6 +142,35 @@ function! s:remove_substring(str, c1, c2)
     return [join(chars, ''), join(removed, '')]
 endfunction
 
+function! s:get_func_markers(word_size)
+    let fstart = s:get_start_of_func_column(a:word_size)
+    let fopen = s:get_func_open_paren_column()
+    let ftrail = s:get_start_of_trailing_args_column()
+    let fclose = s:get_end_of_func_column()
+    return [fstart, fopen, ftrail, fclose]
+endfunction
+
+function! s:get_word_markers(word_size)
+    if a:word_size ==# 'small'
+        let [_, wstart] = searchpos('\<', 'b', line('.'))
+        let [_, wclose] = searchpos('\>', '', line('.'))
+    else
+        let [_, wstart] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
+        let [_, wclose] = searchpos('\('.s:legal_func_name_chars.'\)\@<!\|$', '', line('.'))
+    endif
+    return [wstart, wclose-1]
+endfunction
+
+function! s:extract_func_parts(word_size)
+    let [fstart, fopen, ftrail, fclose] = s:get_func_markers(a:word_size)
+    let str = getline('.')
+    let offset = fopen-fstart+1
+    let [tmp, rm1] = s:remove_substring(str, fstart, fopen) 
+    let [result, rm2] = s:remove_substring(tmp, ftrail-offset, fclose-offset) 
+    let s:surroundfunk_func_parts = [fstart, result, rm1, rm2]
+    return [fstart, result, rm1, rm2]
+endfunction
+
 " this isn't used, but could allow me to switch to from 'dsf' to 'dsw' if 'dsf'
 " was called with the cursor not on a function (or to gracfully do nothing
 " instead of clobbering the line)...
@@ -174,35 +203,7 @@ function! s:is_cursor_on_func()
     return close_paren_count > open_paren_count
 endfunction
 
-function! s:get_func_markers(word_size)
-    let fstart = s:get_start_of_func_column(a:word_size)
-    let fopen = s:get_func_open_paren_column()
-    let ftrail = s:get_start_of_trailing_args_column()
-    let fclose = s:get_end_of_func_column()
-    return [fstart, fopen, ftrail, fclose]
-endfunction
-
-function! s:get_word_markers(word_size)
-    if a:word_size ==# 'small'
-        let [_, wstart] = searchpos('\<', 'b', line('.'))
-        let [_, wclose] = searchpos('\>', '', line('.'))
-    else
-        let [_, wstart] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
-        let [_, wclose] = searchpos('\('.s:legal_func_name_chars.'\)\@<!\|$', '', line('.'))
-    endif
-    return [wstart, wclose-1]
-endfunction
-
-function! s:extract_func_parts(word_size)
-    let [fstart, fopen, ftrail, fclose] = s:get_func_markers(a:word_size)
-    let str = getline('.')
-    let offset = fopen-fstart+1
-    let [tmp, rm1] = s:remove_substring(str, fstart, fopen) 
-    let [result, rm2] = s:remove_substring(tmp, ftrail-offset, fclose-offset) 
-    let s:surroundfunk_func_parts = [fstart, result, rm1, rm2]
-    return [fstart, result, rm1, rm2]
-endfunction
-
+"- perform the operations -----------------------------------------------------
 function! s:operate_on_surrounding_func(word_size, operation)
     let [fstart, result, rm1, rm2] = s:extract_func_parts(a:word_size)
     call setreg('"', rm1.rm2)
@@ -214,26 +215,6 @@ function! s:operate_on_surrounding_func(word_size, operation)
         startinsert
     endif
 endfunction
-
-" function! s:paste_func_around_func(word_size)
-"     let [fstart, _, _, fclose] = s:get_func_markers(a:word_size)
-"     let chars = s:string2list('.')
-"     call extend(chars, [s:surroundfunk_func_parts[2]], fstart-1)
-"     call extend(chars, [s:surroundfunk_func_parts[3]], fclose+1)
-"     let chars = join(chars, '')
-"     call setline('.', chars)
-"     call cursor('.', fstart)
-" endfunction
-
-" function! s:paste_func_around_word(word_size)
-"     let [wstart, wclose] = s:get_word_markers(a:word_size)
-"     let chars = s:string2list('.')
-"     call extend(chars, [s:surroundfunk_func_parts[2]], wstart-1)
-"     call extend(chars, [s:surroundfunk_func_parts[3]], wclose+1)
-"     let chars = join(chars, '')
-"     call setline('.', chars)
-"     call cursor('.', wstart)
-" endfunction
 
 function! s:paste_func_around(word_size, func_or_word)
     if a:func_or_word ==# 'func'
@@ -256,11 +237,7 @@ function! s:repeatable_delete(word_size, operation, mapname)
 endfunction
 
 function! s:repeatable_paste(word_size, func_or_word, mapname)
-    " if a:func_or_word ==# 'func'
-        call s:paste_func_around(a:word_size, a:func_or_word)
-    " else
-    "     call s:paste_func_around_word(a:word_size)
-    " endif
+    call s:paste_func_around(a:word_size, a:func_or_word)
     silent! call repeat#set("\<Plug>".a:mapname, v:count)
 endfunction
 
