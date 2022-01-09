@@ -256,16 +256,6 @@ function! s:change_surrounding_big_func()
     silent! call repeat#set("\<Plug>ChangeSurroundingFUNCTION", v:count)
 endfunction
 
-function! s:yank_surrounding_small_func()
-    call s:operate_on_surrounding_func("small", "yank")
-    silent! call repeat#set("\<Plug>YankSurroundingFUNCTION", v:count)
-endfunction
-
-function! s:yank_surrounding_big_func()
-    call s:operate_on_surrounding_func("big", "yank")
-    silent! call repeat#set("\<Plug>YankSurroundingFUNCTION", v:count)
-endfunction
-
 function! s:paste_func_around_small_func()
     call s:paste_func_around_func("small")
     silent! call repeat#set("\<Plug>PasteFunctionAroundFunction", v:count)
@@ -290,8 +280,8 @@ nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>delete_surroun
 nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>delete_surrounding_big_func()<CR>
 nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>change_surrounding_small_func()<CR>
 nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>change_surrounding_big_func()<CR>
-nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>yank_surrounding_small_func()<CR>
-nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>yank_surrounding_big_func()<CR>
+nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
+nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "yank")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>paste_func_around_small_func()<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>paste_func_around_big_func()<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>paste_func_around_small_word()<CR>
