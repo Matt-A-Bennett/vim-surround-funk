@@ -215,24 +215,38 @@ function! s:operate_on_surrounding_func(word_size, operation)
     endif
 endfunction
 
-function! s:paste_func_around_func(word_size)
-    let [fstart, _, _, fclose] = s:get_func_markers(a:word_size)
+" function! s:paste_func_around_func(word_size)
+"     let [fstart, _, _, fclose] = s:get_func_markers(a:word_size)
+"     let chars = s:string2list('.')
+"     call extend(chars, [s:surroundfunk_func_parts[2]], fstart-1)
+"     call extend(chars, [s:surroundfunk_func_parts[3]], fclose+1)
+"     let chars = join(chars, '')
+"     call setline('.', chars)
+"     call cursor('.', fstart)
+" endfunction
+
+" function! s:paste_func_around_word(word_size)
+"     let [wstart, wclose] = s:get_word_markers(a:word_size)
+"     let chars = s:string2list('.')
+"     call extend(chars, [s:surroundfunk_func_parts[2]], wstart-1)
+"     call extend(chars, [s:surroundfunk_func_parts[3]], wclose+1)
+"     let chars = join(chars, '')
+"     call setline('.', chars)
+"     call cursor('.', wstart)
+" endfunction
+
+function! s:paste_func_around(word_size, func_or_word)
+    if a:func_or_word ==# 'func'
+        let [fstart, _, _, fclose] = s:get_func_markers(a:word_size)
+    else
+        let [fstart, fclose] = s:get_word_markers(a:word_size)
+    endif
     let chars = s:string2list('.')
     call extend(chars, [s:surroundfunk_func_parts[2]], fstart-1)
     call extend(chars, [s:surroundfunk_func_parts[3]], fclose+1)
     let chars = join(chars, '')
     call setline('.', chars)
     call cursor('.', fstart)
-endfunction
-
-function! s:paste_func_around_word(word_size)
-    let [wstart, wclose] = s:get_word_markers(a:word_size)
-    let chars = s:string2list('.')
-    call extend(chars, [s:surroundfunk_func_parts[2]], wstart-1)
-    call extend(chars, [s:surroundfunk_func_parts[3]], wclose+1)
-    let chars = join(chars, '')
-    call setline('.', chars)
-    call cursor('.', wstart)
 endfunction
 
 "- make maps repeatable -------------------------------------------------------
@@ -242,11 +256,11 @@ function! s:repeatable_delete(word_size, operation, mapname)
 endfunction
 
 function! s:repeatable_paste(word_size, func_or_word, mapname)
-    if a:func_or_word ==# 'func'
-        call s:paste_func_around_func(a:word_size)
-    else
-        call s:paste_func_around_word(a:word_size)
-    endif
+    " if a:func_or_word ==# 'func'
+        call s:paste_func_around_func(a:word_size, a:func_or_word)
+    " else
+    "     call s:paste_func_around_word(a:word_size)
+    " endif
     silent! call repeat#set("\<Plug>".a:mapname, v:count)
 endfunction
 
