@@ -7,6 +7,8 @@ surrounding function in the unnamed register, you can 'grip' a word or another
 function with it. 'Gripping' will wrap/encompass a word or function with the
 one you have in the unnamed register (see below).
 
+![demo](demo.gif)
+
 ## Usage
 
 ### What is a surrounding function?
