@@ -1,4 +1,4 @@
-# surround-funk.vim (version 0.5.0)
+# surround-funk.vim (version 0.6.0)
 ***This plugin is currently in an initial testing phase***
 
 This was inspired by tpope's
@@ -60,6 +60,10 @@ np.outerfunc(arg1, arg2, arg3)
 
 ### Deleting, changing and yanking a surrounding function
 
+If you have tpope's excellent [repeat.vim
+plugin](https://github.com/tpope/vim-repeat), then the `dsf` and `dsF` commands
+are repeatable with the dot command.
+
 ```
 dsf: Delete surrounding function
 
@@ -79,6 +83,10 @@ ysF: Like 'ysf', but the function name is delimited by whitespaces, commas,
 ```
 
 ### Gripping a word or another function
+
+If you have tpope's excellent [repeat.vim
+plugin](https://github.com/tpope/vim-repeat), then the following commands are
+repeatable with the dot command.
 
 ```
 gsf: Grip (i.e wrap/encompass) another function with the function in the
