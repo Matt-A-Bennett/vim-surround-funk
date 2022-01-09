@@ -248,7 +248,7 @@ function! s:repeatable_paste(word_size, func_or_word, mapname)
     else
         call s:paste_func_around_word(a:word_size)
     endif
-    silent! call repeat#set("\<Plug>".a:mapname", v:count)
+    silent! call repeat#set("\<Plug>".a:mapname, v:count)
 endfunction
 
 " function! s:paste_func_around_small_func()
