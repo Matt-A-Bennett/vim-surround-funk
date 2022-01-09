@@ -116,7 +116,7 @@ let g:surround_funk_create_mappings = 0
 And map them to something different with:
 
 ```
-nmap <your map here> <Plug><OperationToMap>
+nmap <your-map-here> <Plug><OperationToMap>
 ```
 
 For reference, the default mappings are as follows:
