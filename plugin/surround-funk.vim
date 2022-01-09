@@ -257,7 +257,7 @@ endfunction
 
 function! s:repeatable_paste(word_size, func_or_word, mapname)
     " if a:func_or_word ==# 'func'
-        call s:paste_func_around_func(a:word_size, a:func_or_word)
+        call s:paste_func_around(a:word_size, a:func_or_word)
     " else
     "     call s:paste_func_around_word(a:word_size)
     " endif
