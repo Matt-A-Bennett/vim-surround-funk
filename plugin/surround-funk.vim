@@ -182,6 +182,17 @@ function! s:get_func_markers(word_size)
     return [fstart, fopen, ftrail, fclose]
 endfunction
 
+function! s:get_word_markers(word_size)
+    if a:word_size ==# 'small'
+        let [_, wstart] = searchpos('\<', 'b', line('.'))
+        let [_, wclose] = searchpos('\>', '', line('.'))
+    else
+        let [_, wstart] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
+        let [_, wclose] = searchpos('\('.s:legal_func_name_chars.'\)\@<!\|$', '', line('.'))
+    endif
+    return [wstart, wclose-1]
+endfunction
+
 function! s:extract_func_parts(word_size)
     let [fstart, fopen, ftrail, fclose] = s:get_func_markers(a:word_size)
     let str = getline('.')
@@ -214,17 +225,6 @@ function! s:paste_func_around_func(word_size)
     call cursor('.', fstart)
 endfunction
 
-function! s:get_word_markers(word_size)
-    if a:word_size ==# 'small'
-        let [_, wstart] = searchpos('\<', 'b', line('.'))
-        let [_, wclose] = searchpos('\>', '', line('.'))
-    else
-        let [_, wstart] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
-        let [_, wclose] = searchpos('\('.s:legal_func_name_chars.'\)\@<!\|$', '', line('.'))
-    endif
-    return [wstart, wclose-1]
-endfunction
-
 function! s:paste_func_around_word(word_size)
     let [wstart, wclose] = s:get_word_markers(a:word_size)
     let chars = s:string2list('.')
@@ -235,6 +235,7 @@ function! s:paste_func_around_word(word_size)
     call cursor('.', wstart)
 endfunction
 
+"- make maps repeatable -------------------------------------------------------
 function! s:delete_surrounding_small_func()
     call s:operate_on_surrounding_func("small", "delete")
     silent! call repeat#set("\<Plug>DeleteSurroundingFunction", v:count)
@@ -245,16 +246,56 @@ function! s:delete_surrounding_big_func()
     silent! call repeat#set("\<Plug>DeleteSurroundingFUNCTION", v:count)
 endfunction
 
+function! s:change_surrounding_small_func()
+    call s:operate_on_surrounding_func("small", "change")
+    silent! call repeat#set("\<Plug>ChangeSurroundingFUNCTION", v:count)
+endfunction
+
+function! s:change_surrounding_big_func()
+    call s:operate_on_surrounding_func("big", "change")
+    silent! call repeat#set("\<Plug>ChangeSurroundingFUNCTION", v:count)
+endfunction
+
+function! s:yank_surrounding_small_func()
+    call s:operate_on_surrounding_func("small", "yank")
+    silent! call repeat#set("\<Plug>YankSurroundingFUNCTION", v:count)
+endfunction
+
+function! s:yank_surrounding_big_func()
+    call s:operate_on_surrounding_func("big", "yank")
+    silent! call repeat#set("\<Plug>YankSurroundingFUNCTION", v:count)
+endfunction
+
+function! s:paste_func_around_small_func()
+    call s:paste_func_around_func("small")
+    silent! call repeat#set("\<Plug>PasteFunctionAroundFunction", v:count)
+endfunction
+
+function! s:paste_func_around_big_func()
+    call s:paste_func_around_func("big")
+    silent! call repeat#set("\<Plug>PasteFunctionAroundFUNCTION", v:count)
+endfunction
+
+function! s:paste_func_around_small_word()
+    call s:paste_func_around_word("small")
+    silent! call repeat#set("\<Plug>PasteFunctionAroundWord", v:count)
+endfunction
+
+function! s:paste_func_around_big_word()
+    call s:paste_func_around_word("big")
+    silent! call repeat#set("\<Plug>PasteFunctionAroundWORD", v:count)
+endfunction
+
 nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>delete_surrounding_small_func()<CR>
 nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>delete_surrounding_big_func()<CR>
-nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "change")<CR>
-nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "change")<CR>
-nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
-nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "yank")<CR>
-nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>paste_func_around_func("small")<CR>
-nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>paste_func_around_func("big")<CR>
-nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>paste_func_around_word("small")<CR>
-nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>paste_func_around_word("big")<CR>
+nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>operate_on_surrounding_small_func()<CR>
+nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_big_func()<CR>
+nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>operate_on_surrounding_small_func()<CR>
+nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_big_func()<CR>
+nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>paste_func_around_small_func()<CR>
+nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>paste_func_around_big_func()<CR>
+nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>paste_func_around_small_word()<CR>
+nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>paste_func_around_big_word()<CR>
 
 nmap dsf <Plug>DeleteSurroundingFunction
 nmap dsF <Plug>DeleteSurroundingFUNCTION
