@@ -139,16 +139,16 @@ And map them to something different with:
 
 For reference, the default mappings are as follows:
 
-    nmap dsf <Plug>DeleteSurroundingFunction
-    nmap dsF <Plug>DeleteSurroundingFUNCTION
-    nmap csf <Plug>ChangeSurroundingFunction
-    nmap csF <Plug>ChangeSurroundingFUNCTION
-    nmap ysf <Plug>YankSurroundingFunction
-    nmap ysF <Plug>YankSurroundingFUNCTION
-    nmap gsf <Plug>PasteFunctionAroundFunction
-    nmap gsF <Plug>PasteFunctionAroundFUNCTION
-    nmap gsw <Plug>PasteFunctionAroundWord
-    nmap gsW <Plug>PasteFunctionAroundWORD
+    nmap |dsf| <Plug>DeleteSurroundingFunction
+    nmap |dsF| <Plug>DeleteSurroundingFUNCTION
+    nmap |csf| <Plug>ChangeSurroundingFunction
+    nmap |csF| <Plug>ChangeSurroundingFUNCTION
+    nmap |ysf| <Plug>YankSurroundingFunction
+    nmap |ysF| <Plug>YankSurroundingFUNCTION
+    nmap |gsf| <Plug>PasteFunctionAroundFunction
+    nmap |gsF| <Plug>PasteFunctionAroundFUNCTION
+    nmap |gsw| <Plug>PasteFunctionAroundWord
+    nmap |gsW| <Plug>PasteFunctionAroundWORD
 
 
 
