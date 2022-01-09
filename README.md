@@ -111,7 +111,6 @@ combinations mapped to something else) you can turn them off with:
 
 ```
 let g:surround_funk_create_mappings = 0
-
 ```
 
 And map them to something different with:
