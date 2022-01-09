@@ -245,8 +245,8 @@ function! s:delete_surrounding_big_func()
     silent! call repeat#set("\<Plug>DeleteSurroundingFUNCTION", v:count)
 endfunction
 
-" nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "delete")<CR>
-" nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "delete")<CR>
+nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>delete_surrounding_small_func()<CR>
+nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>delete_surrounding_big_func()<CR>
 nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "change")<CR>
 nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "change")<CR>
 nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
