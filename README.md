@@ -97,10 +97,10 @@ gsW: Like 'gsw', but the word name is delimited by whitespaces, commas,
 ### Settings
 
 By default the 'surround-funk' plugin defines any vim word character
-([0-9A-Za-z_]) and any period symbols as valid parts of a functions name. These
-symbols are used to delimit the function name when using the capitalised (e.g.
-`dsF`, but not `dsf`) versions of the above commands. You can add to or remove
-from these groups.
+(`[0-9A-Za-z_]`) and any period symbols as valid parts of a functions name.
+These symbols are used to delimit the function name when using the capitalised
+(e.g. `dsF`, but not `dsf`) versions of the above commands. You can add to or
+remove from these groups.
 
 The default:
 
@@ -116,7 +116,7 @@ will match function names like:
       ^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^
 ```
 
-    but would stop at characters not in the legal name set (e.g. @, #, /):
+but would stop at characters not in the legal name set (e.g. @, #, /):
 
 ```
          ******         ******      **********
