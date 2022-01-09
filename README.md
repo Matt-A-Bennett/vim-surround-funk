@@ -92,7 +92,7 @@ this case)
 
 ```
 os.lonelyfunc(argA, argB)
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
 
 And do `gsF` to 'grip/surround' the lonely function with the yanked one:

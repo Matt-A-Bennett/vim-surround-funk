@@ -135,7 +135,7 @@ Then go to some other function (or just a word) (the cursor can be anywhere in
 this case):
 
     os.lonelyfunc(argA, argB)
-    ^^^^^^^^^^^^^^^^^^^^^
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 And do |gsF| to 'grip/surround' the lonely function with the yanked one:
