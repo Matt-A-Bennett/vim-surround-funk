@@ -12,6 +12,7 @@
 
 ## Patches
 - [x] Fix small bug 1
+- [ ] These functions are unneeded (s:move_to_end_of_func)
 
 ### Bugs
 #### Big Bugs
