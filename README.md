@@ -1,11 +1,11 @@
 # surround-funk.vim (version 1.0.0)
 
-This was inspired by tpope's
-[surround.vim](https://github.com/tpope/vim-surround) and allows you to delete,
-change and yank a surrounding function along with its additional arguments.
-With the surrounding function in the unnamed register, you can 'grip' a word or
-another function with it. 'Gripping' will wrap/encompass a word or function
-with the one you have in the unnamed register (see below).
+This was inspired by tpope's [surround.vim
+plugin](https://github.com/tpope/vim-surround) and allows you to delete, change
+and yank a surrounding function along with its additional arguments. With the
+surrounding function in the unnamed register, you can 'grip' a word or another
+function with it. 'Gripping' will wrap/encompass a word or function with the
+one you have in the unnamed register (see below).
 
 ## Usage
 
