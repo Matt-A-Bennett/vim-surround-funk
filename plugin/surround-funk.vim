@@ -203,6 +203,7 @@ function! s:operate_on_surrounding_func(word_size, operation)
         startinsert
     endif
     silent! call repeat#set("\<Plug>DeleteSurroundingFunction", v:count)
+    silent! call repeat#set("\<Plug>DeleteSurroundingFUNCTION", v:count)
 endfunction
 
 function! s:paste_func_around_func(word_size)
