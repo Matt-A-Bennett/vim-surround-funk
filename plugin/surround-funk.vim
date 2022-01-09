@@ -276,8 +276,8 @@ nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>repeat_map("sm
 nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>repeat_map("big", "delete", "DeleteSurroundingFunction")<CR>
 " nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>repeat_map("small", "change", "ChangeSurroundingFunction")<CR>
 " nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>repeat_map("big", "change", "ChangeSurroundingFunction")<CR>
-nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>change_surrounding_small_func<CR>
-nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>change_surrounding_big_func<CR>
+nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>change_surrounding_small_func()<CR>
+nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>change_surrounding_big_func()<CR>
 nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
 nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "yank")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>paste_func_around_small_func()<CR>
