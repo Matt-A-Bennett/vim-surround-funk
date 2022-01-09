@@ -57,30 +57,6 @@ np.outerfunc(arg1, arg2, arg3)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
 
-### Deleting, changing and yanking a surrounding function
-
-If you have tpope's excellent [repeat.vim
-plugin](https://github.com/tpope/vim-repeat), then the `dsf` and `dsF` commands
-are repeatable with the dot command.
-
-```
-dsf: Delete surrounding function
-
-dsF: Like 'dsf', but the function name is delimited by whitespaces, commas,
-     semicolons and opening parentheses.
-
-csf: Like 'dsf' but start instert mode where the opening parenthesis of the
-     changed function was
-
-csF: Like 'csf', but the function name is delimited by whitespaces, commas,
-     semicolons and opening parentheses.
-
-ysf: Yank surrounding function
-
-ysF: Like 'ysf', but the function name is delimited by whitespaces, commas,
-     semicolons and opening parentheses.
-```
-
 ### Gripping a word or another function
 
 If you have tpope's excellent [repeat.vim
@@ -99,6 +75,48 @@ gsw: Grip (i.e wrap/encompass) a word with the function in the unnamed
 
 gsW: Like 'gsw', but the word name is delimited by whitespaces, commas,
      semicolons and opening parentheses.
+```
+
+In the example below, with the cursor anywhere with a `^` symbol, you can do
+`ysF` to 'yank the surrounding function' (which is all the stuff with `*` above
+it):
+
+```
+*************               *************
+np.outerfunc(innerfunc(arg1), arg2, arg3)
+^^^^^^^^^^^^^               ^^^^^^^^^^^^^
+```
+
+Then go to some other function (or just a word) (the cursor can be anywhere in
+this case)
+
+```
+os.lonelyfunc(argA, argB)
+^^^^^^^^^^^^^^^^^^^^^
+```
+
+And do `gsF` to 'grip/surround' the lonely function with the yanked one:
+
+```
+************                          *************
+np.outerfunc(os.lonelyfunc(argA, argB), arg2, arg3)
+^
+```
+
+You could then move to a word:
+
+```
+******
+MeNext
+^^^^^^
+```
+
+and grip/surround it with `gsw`
+
+```
+*************      *************
+np.outerfunc(MeNext, arg2, arg3)
+^
 ```
 
 ### Settings

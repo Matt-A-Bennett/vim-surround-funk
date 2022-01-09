@@ -122,9 +122,44 @@ gsW                     Like |gsw|, but the word is delimited by any contiguous
                         sequence of |g:legal_func_name_chars|
 
 
+In the example below, with the cursor anywhere with a ^ symbol, you can do
+|ysF| to 'yank the surrounding function' (which is all the stuff with * above
+it):
+
+    *************               *************
+    np.outerfunc(innerfunc(arg1), arg2, arg3)
+    ^^^^^^^^^^^^^               ^^^^^^^^^^^^^
+
+
+Then go to some other function (or just a word) (the cursor can be anywhere in
+this case):
+
+    os.lonelyfunc(argA, argB)
+    ^^^^^^^^^^^^^^^^^^^^^
+
+
+And do |gsF| to 'grip/surround' the lonely function with the yanked one:
+
+    ************                          *************
+    np.outerfunc(os.lonelyfunc(argA, argB), arg2, arg3)
+    ^
+
+
+You could then move to a word:
+
+    ******
+    MeNext
+    ^^^^^^
+
+
+and grip/surround it with `gsw`:
+
+    *************      *************
+    np.outerfunc(MeNext, arg2, arg3)
+    ^
+
+
 SETTINGS
-
-
 
                                    *g:surround_funk_create_mappings*
 By default |surround-funk| creates the above normal mode mappings. If you would
