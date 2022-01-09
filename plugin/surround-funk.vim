@@ -1,5 +1,5 @@
 " Author:       Matthew Bennett
-" Version:      0.6.0
+" Version:      1.0.0
 "
 " The following column indices are found in the current line:
 "      
