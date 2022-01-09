@@ -236,25 +236,31 @@ function! s:paste_func_around_word(word_size)
 endfunction
 
 "- make maps repeatable -------------------------------------------------------
-function! s:delete_surrounding_small_func()
-    call s:operate_on_surrounding_func("small", "delete")
-    silent! call repeat#set("\<Plug>DeleteSurroundingFunction", v:count)
+
+function! s:repeat_map(word_size, operation, mapname)
+    call s:operate_on_surrounding_func(a:word_size, a:operation)
+    silent! call repeat#set("\<Plug>".a:mapname, v:count)
 endfunction
 
-function! s:delete_surrounding_big_func()
-    call s:operate_on_surrounding_func("big", "delete")
-    silent! call repeat#set("\<Plug>DeleteSurroundingFUNCTION", v:count)
-endfunction
+" function! s:delete_surrounding_small_func()
+"     call s:operate_on_surrounding_func("small", "delete")
+"     silent! call repeat#set("\<Plug>DeleteSurroundingFunction", v:count)
+" endfunction
 
-function! s:change_surrounding_small_func()
-    call s:operate_on_surrounding_func("small", "change")
-    silent! call repeat#set("\<Plug>ChangeSurroundingFUNCTION", v:count)
-endfunction
+" function! s:delete_surrounding_big_func()
+"     call s:operate_on_surrounding_func("big", "delete")
+"     silent! call repeat#set("\<Plug>DeleteSurroundingFUNCTION", v:count)
+" endfunction
 
-function! s:change_surrounding_big_func()
-    call s:operate_on_surrounding_func("big", "change")
-    silent! call repeat#set("\<Plug>ChangeSurroundingFUNCTION", v:count)
-endfunction
+" function! s:change_surrounding_small_func()
+"     call s:operate_on_surrounding_func("small", "change")
+"     silent! call repeat#set("\<Plug>ChangeSurroundingFUNCTION", v:count)
+" endfunction
+
+" function! s:change_surrounding_big_func()
+"     call s:operate_on_surrounding_func("big", "change")
+"     silent! call repeat#set("\<Plug>ChangeSurroundingFUNCTION", v:count)
+" endfunction
 
 function! s:paste_func_around_small_func()
     call s:paste_func_around_func("small")
@@ -276,10 +282,10 @@ function! s:paste_func_around_big_word()
     silent! call repeat#set("\<Plug>PasteFunctionAroundWORD", v:count)
 endfunction
 
-nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>delete_surrounding_small_func()<CR>
-nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>delete_surrounding_big_func()<CR>
-nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>change_surrounding_small_func()<CR>
-nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>change_surrounding_big_func()<CR>
+nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>repeat_map("small", "delete", "DeleteSurroundingFunction")<CR>
+nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>repeat_map("big", "delete", "DeleteSurroundingFunction")<CR>
+nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>repeat_map("small", "change", "ChangeSurroundingFunction")<CR>
+nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>repeat_map("big", "change", "ChangeSurroundingFunction")<CR>
 nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
 nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "yank")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>paste_func_around_small_func()<CR>
