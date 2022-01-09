@@ -106,7 +106,7 @@ To prevent these mappings from being generated, and define your own, see
 
                                                 *gsf*
 gsf                     Grip (i.e wrap/encompass) another function with the
-                        function in the  unnamed register.
+                        function in the unnamed register.
 
                                                 *gsF*
 gsF                     Like |gsf|, but the function name is delimited by
