@@ -236,7 +236,6 @@ function! s:paste_func_around_word(word_size)
 endfunction
 
 "- make maps repeatable -------------------------------------------------------
-
 function! s:repeatable_delete(word_size, operation, mapname)
     call s:operate_on_surrounding_func(a:word_size, a:operation)
     silent! call repeat#set("\<Plug>".a:mapname, v:count)
@@ -250,26 +249,6 @@ function! s:repeatable_paste(word_size, func_or_word, mapname)
     endif
     silent! call repeat#set("\<Plug>".a:mapname, v:count)
 endfunction
-
-" function! s:paste_func_around_small_func()
-"     call s:paste_func_around_func("small")
-"     silent! call repeat#set("\<Plug>PasteFunctionAroundFunction", v:count)
-" endfunction
-
-" function! s:paste_func_around_big_func()
-"     call s:paste_func_around_func("big")
-"     silent! call repeat#set("\<Plug>PasteFunctionAroundFUNCTION", v:count)
-" endfunction
-
-" function! s:paste_func_around_small_word()
-"     call s:paste_func_around_word("small")
-"     silent! call repeat#set("\<Plug>PasteFunctionAroundWord", v:count)
-" endfunction
-
-" function! s:paste_func_around_big_word()
-"     call s:paste_func_around_word("big")
-"     silent! call repeat#set("\<Plug>PasteFunctionAroundWORD", v:count)
-" endfunction
 
 nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>repeatable_delete("small", "delete", "DeleteSurroundingFunction")<CR>
 nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>repeatable_delete("big", "delete", "DeleteSurroundingFunction")<CR>
