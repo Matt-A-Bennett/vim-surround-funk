@@ -116,7 +116,7 @@ will match function names like:
       ^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^
 ```
 
-but would stop at characters not in the legal name set (e.g. @, #, /):
+but would stop at characters not in the legal name set (e.g. `@,` `#,` `/):`
 
 ```
          ******         ******      **********
@@ -124,7 +124,7 @@ but would stop at characters not in the legal name set (e.g. @, #, /):
          ^^^^^^         ^^^^^^      ^^^^^^^^^^
 ```
 
-To make numbers illegal, and to introduce # and @ as legal characters, use:
+To make numbers illegal, and to introduce `#` and `@` as legal characters, use:
 
 ```
 g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.', '#', '@']
