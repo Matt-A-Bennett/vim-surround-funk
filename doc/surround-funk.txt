@@ -46,7 +46,7 @@ sf                      Where the name of the function (e.g. outerfunc) is a
                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
   
 sF                      Where the name of the function (e.g. np.outerfunc) is 
-                        any contiguous sequence of |g:legal_func_name_chars|
+                        any character not in |g:legal_func_name_chars|
 
                         *************               *
                         np.outerfunc(innerfunc(arg1))
@@ -78,7 +78,7 @@ dsf                     Delete surrounding function
 
                                                 *dsF*
 dsF                     Like |dsf|, but the function name is delimited by
-                        any contiguous sequence of |g:legal_func_name_chars|
+                        any character not in |g:legal_func_name_chars|
 
                                                 *csf*
 csf                     Like |dsf| but start instert mode where the opening
@@ -86,14 +86,14 @@ csf                     Like |dsf| but start instert mode where the opening
 
                                                 *csF*
 csF                     Like |csf|, but the function name is delimited by
-                        any contiguous sequence of |g:legal_func_name_chars|
+                        any character not in |g:legal_func_name_chars|
 
                                                 *ysf*
 ysf                     Yank surrounding function
 
                                                 *ysF*
 ysF                     Like |ysf|, but the function name is delimited by
-                        any contiguous sequence of |g:legal_func_name_chars|
+                        any character not in |g:legal_func_name_chars|
 
 
 GRIPPING A WORD OR ANOTHER FUNCTION
@@ -110,15 +110,15 @@ gsf                     Grip (i.e wrap/encompass) another function with the
 
                                                 *gsF*
 gsF                     Like |gsf|, but the function name is delimited by
-                        any contiguous sequence of |g:legal_func_name_chars|
+                        any character not in |g:legal_func_name_chars|
 
                                                 *gsw*
 gsw                     Grip (i.e wrap/encompass) a word with the function in 
                         the unnamed register.
 
                                                 *gsW*
-gsW                     Like |gsw|, but the word is delimited by any contiguous
-                        sequence of |g:legal_func_name_chars|
+gsW                     Like |gsw|, but the word is delimited by any character
+                        not in |g:legal_func_name_chars|
 
 
 In the example below, with the cursor anywhere with a ^ symbol, you can do
@@ -190,7 +190,7 @@ For reference, the default mappings are as follows:
                                        *g:legal_func_name_chars*
 By default the |surround-funk| plugin defines any vim word character
 ([0-9A-Za-z_]) and any period symbols as valid parts of a functions name. These
-symbols are used to delimit the function name when using the capitalised (e.g.
+characters are used to find the function name when using the capitalised (e.g.
 |dsF|, but not |dsf|) versions of the above commands. You can add to or remove
 from these groups.
 

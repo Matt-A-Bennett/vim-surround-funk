@@ -71,18 +71,17 @@ To prevent these mappings from being generated, and define your own see
 ```
 dsf: Delete surrounding function
 
-dsF: Like `dsf`, but the function name is delimited by any contiguous sequence
-     of 'g:legal_func_name_chars' (see below)
+dsF: Like `dsf`, but the function name is delimited by any character not in 
+     'g:legal_func_name_chars' (see below)
 
 csf: Like `dsf` but start instert mode where the opening parenthesis of the
      changed function used to be
 
-csF: Like `csf`, but the function name is delimited by any contiguous sequence
-     of 'g:legal_func_name_chars' (see below)
+csF: Like `csf`, but the function name is delimited by any character not in 
+     'g:legal_func_name_chars' (see below)
 
 ysf: Yank surrounding function ysF: Like `ysf`, but the function name is
-     delimited by any contiguous sequence of 'g:legal_func_name_chars' (see
-     below)
+     delimited by any character not in 'g:legal_func_name_chars' (see below)
 ```
 
 ### Gripping a word or another function
@@ -98,14 +97,14 @@ To prevent these mappings from being generated, and define your own see
 gsf: Grip (i.e wrap/encompass) another function with the function in the
      unnamed register.
 
-gsF: Like 'gsf', but the function name is delimited by any contiguous sequence
-     of 'g:legal_func_name_chars' (see below)
+gsF: Like 'gsf', but the function name is delimited by any character not in 
+     'g:legal_func_name_chars' (see below)
 
 gsw: Grip (i.e wrap/encompass) a word with the function in the unnamed 
      register.
 
-gsW: Like 'gsw', but the function name is delimited by any contiguous sequence
-     of 'g:legal_func_name_chars' (see below)
+gsW: Like 'gsw', but the function name is delimited by of 
+     'g:legal_func_name_chars' (see below)
 ```
 
 In the example below, with the cursor anywhere with a `^` symbol, you can do
@@ -187,7 +186,7 @@ nmap gsW <Plug>PasteFunctionAroundWORD
 
 By default the 'surround-funk' plugin defines any vim word character
 (`[0-9A-Za-z_]`) and any period symbols as valid parts of a functions name.
-These symbols are used to delimit the function name when using the capitalised
+These characters are used to find the function name when using the capitalised
 (e.g. `dsF`, but not `dsf`) versions of the above commands. You can add to or
 remove from these groups.
 
