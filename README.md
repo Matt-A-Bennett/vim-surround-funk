@@ -99,7 +99,7 @@ gsW: Like 'gsw', but the word name is delimited by whitespaces, commas,
 By default the 'surround-funk' plugin defines any vim word character
 ([0-9A-Za-z_]) and any period symbols as valid parts of a functions name. These
 symbols are used to delimit the function name when using the capitalised (e.g.
-'dsF', but not 'dsf') versions of the above commands. You can add to or remove
+`dsF`, but not `dsf`) versions of the above commands. You can add to or remove
 from these groups.
 
 The default:
@@ -108,20 +108,20 @@ The default:
 g:surround_funk_legal_func_name_chars = ['[0-9]', '[A-Z]', '[a-z]', '_', '\.']
 ```
 
-    will match function names like:
+will match function names like:
 
 ```
-          *********  *************  **************
-    ...), pd.mean(), np2.my_func(), 8np.my._func(), ...
-          ^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^
+      *********  *************  **************
+...), pd.mean(), np2.my_func(), 8np.my._func(), ...
+      ^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^
 ```
 
     but would stop at characters not in the legal name set (e.g. @, #, /):
 
 ```
-             ******         ******      **********
-    ...), pd@mean(), np2.my#func(), 8np/my._func(), ...
-             ^^^^^^         ^^^^^^      ^^^^^^^^^^
+         ******         ******      **********
+...), pd@mean(), np2.my#func(), 8np/my._func(), ...
+         ^^^^^^         ^^^^^^      ^^^^^^^^^^
 ```
 
 To make numbers illegal, and to introduce # and @ as legal characters, use:
@@ -130,16 +130,16 @@ To make numbers illegal, and to introduce # and @ as legal characters, use:
 g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.', '#', '@']
 ```
 
-    will match function names like:
+will match function names like:
 
 ```
-          *********     **********   *************
-    ...), pd.mean(), np2.my_func(), 8np.my._func(), ...
-          ^^^^^^^^^     ^^^^^^^^^^   ^^^^^^^^^^^^^
+      *********     **********   *************
+...), pd.mean(), np2.my_func(), 8np.my._func(), ...
+      ^^^^^^^^^     ^^^^^^^^^^   ^^^^^^^^^^^^^
 
-          *********     **********      **********
-    ...), pd@mean(), np2.my#func(), 8np/my._func(), ...
-          ^^^^^^^^^     ^^^^^^^^^^      ^^^^^^^^^^
+      *********     **********      **********
+...), pd@mean(), np2.my#func(), 8np/my._func(), ...
+      ^^^^^^^^^     ^^^^^^^^^^      ^^^^^^^^^^
 ```
 
 ## Installation
