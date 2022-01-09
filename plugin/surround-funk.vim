@@ -202,8 +202,6 @@ function! s:operate_on_surrounding_func(word_size, operation)
     if a:operation =~ 'change'
         startinsert
     endif
-    silent! call repeat#set("\<Plug>DeleteSurroundingFunction", v:count)
-    silent! call repeat#set("\<Plug>DeleteSurroundingFUNCTION", v:count)
 endfunction
 
 function! s:paste_func_around_func(word_size)
@@ -237,8 +235,18 @@ function! s:paste_func_around_word(word_size)
     call cursor('.', wstart)
 endfunction
 
-nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "delete")<CR>
-nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "delete")<CR>
+function! s:delete_surrounding_small_func()
+    call s:operate_on_surrounding_func("small", "delete")
+    silent! call repeat#set("\<Plug>DeleteSurroundingFunction", v:count)
+endfunction
+
+function! s:delete_surrounding_big_func()
+    call s:operate_on_surrounding_func("big", "delete")
+    silent! call repeat#set("\<Plug>DeleteSurroundingFUNCTION", v:count)
+endfunction
+
+" nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "delete")<CR>
+" nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "delete")<CR>
 nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "change")<CR>
 nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "change")<CR>
 nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
