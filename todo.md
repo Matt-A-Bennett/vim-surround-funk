@@ -1,13 +1,13 @@
 # Todo list
 ## Major
-- [x] Allow users to define their own maps
+- [x] Integrate with repeat.vim
 - [ ] Have `gs` commands operate on any motion (constrained to a single line)
 
 ## Minor
-- [x] Let users provide a list of legal function name characters
-- [x] Integrate with repeat.vim
 - [x] Rewrite so we don't rely on tons of `exe norm!` commands
 - [x] Fix big bug 1
+- [x] Let users provide a list of legal function name characters
+- [x] Allow users to define their own maps
 
 ## Patches
 - [x] Fix small bug 1
