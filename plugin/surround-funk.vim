@@ -237,41 +237,50 @@ endfunction
 
 "- make maps repeatable -------------------------------------------------------
 
-function! s:repeat_map(word_size, operation, mapname)
+function! s:repeatable_delete(word_size, operation, mapname)
     call s:operate_on_surrounding_func(a:word_size, a:operation)
     silent! call repeat#set("\<Plug>".a:mapname, v:count)
 endfunction
 
-function! s:paste_func_around_small_func()
-    call s:paste_func_around_func("small")
-    silent! call repeat#set("\<Plug>PasteFunctionAroundFunction", v:count)
+function! s:repeatable_paste(word_size, func_or_word, mapname)
+    if a:func_or_word ==# 'func'
+        call s:paste_func_around_func(a:word_size)
+    else
+        call s:paste_func_around_word(a:word_size)
+    endif
+    silent! call repeat#set("\<Plug>".a:mapname", v:count)
 endfunction
 
-function! s:paste_func_around_big_func()
-    call s:paste_func_around_func("big")
-    silent! call repeat#set("\<Plug>PasteFunctionAroundFUNCTION", v:count)
-endfunction
+" function! s:paste_func_around_small_func()
+"     call s:paste_func_around_func("small")
+"     silent! call repeat#set("\<Plug>PasteFunctionAroundFunction", v:count)
+" endfunction
 
-function! s:paste_func_around_small_word()
-    call s:paste_func_around_word("small")
-    silent! call repeat#set("\<Plug>PasteFunctionAroundWord", v:count)
-endfunction
+" function! s:paste_func_around_big_func()
+"     call s:paste_func_around_func("big")
+"     silent! call repeat#set("\<Plug>PasteFunctionAroundFUNCTION", v:count)
+" endfunction
 
-function! s:paste_func_around_big_word()
-    call s:paste_func_around_word("big")
-    silent! call repeat#set("\<Plug>PasteFunctionAroundWORD", v:count)
-endfunction
+" function! s:paste_func_around_small_word()
+"     call s:paste_func_around_word("small")
+"     silent! call repeat#set("\<Plug>PasteFunctionAroundWord", v:count)
+" endfunction
 
-nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>repeat_map("small", "delete", "DeleteSurroundingFunction")<CR>
-nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>repeat_map("big", "delete", "DeleteSurroundingFunction")<CR>
+" function! s:paste_func_around_big_word()
+"     call s:paste_func_around_word("big")
+"     silent! call repeat#set("\<Plug>PasteFunctionAroundWORD", v:count)
+" endfunction
+
+nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>repeatable_delete("small", "delete", "DeleteSurroundingFunction")<CR>
+nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>repeatable_delete("big", "delete", "DeleteSurroundingFunction")<CR>
 nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "change")<CR>
 nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "change")<CR>
 nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
 nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "yank")<CR>
-nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>paste_func_around_small_func()<CR>
-nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>paste_func_around_big_func()<CR>
-nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>paste_func_around_small_word()<CR>
-nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>paste_func_around_big_word()<CR>
+nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>repeatable_paste("small", "func", "PasteFunctionAroundFunction")<CR>
+nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>repeatable_paste("big", "func", "PasteFunctionAroundFUNCTION")<CR>
+nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>repeatable_paste("small", "word", "PasteFunctionAroundWord")<CR>
+nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>repeatable_paste("big", "word", "PasteFunctionAroundWORD")<CR>
 
 nmap dsf <Plug>DeleteSurroundingFunction
 nmap dsF <Plug>DeleteSurroundingFUNCTION
