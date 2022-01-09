@@ -116,7 +116,7 @@ will match function names like:
       ^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^
 ```
 
-but would stop at characters not in the legal name set (e.g. `@`, `#`, `/):`
+but would stop at characters not in the legal name set (e.g. `@`, `#`, `/`):
 
 ```
          ******         ******      **********
