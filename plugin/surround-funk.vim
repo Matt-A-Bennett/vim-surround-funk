@@ -252,7 +252,7 @@ nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>repeatable_p
 nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>repeatable_paste("small", "word", "PasteFunctionAroundWord")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>repeatable_paste("big", "word", "PasteFunctionAroundWORD")<CR>
 
-if !exists("g:surround_funk_no_mappings") || ! g:surround_funk_no_mappings
+if !exists("g:surround_funk_no_mappings") || g:surround_funk_no_mappings != 0
     nmap dsf <Plug>DeleteSurroundingFunction
     nmap dsF <Plug>DeleteSurroundingFUNCTION
     nmap csf <Plug>ChangeSurroundingFunction
