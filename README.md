@@ -57,11 +57,39 @@ np.outerfunc(arg1, arg2, arg3)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
 
+### Deleting, changing and yanking a surrounding function
+
+If you have tpope's excellent [repeat.vim
+plugin](https://github.com/tpope/vim-repeat), then the `dsf` and `dsF` commands
+are repeatable with the dot command.
+
+To prevent these mappings from being generated, and define your own see
+`g:surround_funk_create_mappings` below.
+
+```
+dsf: Delete surrounding function
+
+dsF: Like `dsf`, but the function name is delimited by any contiguous sequence
+     of `g:legal_func_name_chars`
+
+csf: Like `dsf` but start instert mode where the opening parenthesis of the
+     changed function was
+
+csF: Like `csf`, but the function name is delimited by any contiguous sequence
+     of `g:legal_func_name_chars`
+
+ysf: Yank surrounding function ysF: Like `ysf`, but the function name is
+     delimited by any contiguous sequence of `g:legal_func_name_chars`
+```
+
 ### Gripping a word or another function
 
 If you have tpope's excellent [repeat.vim
 plugin](https://github.com/tpope/vim-repeat), then the following commands are
 repeatable with the dot command.
+
+To prevent these mappings from being generated, and define your own see
+`g:surround_funk_create_mappings` below.
 
 ```
 gsf: Grip (i.e wrap/encompass) another function with the function in the
