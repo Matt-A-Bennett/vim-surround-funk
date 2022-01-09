@@ -246,6 +246,8 @@ nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>paste_func_a
 nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>paste_func_around_word("small")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>paste_func_around_word("big")<CR>
 
+silent! call repeat#set("\<Plug>DeleteSurroundingFunction")
+
 nmap dsf <Plug>DeleteSurroundingFunction
 nmap dsF <Plug>DeleteSurroundingFUNCTION
 nmap csf <Plug>ChangeSurroundingFunction
