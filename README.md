@@ -11,7 +11,6 @@ one you have in the unnamed register (see below).
 
 <!--ts-->
    * [Usage](#usage)
-      * [STDIN](#stdin)
       * [What is a surrounding function?](#what-is-a-surrounding-function)
       * [Deleting, changing and yanking a surrounding function](#deleting-changing-and-yanking-a-surrounding-function)
       * [Gripping a word or another function](#gripping-a-word-or-another-function)
