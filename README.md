@@ -136,7 +136,6 @@ np.outerfunc(os.lonelyfunc(argA, argB), arg2, arg3)
 You could then move to a word:
 
 ```
-******
 MeNext
 ^^^^^^
 ```

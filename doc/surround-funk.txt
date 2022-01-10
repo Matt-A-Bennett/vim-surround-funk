@@ -146,7 +146,6 @@ And do |gsF| to 'grip/surround' the lonely function with the yanked one:
 
 You could then move to a word:
 
-    ******
     MeNext
     ^^^^^^
 
