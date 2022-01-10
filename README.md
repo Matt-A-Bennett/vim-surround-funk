@@ -17,7 +17,7 @@ one you have in the unnamed register (see below).
       * [Gripping a word or another function](#gripping-a-word-or-another-function)
       * [Settings](#settings)
          * [Turn off automatic creation of normal mode mappings](#turn-off-automatic-creation-of-normal-mode-mappings)
-         * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function name)
+         * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
    * [Installation](#installation)
    * [Licence](#license)
 <!--te-->
