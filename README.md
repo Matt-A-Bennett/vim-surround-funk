@@ -18,7 +18,7 @@ one you have in the unnamed register (see below).
          * [Turn off automatic creation of normal mode mappings](#turn-off-automatic-creation-of-normal-mode-mappings)
          * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
    * [Installation](#installation)
-   * [Licence](#license)
+   * [License](#license)
 <!--te-->
 
 ## Usage
@@ -275,7 +275,7 @@ Use your favorite plugin manager.
 [vim-plug]: https://github.com/junegunn/vim-plug
 [pathogen]: https://github.com/tpope/vim-pathogen
 
-## Licence
+## License
  Copyright (c) Matthew Bennett. Distributed under the same terms as Vim itself.
  See `:help license`.
 
