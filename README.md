@@ -40,7 +40,7 @@ np.outerfunc(arg1, arg2, arg3)
 ```
 sF: Where the name of the function (e.g. np.outerfunc) is similar to a Vim
     WORD, but is additionally delimited by any character not in
-    'g:legal_func_name_chars' (see below)
+    'g:surround_funk_legal_func_name_chars' (see below)
 
 *************               *
 np.outerfunc(innerfunc(arg1))
@@ -72,16 +72,17 @@ To prevent these mappings from being generated, and define your own see
 dsf: Delete surrounding function
 
 dsF: Like `dsf`, but the function name is delimited by any character not in 
-     'g:legal_func_name_chars' (see below)
+     'g:surround_funk_legal_func_name_chars' (see below)
 
 csf: Like `dsf` but start instert mode where the opening parenthesis of the
      changed function used to be
 
 csF: Like `csf`, but the function name is delimited by any character not in 
-     'g:legal_func_name_chars' (see below)
+     'g:surround_funk_legal_func_name_chars' (see below)
 
 ysf: Yank surrounding function ysF: Like `ysf`, but the function name is
-     delimited by any character not in 'g:legal_func_name_chars' (see below)
+     delimited by any character not in 'g:surround_funk_legal_func_name_chars'
+     (see below)
 ```
 
 ### Gripping a word or another function
@@ -98,13 +99,13 @@ gsf: Grip (i.e wrap/encompass) another function with the function in the
      unnamed register.
 
 gsF: Like 'gsf', but the function name is delimited by any character not in 
-     'g:legal_func_name_chars' (see below)
+     'g:surround_funk_legal_func_name_chars' (see below)
 
 gsw: Grip (i.e wrap/encompass) a word with the function in the unnamed 
      register.
 
 gsW: Like 'gsw', but the function name is delimited by of 
-     'g:legal_func_name_chars' (see below)
+     'g:surround_funk_legal_func_name_chars' (see below)
 ```
 
 In the example below, with the cursor anywhere with a `^` symbol, you can do
