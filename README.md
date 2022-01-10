@@ -9,6 +9,7 @@ one you have in the unnamed register (see below).
 
 ![demo](demo.gif)
 
+## Table of contents
 <!--ts-->
    * [Usage](#usage)
       * [What is a surrounding function?](#what-is-a-surrounding-function)
