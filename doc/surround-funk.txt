@@ -191,7 +191,7 @@ For reference, the default mappings are as follows:
 
 
 
-                                       *g:surround_funk_legal_func_name_chars*
+                                *g:surround_funk_legal_func_name_chars*
 By default the |surround-funk| plugin defines any vim word character
 ([0-9A-Za-z_]) and any period symbols as valid parts of a functions name. These
 characters are used to find the function name when using the capitalised (e.g.
