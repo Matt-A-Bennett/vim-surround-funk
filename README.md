@@ -228,7 +228,7 @@ but would stop at characters not in the legal name set (e.g. `@`, `#`, `/`):
 To make numbers illegal, and to introduce `#` and `@` as legal characters, use:
 
 ```vim
-g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.', '#', '@']
+let g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.', '#', '@']
 ```
 
 will match function names like:
