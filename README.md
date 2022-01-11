@@ -23,6 +23,8 @@ one you have in the unnamed register (see below).
 <!--te-->
 
 ## Usage
+(Everything below can also be found with `:help surround-funk`, or just `:help
+funk`)
 
 ### What is a surrounding function?
 
