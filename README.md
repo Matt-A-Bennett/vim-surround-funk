@@ -144,7 +144,7 @@ os.lonelyfunc(argA, argB)
 And do `gsF` to 'grip/surround' the lonely function with the yanked one:
 
 ```
-************                          *************
+*************                         *************
 np.outerfunc(os.lonelyfunc(argA, argB), arg2, arg3)
 ^
 ```
