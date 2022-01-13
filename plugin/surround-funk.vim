@@ -341,11 +341,21 @@ endfunction
 " endfunction
 
 "- perform the operations -----------------------------------------------------
-function! s:operate_on_surrounding_func(word_size, operation)
-    let [fstart, result, rm1, rm2] = s:extract_func_parts(a:word_size)
-    call setreg('"', rm1.rm2)
-    call cursor('.', fstart)
+function! Operate_on_surrounding_func(word_size, operation)
+    let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
+    let parts = Extract_func_parts(a:word_size)
+    if open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
+        let result = [parts['func_name'][0]]
+        let rm = [parts['func_name'][1]]
+    else
+        let result = [parts['func_name'][0]] + parts['args'][0] + [parts['last'][0]]
+        let rm = [parts['func_name'][1]] + parts['args'][1] + [parts['last'][1]]
+    end
+    call join(rm, '\n')
+    call setreg('"', rm)
+    call cursor(parts['start_pos'][0], parts['start_pos'][1])
     if a:operation =~ 'delete\|change'
+        call join(result, '\n')
         call setline('.', result)
     endif
     if a:operation =~ 'change'
