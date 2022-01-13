@@ -1,13 +1,13 @@
 " Author:       Matthew Bennett
 " Version:      1.0.0
 "
-" The following column indices are found in the current line:
+" The following 'function markers' are found in the current line:
 "      
 "    np.outer(os.inner(arg1), arg2)
 "    ^  ^    ^              ^     ^
 "    1a 1b   2              3     4
 "
-" Then we delete/yank 1:2, and 3:4
+" Then we can delete/yank 1:2, and 3:4
 
 "- setup ----------------------------------------------------------------------
 if exists("g:loaded_surround_funk") || &cp || v:version < 700
@@ -31,33 +31,39 @@ function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
     endif
 endfunction
 
-function! s:searchpairpos2(start, middle, end, flag)
-    let [_, _, c_orig, _] = getpos('.')
-    if a:flag ==# 'b'
-        let f1 = 'b'
+function! Searchpairpos2(start, middle, end, flags)
+    " like Vim's builtin searchpairpos(), but find the {middle} even when it's
+    " in a nested stat-end pair
+    let [_, l_orig, c_orig, _] = getpos('.')
+    if a:flags =~# 'b'
+        let f1 = 'bW'
         let f2 = ''
         let g_or_l = '>'
     else
         let f1 = ''
-        let f2 = 'b'
+        let f2 = 'bW'
         let g_or_l = '<'
     endif
     call searchpair(a:start, '', a:end, f1)
-    let end_c = col(".")
+    let [_, end_l, end_c, _] = getpos('.')
     call searchpair(a:start, '', a:end, f2)
-    let [_, c] = searchpos(a:middle, f1, line(".")) 
-    call cursor('.', c_orig)
-    if s:is_greater_or_lesser(c, end_c, g_or_l)
-        return c
+    let [l, c] = searchpos(a:middle, f1) 
+    call cursor(l_orig, c_orig)
+    if Is_greater_or_lesser(l, end_l, g_or_l)
+        return [l, c]
+    elseif l == end_l && Is_greater_or_lesser(c, end_c, g_or_l)
+        return [l, c]
     else
-        return 0
+        return [-1, -1]
     endif
 endfunction
 
-function! s:searchpair2(start, middle, end, flag)
-     let c = s:searchpairpos2(a:start, a:middle, a:end, a:flag)
-     if c > 0
-         call cursor('.', c)
+function! Searchpair2(start, middle, end, flag)
+    " like Vim's builtin searchpair(), but find the {middle} even when it's in
+    " a nested stat-end pair
+     let [l, c]  = Searchpairpos2(a:start, a:middle, a:end, a:flag)
+     if l > 0 || c > 0
+         call cursor(l, c)
      endif
 endfunction
 
