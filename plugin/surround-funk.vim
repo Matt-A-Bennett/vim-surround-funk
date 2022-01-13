@@ -303,6 +303,56 @@ function! Extract_func_parts(word_size)
     return parts
 endfunction
 
+function! Parts_2_string(parts, word_size)
+    let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
+    if open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
+        let str = getline('.')
+        let [result, removed] = Extract_substrings(str, [[start_pos[1], open_pos[1]], [trail_pos[1], close_pos[1]]]) 
+        let [rm1, rm2] = [removed[0], removed[1]]
+    else
+        if a:parts['online_args'][1] == 0
+            let result =   [a:parts['func_name'][0][0]]
+                        \+  a:parts['offline_args'][0][0] 
+                        \+ [a:parts['last'][0][0]]
+
+            let rm1 =       a:parts['func_name'][0][1] 
+
+            let rm2 =       a:parts['offline_args'][0][1]  
+                        \+  a:parts['last'][0][1]
+        else
+            let result =   [a:parts['func_name'][0][0]] 
+                        \+ [a:parts['online_args'][0][0]] 
+                        \+  a:parts['offline_args'][0][0]  
+                        \+ [a:parts['last'][0][0]]
+
+            let rm1 =       a:parts['func_name'][0][1] 
+
+            let rm1 =       a:parts['online_args'][0][1] 
+                        \+  a:parts['offline_args'][0][1]  
+                        \+  a:parts['last'][0][1]
+        endif
+        call join(result, '\n')
+        call join(rm1, '\n')
+        call join(rm2, '\n')
+    endif
+    return [result, rm1[0], rm2[0]]
+endfunction
+
+"- perform the operations -----------------------------------------------------
+function! Operate_on_surrounding_func(word_size, operation)
+    let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
+    let parts = Extract_func_parts(a:word_size)
+    let [result, rm1, rm2] = Parts_2_string(parts, a:word_size)
+    call setreg('"', rm1.rm2)
+    call cursor('start_pos'[0], 'start_pos'[1])
+    if a:operation =~ 'delete\|change'
+        call setline('.', result)
+    endif
+    if a:operation =~ 'change'
+        startinsert
+    endif
+endfunction
+
 function! Insert_substrings(str, insertion_list)
     " insert a set of new strings into <str>
     " <insertion_list> is a list of lists where:
@@ -326,52 +376,6 @@ function! Insert_substrings(str, insertion_list)
     endfor
     return join(chars, '')
 endfunction
-
-function! Parts_2_string(parts, word_size)
-    let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
-    if open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
-        let str = getline('.')
-        let [result, removed] = Extract_substrings(str, [[start_pos[1], open_pos[1]], [trail_pos[1], close_pos[1]]]) 
-        let removed = removed[0]
-    else
-        if a:parts['online_args'][1] == 0
-            let result =   [a:parts['func_name'][0][0]]
-                        \+  a:parts['offline_args'][0][0] 
-                        \+ [a:parts['last'][0][0]]
-            let removed =   a:parts['func_name'][0][1] 
-                        \+  a:parts['offline_args'][0][1]  
-                        \+  a:parts['last'][0][1]
-        else
-            let result =   [a:parts['func_name'][0][0]] 
-                        \+ [a:parts['online_args'][0][0]] 
-                        \+  a:parts['offline_args'][0][0]  
-                        \+ [a:parts['last'][0][0]]
-            let removed =   a:parts['func_name'][0][1] 
-                        \+  a:parts['online_args'][0][1] 
-                        \+  a:parts['offline_args'][0][1]  
-                        \+  a:parts['last'][0][1]
-        endif
-        call join(removed, '\n')
-        call join(result, '\n')
-    endif
-    return [result, removed]
-endfunction
-
-"- perform the operations -----------------------------------------------------
-function! Operate_on_surrounding_func(word_size, operation)
-    let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
-    let parts = Extract_func_parts(a:word_size)
-    let [result, removed] = Parts_2_string(parts, a:word_size)
-    call setreg('"', removed)
-    call cursor('start_pos'[0], 'start_pos'[1])
-    if a:operation =~ 'delete\|change'
-        call setline('.', result)
-    endif
-    if a:operation =~ 'change'
-        startinsert
-    endif
-endfunction
-
 function! Paste_func_around(word_size, func_or_word)
     if a:func_or_word ==# 'func'
         let [open_pos, _, _, close_pos] = Get_func_markers(a:word_size)
