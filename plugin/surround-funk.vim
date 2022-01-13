@@ -3,11 +3,20 @@
 "
 " The following 'function markers' are found in the current line:
 "      
-"    np.outer(os.inner(arg1), arg2)
-"    ^  ^    ^              ^     ^
-"    1a 1b   2              3     4
+"    np.outer(os.inner(arg1    <----- 1a, 1b, 2
+"                  arg2, arg3),  <--- 3
+"    ^  ^    ^     arg3,       
+"    |  |    |     arg4,      ^
+"    |  |    |     arg5)      |
+"    |  |    |     arg6) <----|------ 4
+"    |  |    |                |    
+"    |  |    |         ^      |
+"    |  |    |         |      |
+"    |  |    |         |      |
+"    1a 1b   2         4      3   
 "
-" Then we can delete/yank 1:2, and 3:4
+" Then we can delete/yank bewteen them, and paste the pieces around markers
+" found for a different function
 
 "- setup ----------------------------------------------------------------------
 if exists("g:loaded_surround_funk") || &cp || v:version < 700
