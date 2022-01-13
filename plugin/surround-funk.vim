@@ -291,10 +291,10 @@ endfunction
 function! Extract_func_parts(word_size)
     let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
     let parts = {}
-    let parts['func_name']      = [['', ['']], 0]
-    let parts['online_args']    = [['', ['']], 0]
-    let parts['offline_args']   = [['', ['']], (close_pos[0]-1) > open_pos[0]]
-    let parts['last']           = [['', ['']], close_pos[0]-open_pos[0]]
+    let parts['func_name']         = [['', ['']], 0]
+    let parts['online_args']       = [['', ['']], 0]
+    let parts['offline_args']      = [['', ['']], close_pos[0]-1 > open_pos[0]]
+    let parts['last']              = [['', ['']], close_pos[0]-open_pos[0]]
     let parts['func_name'][0]      = Extract_func_name_and_open_paren(a:word_size)
     let parts['online_args'][0]    = Extract_online_args(a:word_size)
     let parts['offline_args'][0]   = Extract_offline_args(a:word_size)
@@ -302,38 +302,6 @@ function! Extract_func_parts(word_size)
     let g:surroundfunk_func_parts = parts
     return parts
 endfunction
-
-" " this isn't used, but could allow me to switch to from 'dsf' to 'dsw' if 'dsf'
-" " was called with the cursor not on a function (or to gracfully do nothing
-" " instead of clobbering the line)...
-" function! s:is_cursor_on_func()
-"     let [_, _, c_orig, _] = getpos('.')
-"     if s:get_char_under_cursor() =~ '(\|)'
-"         return 1
-"     endif
-"     let chars = s:string2list('.')
-"     let right = chars[col("."):]
-"     let on_func_name = s:get_char_under_cursor() =~ s:legal_func_name_chars.'\|('
-"     let open_paren_count = 0
-"     let close_paren_count = 0
-"     for char in right
-"         if on_func_name && char !~ s:legal_func_name_chars.'\|('
-"             let on_func_name = 0
-"         endif
-"         if char ==# '('
-"             if on_func_name
-"                 call cursor('.', c_orig)
-"                 return 1
-"             endif
-"             " maybe jump to the matching ')' at this point to speed things up
-"             let open_paren_count+=1
-"         elseif char ==# '('
-"             let close_paren_count+=1
-"         endif
-"     endfor
-"     call cursor('.', c_orig)
-"     return close_paren_count > open_paren_count
-" endfunction
 
 function! Insert_substrings(str, insertion_list)
     " insert a set of new strings into <str>
@@ -364,17 +332,33 @@ function! Operate_on_surrounding_func(word_size, operation)
     let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
     let parts = Extract_func_parts(a:word_size)
     if open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
-        let result = [parts['func_name'][0]]
-        let rm = [parts['func_name'][1]]
+        let str = getline('.')
+        let [result, removed] = Extract_substrings(str, [[start_pos[1], open_pos[1]], [trail_pos[1], close_pos[1]]]) 
+        let removed = removed[0]
     else
-        let result = [parts['func_name'][0]] + parts['args'][0] + [parts['last'][0]]
-        let rm = [parts['func_name'][1]] + parts['args'][1] + [parts['last'][1]]
-    end
-    call join(rm, '\n')
-    call setreg('"', rm)
-    call cursor(parts['start_pos'][0], parts['start_pos'][1])
-    if a:operation =~ 'delete\|change'
+        if parts['online_args'][1] == 0
+            let result =   [parts['func_name'][0][0]]
+                        \+  parts['offline_args'][0][0] 
+                        \+ [parts['last'][0][0]]
+            let removed =   parts['func_name'][0][1] 
+                        \+  parts['offline_args'][0][1]  
+                        \+  parts['last'][0][1]
+        else
+            let result =   [parts['func_name'][0][0]] 
+                        \+ [parts['online_args'][0][0]] 
+                        \+  parts['offline_args'][0][0]  
+                        \+ [parts['last'][0][0]]
+            let removed =   parts['func_name'][0][1] 
+                        \+  parts['online_args'][0][1] 
+                        \+  parts['offline_args'][0][1]  
+                        \+  parts['last'][0][1]
+        endif
+        call join(removed, '\n')
         call join(result, '\n')
+    endif
+    call setreg('"', removed)
+    call cursor('start_pos'[0], 'start_pos'[1])
+    if a:operation =~ 'delete\|change'
         call setline('.', result)
     endif
     if a:operation =~ 'change'
