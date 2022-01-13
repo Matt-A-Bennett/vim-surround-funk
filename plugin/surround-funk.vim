@@ -91,66 +91,75 @@ function! s:string2list(str)
 endfunction
 
 "- get marker positions -------------------------------------------------------
-function! s:get_func_open_paren_column()
-    let [_, _, c_orig, _] = getpos('.')
+function! Get_func_open_paren_position()
+    let [_, l_orig, c_orig, _] = getpos('.')
     " move forward to one of function's parentheses (unless already on one)
-    call search('(\|)', 'c', line('.'))
-    " if we're on the closing parenthsis, move to other side
-    if s:get_char_under_cursor() ==# ')'
+    call search('(\|)', 'c')
+    " if we're on the closing parenthesis, move to other side
+    if Get_char_under_cursor() ==# ')'
         call searchpair('(','',')', 'b')
     endif
-    let c = col('.')
-    call cursor('.', c_orig)
-    return c
+    let [_, l, c, _] = getpos('.')
+    call cursor(l_orig, c_orig)
+    return [l, c]
 endfunction
 
-function! s:move_to_func_open_paren()
-    call cursor('.', s:get_func_open_paren_column())
+function! Move_to_func_open_paren()
+    let [l, c] = Get_func_open_paren_position()
+    call cursor(l, c)
 endfunction
 
-function! s:get_start_of_func_column(word_size)
-    let [_, _, c_orig, _] = getpos('.')
-    call s:move_to_func_open_paren()
+function! Get_start_of_func_position(word_size)
+    let [_, l_orig, c_orig, _] = getpos('.')
+    call Move_to_func_open_paren()
     if a:word_size ==# 'small'
-        let [_, c] = searchpos('\<', 'b', line('.'))
-    else
-        let [_, c] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
+        let [l, c] = searchpos('\<', 'b', line('.'))
+    elseif a:word_size ==# 'big'
+        let [l, c] = searchpos('\('.g:legal_func_name_chars.'\)\@<!', 'b', line('.'))
     endif
-    call cursor('.', c_orig)
-    return c
+    call cursor(l_orig, c_orig)
+    return [l, c]
 endfunction
 
-function! s:move_to_start_of_func(word_size)
-    call cursor('.', s:get_start_of_func_column(a:word_size))
+function! Move_to_start_of_func(word_size)
+    let [l, c] = Get_start_of_func_position(a:word_size)
+    call cursor(l, c)
 endfunction
 
-function! s:get_end_of_func_column()
-    let [_, _, c_orig, _] = getpos('.')
-    call s:move_to_func_open_paren()
-    let [_, c] = searchpairpos('(','',')')
-    call cursor('.', c_orig)
-    return c
+function! Get_end_of_func_position()
+    let [_, l_orig, c_orig, _] = getpos('.')
+    call Move_to_func_open_paren()
+    let [l, c] = searchpairpos('(','',')')
+    call cursor(l_orig, c_orig)
+    return [l, c]
 endfunction
 
-function! s:move_to_end_of_func()
-    call cursor('.', s:get_end_of_func_column())
+function! Move_to_end_of_func()
+    let [l, c] = Get_end_of_func_position()
+    call cursor(l, c)
 endfunction
 
-function! s:get_start_of_trailing_args_column()
-    let [_, _, c_orig, _] = getpos('.')
-    call s:move_to_func_open_paren()
-    let c = s:searchpairpos2('(', ')', ')', '')
-    call cursor('.', c_orig)
-    if c > 0
-        return c+1
-    else
-        return s:get_end_of_func_column()
+function! Get_start_of_trailing_args_position()
+    let [_, l_orig, c_orig, _] = getpos('.')
+    call Move_to_func_open_paren()
+    let [l, c] = Searchpairpos2('(', ')', ')', '')
+    call cursor(l_orig, c_orig)
+    if l < 0 || c < 0
+        return Get_end_of_func_position()
+    elseif l == line('.') && c == col('.')
+        return Get_end_of_func_position()
+    elseif Get_char_at_pos(l, c) ==# ')'
+        let [l, c] = [l, c+1]
     endif
+    if Get_char_at_pos(l, c) ==# ''
+        let [l, c] = [l+1, 1]
+    endif
+    return [l, c]
 endfunction
 
-function! s:get_substring(str, c1, c2)
-    let chars = s:string2list(a:str)
-    return join(chars[a:c1-1:a:c2-1], '')
+function! Move_to_start_of_trailing_args()
+    let [l, c] = Get_start_of_trailing_args_position()
+    call cursor(l, c)
 endfunction
 
 function! s:remove_substring(str, c1, c2)
@@ -159,12 +168,18 @@ function! s:remove_substring(str, c1, c2)
     return [join(chars, ''), join(removed, '')]
 endfunction
 
-function! s:get_func_markers(word_size)
-    let fstart = s:get_start_of_func_column(a:word_size)
-    let fopen = s:get_func_open_paren_column()
-    let ftrail = s:get_start_of_trailing_args_column()
-    let fclose = s:get_end_of_func_column()
-    return [fstart, fopen, ftrail, fclose]
+function! Get_func_markers(word_size)
+    " get a list of lists: each list contains the line and column positions of
+    " one of the four key function markers (see top of file for explanation of
+    " these function markers)
+    let [l_fstart, c_fstart] = Get_start_of_func_position(a:word_size)
+    let [l_fopen, c_fopen] = Get_func_open_paren_position()
+    let [l_ftrail, c_ftrail] = Get_start_of_trailing_args_position()
+    let [l_fclose, c_fclose] = Get_end_of_func_position()
+    return [[l_fstart, c_fstart],
+           \[l_fopen, c_fopen],
+           \[l_ftrail, c_ftrail],
+           \[l_fclose, c_fclose]]
 endfunction
 
 function! s:get_word_markers(word_size)
