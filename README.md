@@ -25,7 +25,7 @@ list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/sur
     * [Settings](#settings)
         * [Turn off automatic creation of normal mode mappings](#turn-off-automatic-creation-of-normal-mode-mappings)
         * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
-* [Contribution Guidelines](#contribution-guidelines)
+* [Contribution guidelines](#contribution-guidelines)
     * [Report a bug](#report-a-bug)
     * [Request a feature](#request-a-feature)
 * [Installation](#installation)
@@ -291,7 +291,7 @@ Use your favorite plugin manager.
 [vim-plug]: https://github.com/junegunn/vim-plug
 [pathogen]: https://github.com/tpope/vim-pathogen
 
-## Contribution Guidelines
+## Contribution guidelines
 
 ### Report a bug
 First, check if the bug is already known by seeing whether it's listed on the
