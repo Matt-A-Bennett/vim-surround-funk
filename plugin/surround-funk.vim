@@ -363,19 +363,35 @@ function! Operate_on_surrounding_func(word_size, operation)
     endif
 endfunction
 
-function! s:paste_func_around(word_size, func_or_word)
+function! Paste_func_around(word_size, func_or_word)
     if a:func_or_word ==# 'func'
-        let [fstart, _, _, fclose] = s:get_func_markers(a:word_size)
+        let [open_pos, _, _, close_pos] = Get_func_markers(a:word_size)
     else
-        let [fstart, fclose] = s:get_word_markers(a:word_size)
+        let [fstart, fclose] = Get_word_markers(a:word_size)
     endif
-    let chars = s:string2list('.')
-    call extend(chars, [s:surroundfunk_func_parts[2]], fstart-1)
-    call extend(chars, [s:surroundfunk_func_parts[3]], fclose+1)
+    let chars = String2list('.')
+    let rm = g:surroundfunk_func_parts['args'][1] + [g:surroundfunk_func_parts['last'][1]]
+    call join(rm, '\n')
+    call extend(chars, [g:surroundfunk_func_parts['func_name'][1]], open_pos[1]-1)
+    " call extend(chars, rm, close_pos[1]+1) 
     let chars = join(chars, '')
     call setline('.', chars)
-    call cursor('.', fstart)
+    call cursor(open_pos[0], open_pos[1])
 endfunction
+
+" function! s:paste_func_around(word_size, func_or_word)
+"     if a:func_or_word ==# 'func'
+"         let [fstart, _, _, fclose] = s:get_func_markers(a:word_size)
+"     else
+"         let [fstart, fclose] = s:get_word_markers(a:word_size)
+"     endif
+"     let chars = s:string2list('.')
+"     call extend(chars, [s:surroundfunk_func_parts[2]], fstart-1)
+"     call extend(chars, [s:surroundfunk_func_parts[3]], fclose+1) 
+"     let chars = join(chars, '')
+"     call setline('.', chars)
+"     call cursor('.', fstart)
+" endfunction
 
 "- make maps repeatable -------------------------------------------------------
 function! s:repeatable_delete(word_size, operation, mapname)
