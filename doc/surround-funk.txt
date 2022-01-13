@@ -46,7 +46,7 @@ sf                      Where the name of the function (e.g. outerfunc) is a
                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
   
 sF                      Where the name of the function (e.g. np.outerfunc) is 
-                        any character not in
+                        any contiguous sequence of characters in
                         |g:surround_funk_legal_func_name_chars|
 
                         *************               *
@@ -144,7 +144,7 @@ this case):
 
 And do |gsF| to 'grip/surround' the lonely function with the yanked one:
 
-    ************                          *************
+    *************                         *************
     np.outerfunc(os.lonelyfunc(argA, argB), arg2, arg3)
     ^
 

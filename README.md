@@ -7,7 +7,7 @@ surrounding function in the unnamed register, you can 'grip' a word or another
 function with it. 'Gripping' will wrap/encompass a word or function with the
 one you have in the unnamed register (see below).
 
-![demo](demo.gif)
+![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/demo.gif)
 
 ## Table of contents
 <!--ts-->
@@ -23,6 +23,8 @@ one you have in the unnamed register (see below).
 <!--te-->
 
 ## Usage
+(Everything below can also be found with `:help surround-funk`, or just `:help
+funk`)
 
 ### What is a surrounding function?
 
@@ -142,7 +144,7 @@ os.lonelyfunc(argA, argB)
 And do `gsF` to 'grip/surround' the lonely function with the yanked one:
 
 ```
-************                          *************
+*************                         *************
 np.outerfunc(os.lonelyfunc(argA, argB), arg2, arg3)
 ^
 ```
@@ -170,19 +172,19 @@ By default surround-funk creates the above normal mode mappings. If you would
 rather it didn't do this (for instance if you already have those key
 combinations mapped to something else) you can turn them off with:
 
-```
+```vim
 let g:surround_funk_create_mappings = 0
 ```
 
 And map them to something different with:
 
-```
+```vim
 nmap <your-map-here> <Plug><OperationToMap>
 ```
 
 For reference, the default mappings are as follows:
 
-```
+```vim
 nmap dsf <Plug>DeleteSurroundingFunction
 nmap dsF <Plug>DeleteSurroundingFUNCTION
 nmap csf <Plug>ChangeSurroundingFunction
@@ -205,7 +207,7 @@ remove from these groups.
 
 The default:
 
-```
+```vim
 g:surround_funk_legal_func_name_chars = ['[0-9]', '[A-Z]', '[a-z]', '_', '\.']
 ```
 
@@ -227,8 +229,8 @@ but would stop at characters not in the legal name set (e.g. `@`, `#`, `/`):
 
 To make numbers illegal, and to introduce `#` and `@` as legal characters, use:
 
-```
-g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.', '#', '@']
+```vim
+let g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.', '#', '@']
 ```
 
 will match function names like:
