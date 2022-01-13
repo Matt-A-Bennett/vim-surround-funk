@@ -26,7 +26,7 @@ list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/sur
       * [Settings](#settings)
          * [Turn off automatic creation of normal mode mappings](#turn-off-automatic-creation-of-normal-mode-mappings)
          * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
-   * [Contribution Guidelines]
+   * [Contribution Guidelines](#contribution-guidelines)
          * [Report a bug](#report-a-bug)
          * [Request a feature](#request-a-feature)
    * [Installation](#installation)
@@ -307,32 +307,32 @@ Command used: `dsF`
 Reproducible example (with arrows showing where the cursor was, in this case,
 the 'e' in 'mean'):
 
-\```
+```
 np.mean(st.std(arg1),     <---
             arg2, arg3)
 
     ^
     |
-\```
+```
 
 Result:
 
-\```
+```
 np.mean(st.std(arg1),     <---
     arg2, ar
 
 ^
 |
-\```
+```
 
 Expected:
 
-\```
+```
 st.std(arg1)  <---
             
 ^
 |
-\```
+```
 
 ---
 
