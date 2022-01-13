@@ -19,15 +19,15 @@ list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/sur
 
 ## Table of contents
 * [Usage](#usage)
-    - [What is a surrounding function?](#what-is-a-surrounding-function)
-    - [Deleting, changing and yanking a surrounding function](#deleting-changing-and-yanking-a-surrounding-function)
-    - [Gripping a word or another function](#gripping-a-word-or-another-function)
-* [Settings](#settings)
-    - [Turn off automatic creation of normal mode mappings](#turn-off-automatic-creation-of-normal-mode-mappings)
-    - [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
+    * [What is a surrounding function?](#what-is-a-surrounding-function)
+    * [Deleting, changing and yanking a surrounding function](#deleting-changing-and-yanking-a-surrounding-function)
+    * [Gripping a word or another function](#gripping-a-word-or-another-function)
+    * [Settings](#settings)
+        * [Turn off automatic creation of normal mode mappings](#turn-off-automatic-creation-of-normal-mode-mappings)
+        * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
 * [Contribution Guidelines](#contribution-guidelines)
-    - [Report a bug](#report-a-bug)
-    - [Request a feature](#request-a-feature)
+    * [Report a bug](#report-a-bug)
+    * [Request a feature](#request-a-feature)
 * [Installation](#installation)
 * [License](#license)
 
