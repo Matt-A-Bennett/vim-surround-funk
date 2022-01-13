@@ -335,7 +335,7 @@ endfunction
 "     return close_paren_count > open_paren_count
 " endfunction
 
-function! Multi_insert_into_string(str, insertion_list)
+function! Insert_substrings(str, insertion_list)
     " insert a set of new strings into <str>
     " <insertion_list> is a list of lists where:
     " the 1st element is the string to be insterted
