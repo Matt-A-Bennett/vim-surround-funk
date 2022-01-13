@@ -167,28 +167,24 @@ function! Extract_substring(str, c1, c2)
     " remove the characters ranging from <c1> to <c2> (inclusive) from <str>
     " returns: the original with characters removed
     "          the removed characters as a string
+    let [c1, c2] = [a:c1, a:c2]
     let chars = String2list(a:str)
-    " index from 1
-    let [c1, c2] = [a:c1-1, a:c2-1]
-    " unless idexing from the end of the list
-    if a:c2 < 0
-        let c2 = a:c2
+    " convert negative indices to positive
+    if c1 < 0
+        let c1 = len(a:str)-abs(c1)+1
     endif
-    let removed = remove(chars, c1, c2)
+    if c2 < 0
+        let c2 = len(a:str)-abs(c2)+1
+    endif
+    let removed = remove(chars, c1-1, c2-1)
     return [join(chars, ''), join(removed, '')]
 endfunction
 
-function! Multi_extract_substring(str, deletion_ranges)
+function! Extract_substrings(str, deletion_ranges)
     let removed = []
     let result = a:str
     let offset = 0
     for [c1, c2] in a:deletion_ranges
-        if c1 < 0
-            let c1 = len(a:str)-abs(c1)+1
-        endif
-        if c2 < 0
-            let c2 = len(a:str)-abs(c2)+1
-        endif
         let [result, rm] = Extract_substring(result, c1+offset, c2+offset)
         let offset -= len(rm)
         call add(removed, rm)
