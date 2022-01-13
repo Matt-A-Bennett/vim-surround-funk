@@ -223,7 +223,7 @@ endfunction
 function! Extract_func_name_and_open_paren(word_size)
     let [start_pos, open_pos, _, _] = Get_func_markers(a:word_size)
     let str = getline(start_pos[0])
-    return Extract_substring(str, start_pos[1], open_pos[1]) 
+    return Extract_substrings(str, [[start_pos[1], open_pos[1]]]) 
 endfunction
 
 " function! Extract_func_name_and_open_paren_and_first_trail(word_size)
@@ -264,10 +264,10 @@ function! Extract_intervening_trailing_args(word_size)
         if len(str) == 0
             let [result, rm2] = ['', '']
         else
-            let [result, rm2] = Extract_substring(str, trail_pos[1], -1) 
+            let [result, rm2] = Extract_substrings(str, [[trail_pos[1], -1]]) 
         endif
         call add(results, result)
-        call add(intervening, rm2)
+        call add(intervening, rm2[0])
         let trail_pos[1] = 1
     endfor
     return [results, intervening]
@@ -280,17 +280,7 @@ function! Extract_last_line_with_closing_paren(word_size)
         let trail_pos[1] = 1
     endif
     let str = getline(close_pos[0])
-    let last = Extract_substring(str, trail_pos[1], close_pos[1]) 
-    return last
-endfunction
-
-function! Extract_func_single_line(word_size)
-    let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
-    let str = getline('.')
-    let [tmp, rm1] = Extract_substring(str, start_pos[1], open_pos[1]) 
-    let offset = open_pos[1]-start_pos[1]+1
-    let [result, rm2] = Extract_substring(tmp, trail_pos[1]-offset, close_pos[1]-offset) 
-    return [result, rm1, rm2] " **
+    return Extract_substrings(str, [[trail_pos[1], close_pos[1]]]) 
 endfunction
 
 function! Extract_func_parts(word_size)
@@ -316,26 +306,6 @@ function! Extract_func_parts(word_size)
     let g:surroundfunk_func_parts = parts
     return parts
 endfunction
-
-" function! Extract_func_parts(word_size)
-"     let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
-"     let parts = {'start_pos':start_pos}
-"     if open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
-"         let parts['func_name'] = Extract_func_single_line(a:word_size) " **
-"         let parts['args'] = [['', ''], ['', '']]
-"         let parts['last'] = ['', '']
-"     else
-"         if open_pos[0] == trail_pos[0]
-"             let parts['func_name'] = Extract_func_name_and_open_paren_and_first_trail(a:word_size)
-"         else
-"             let parts['func_name'] = Extract_func_name_and_open_paren(a:word_size)
-"         endif
-"         let parts['args'] = Extract_intervening_trailing_args(a:word_size)
-"         let parts['last'] = Extract_last_line_with_closing_paren(a:word_size)
-"     endif
-"     let g:surroundfunk_func_parts = parts
-"     return parts
-" endfunction
 
 " " this isn't used, but could allow me to switch to from 'dsf' to 'dsw' if 'dsf'
 " " was called with the cursor not on a function (or to gracfully do nothing
