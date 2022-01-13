@@ -178,6 +178,24 @@ function! Extract_substring(str, c1, c2)
     return [join(chars, ''), join(removed, '')]
 endfunction
 
+function! Multi_extract_substring(str, deletion_ranges)
+    let removed = []
+    let result = a:str
+    let offset = 0
+    for [c1, c2] in a:deletion_ranges
+        if c1 < 0
+            let c1 = len(a:str)-abs(c1)+1
+        endif
+        if c2 < 0
+            let c2 = len(a:str)-abs(c2)+1
+        endif
+        let [result, rm] = Extract_substring(result, c1+offset, c2+offset)
+        let offset -= len(rm)
+        call add(removed, rm)
+    endfor
+    return [result, removed]
+endfunction
+
 function! Get_func_markers(word_size)
     " get a list of lists: each list contains the line and column positions of
     " one of the four key function markers (see top of file for explanation of
@@ -354,24 +372,6 @@ endfunction
 "     call cursor('.', c_orig)
 "     return close_paren_count > open_paren_count
 " endfunction
-
-function! Multi_extract_substring(str, deletion_ranges)
-    let removed = []
-    let result = a:str
-    let offset = 0
-    for [c1, c2] in a:deletion_ranges
-        if c1 < 0
-            let c1 = len(a:str)-abs(c1)+1
-        endif
-        if c2 < 0
-            let c2 = len(a:str)-abs(c2)+1
-        endif
-        let [result, rm] = Extract_substring(result, c1+offset, c2+offset)
-        let offset -= len(rm)
-        call add(removed, rm)
-    endfor
-    return [result, removed]
-endfunction
 
 function! Multi_insert_into_string(str, insertion_list)
     " insert a set of new strings into <str>
