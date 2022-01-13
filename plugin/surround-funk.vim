@@ -20,7 +20,7 @@ if ! exists("g:surround_funk_legal_func_name_chars")
     let g:surround_funk_legal_func_name_chars = ['\w', '\.']
 endif
 
-let s:legal_func_name_chars = join(g:surround_funk_legal_func_name_chars, '\|')
+let g:legal_func_name_chars = join(g:surround_funk_legal_func_name_chars, '\|')
 
 "- helper functions -----------------------------------------------------------
 function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
@@ -176,27 +176,18 @@ function! Get_func_markers(word_size)
            \[l_fclose, c_fclose]]
 endfunction
 
-function! s:get_func_markers(word_size)
-    let fstart = s:get_start_of_func_column(a:word_size)
-    let fopen = s:get_func_open_paren_column()
-    let ftrail = s:get_start_of_trailing_args_column()
-    let fclose = s:get_end_of_func_column()
-    return [fstart, fopen, ftrail, fclose]
-endfunction
-
-function! Extract_substring(str, c1, c2)
-    " remove the characters ranging from <c1> to <c2> (inclusive) from <str>
-    " returns: the original with characters removed
-    "          the removed characters as a string
-    let chars = String2list(a:str)
-    " index from 1
-    let [c1, c2] = [a:c1-1, a:c2-1]
-    " unless idexing from the end of the list
-    if a:c2 < 0
-        let c2 = a:c2
+" maybe need to look at the -1 for big vs small??
+function! Get_word_markers(word_size)
+    " get list containing the line and column positions of the word - using the
+    " <s:legal_func_name_chars> if marking a 'big word'
+    if a:word_size ==# 'small'
+        let [fstart, fstart] = searchpos('\<', 'b', line('.'))
+        let [fclose, fclose] = searchpos('\>', '', line('.'))
+    elseif a:word_size ==# 'big'
+        let [fstart, fstart] = searchpos('\('.g:legal_func_name_chars.'\)\@<!', 'b', line('.'))
+        let [fclose, fclose] = searchpos('\('.g:legal_func_name_chars.'\)\@<!\|$', '', line('.'))
     endif
-    let removed = remove(chars, c1, c2)
-    return [join(chars, ''), join(removed, '')]
+    return [[fstart, fstart], [fclose, fclose-1]]
 endfunction
 
 function! Extract_func_name_and_open_paren(word_size)
@@ -204,6 +195,14 @@ function! Extract_func_name_and_open_paren(word_size)
     let str = getline(start_pos[0])
     return Extract_substring(str, start_pos[1], open_pos[1]) 
 endfunction
+
+" function! Extract_func_name_and_open_paren_and_first_trail(word_size)
+"     let [start_pos, open_pos, trail_pos, _] = Get_func_markers(a:word_size)
+"     let [tmp, rm1] = Extract_func_name_and_open_paren(a:word_size)
+"     let offset = open_pos[1]-start_pos[1]+1
+"     let [result, rm2] = Extract_substring(tmp, trail_pos[1]-offset, -1) 
+"     return [result, rm1.rm2]
+" endfunction
 
 function! Extract_func_name_and_open_paren_and_first_trail(word_size)
     let [start_pos, open_pos, trail_pos, _] = Get_func_markers(a:word_size)
