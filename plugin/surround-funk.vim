@@ -67,8 +67,19 @@ function! Searchpair2(start, middle, end, flag)
      endif
 endfunction
 
-function! s:get_char_under_cursor()
-     return getline(".")[col(".")-1]
+function! Get_char_at_pos(l, c)
+    let [l, c] = [a:l, a:c]
+    if a:l ==# '.'
+        let l = line(".")
+    endif
+    if a:c ==# '.'
+        let c = col(".")
+    endif
+    return getline(l)[c-1]
+endfunction
+
+function! Get_char_under_cursor()
+     return Get_char_at_pos('.', '.')
 endfunction
 
 function! s:string2list(str)
