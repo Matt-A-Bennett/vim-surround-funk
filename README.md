@@ -18,20 +18,18 @@ to add, head on over to the [surround-funk todo
 list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/todo.md).
 
 ## Table of contents
-<!--ts-->
-   * [Usage](#usage)
-      * [What is a surrounding function?](#what-is-a-surrounding-function)
-      * [Deleting, changing and yanking a surrounding function](#deleting-changing-and-yanking-a-surrounding-function)
-      * [Gripping a word or another function](#gripping-a-word-or-another-function)
-      * [Settings](#settings)
-         * [Turn off automatic creation of normal mode mappings](#turn-off-automatic-creation-of-normal-mode-mappings)
-         * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
-   * [Contribution Guidelines](#contribution-guidelines)
-         * [Report a bug](#report-a-bug)
-         * [Request a feature](#request-a-feature)
-   * [Installation](#installation)
-   * [License](#license)
-<!--te-->
+* [Usage](#usage)
+    - [What is a surrounding function?](#what-is-a-surrounding-function)
+    - [Deleting, changing and yanking a surrounding function](#deleting-changing-and-yanking-a-surrounding-function)
+    - [Gripping a word or another function](#gripping-a-word-or-another-function)
+* [Settings](#settings)
+    - [Turn off automatic creation of normal mode mappings](#turn-off-automatic-creation-of-normal-mode-mappings)
+    - [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
+* [Contribution Guidelines](#contribution-guidelines)
+    - [Report a bug](#report-a-bug)
+    - [Request a feature](#request-a-feature)
+* [Installation](#installation)
+* [License](#license)
 
 ## Usage
 (Everything below can also be found with `:help surround-funk`, or just `:help
