@@ -163,6 +163,21 @@ function! Move_to_start_of_trailing_args()
     call cursor(l, c)
 endfunction
 
+function! Extract_substring(str, c1, c2)
+    " remove the characters ranging from <c1> to <c2> (inclusive) from <str>
+    " returns: the original with characters removed
+    "          the removed characters as a string
+    let chars = String2list(a:str)
+    " index from 1
+    let [c1, c2] = [a:c1-1, a:c2-1]
+    " unless idexing from the end of the list
+    if a:c2 < 0
+        let c2 = a:c2
+    endif
+    let removed = remove(chars, c1, c2)
+    return [join(chars, ''), join(removed, '')]
+endfunction
+
 function! Get_func_markers(word_size)
     " get a list of lists: each list contains the line and column positions of
     " one of the four key function markers (see top of file for explanation of
