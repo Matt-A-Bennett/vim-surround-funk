@@ -327,35 +327,41 @@ function! Insert_substrings(str, insertion_list)
     return join(chars, '')
 endfunction
 
-"- perform the operations -----------------------------------------------------
-function! Operate_on_surrounding_func(word_size, operation)
+function! Parts_2_string(parts, word_size)
     let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
-    let parts = Extract_func_parts(a:word_size)
     if open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
         let str = getline('.')
         let [result, removed] = Extract_substrings(str, [[start_pos[1], open_pos[1]], [trail_pos[1], close_pos[1]]]) 
         let removed = removed[0]
     else
-        if parts['online_args'][1] == 0
-            let result =   [parts['func_name'][0][0]]
-                        \+  parts['offline_args'][0][0] 
-                        \+ [parts['last'][0][0]]
-            let removed =   parts['func_name'][0][1] 
-                        \+  parts['offline_args'][0][1]  
-                        \+  parts['last'][0][1]
+        if a:parts['online_args'][1] == 0
+            let result =   [a:parts['func_name'][0][0]]
+                        \+  a:parts['offline_args'][0][0] 
+                        \+ [a:parts['last'][0][0]]
+            let removed =   a:parts['func_name'][0][1] 
+                        \+  a:parts['offline_args'][0][1]  
+                        \+  a:parts['last'][0][1]
         else
-            let result =   [parts['func_name'][0][0]] 
-                        \+ [parts['online_args'][0][0]] 
-                        \+  parts['offline_args'][0][0]  
-                        \+ [parts['last'][0][0]]
-            let removed =   parts['func_name'][0][1] 
-                        \+  parts['online_args'][0][1] 
-                        \+  parts['offline_args'][0][1]  
-                        \+  parts['last'][0][1]
+            let result =   [a:parts['func_name'][0][0]] 
+                        \+ [a:parts['online_args'][0][0]] 
+                        \+  a:parts['offline_args'][0][0]  
+                        \+ [a:parts['last'][0][0]]
+            let removed =   a:parts['func_name'][0][1] 
+                        \+  a:parts['online_args'][0][1] 
+                        \+  a:parts['offline_args'][0][1]  
+                        \+  a:parts['last'][0][1]
         endif
         call join(removed, '\n')
         call join(result, '\n')
     endif
+    return [result, removed]
+endfunction
+
+"- perform the operations -----------------------------------------------------
+function! Operate_on_surrounding_func(word_size, operation)
+    let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
+    let parts = Extract_func_parts(a:word_size)
+    let [result, removed] = Parts_2_string(parts, a:word_size)
     call setreg('"', removed)
     call cursor('start_pos'[0], 'start_pos'[1])
     if a:operation =~ 'delete\|change'
