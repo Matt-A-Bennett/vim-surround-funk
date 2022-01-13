@@ -23,7 +23,7 @@ endif
 let g:legal_func_name_chars = join(g:surround_funk_legal_func_name_chars, '\|')
 
 "- helper functions -----------------------------------------------------------
-function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
+function! Is_greater_or_lesser(v1, v2, greater_or_lesser)
     if a:greater_or_lesser ==# '>'
         return a:v1 > a:v2
     else
@@ -82,7 +82,8 @@ function! Get_char_under_cursor()
      return Get_char_at_pos('.', '.')
 endfunction
 
-function! s:string2list(str)
+function! String2list(str)
+    " e.g. 'vim' -> ['v', 'i', 'm']
     let str = a:str
     if str ==# '.'
         let str = getline('.')
