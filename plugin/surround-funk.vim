@@ -355,7 +355,8 @@ endfunction
 "     return close_paren_count > open_paren_count
 " endfunction
 
-function! Delete_from_string(str, deletion_ranges)
+function! Multi_extract_substring(str, deletion_ranges)
+    let removed = []
     let result = a:str
     let offset = 0
     for [c1, c2] in a:deletion_ranges
@@ -367,11 +368,12 @@ function! Delete_from_string(str, deletion_ranges)
         endif
         let [result, rm] = Extract_substring(result, c1+offset, c2+offset)
         let offset -= len(rm)
+        call add(removed, rm)
     endfor
-    return result
+    return [result, removed]
 endfunction
 
-function! Insert_into_string(str, insertion_list)
+function! Multi_insert_into_string(str, insertion_list)
     " insert a set of new strings into <str>
     " <insertion_list> is a list of lists where:
     " the 1st element is the string to be insterted
