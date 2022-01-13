@@ -357,14 +357,23 @@ endfunction
 
 function! Insert_into_string(str, insertion_list)
     " insert a set of new strings into <str>
-    " <insertion_list> is a list of lists where the first element is the string to
-    " be insterted, and the second element is the index of where to insert into
-    " <str>
+    " <insertion_list> is a list of lists where:
+    " the 1st element is the string to be insterted
+    " the 2nd element is the index of where to insert into <str>
+    " the 3rd is an optional flag to insert before (default) or after the index
     let chars = String2list(a:str)
     let offset = -1
     for insertion in a:insertion_list
+        if insertion[1] < 0
+            let insertion[1] = len(a:str)+insertion[1]+1
+        endif
+        if len(insertion) == 2 || insertion[2] ==# '<'
+            call add(insertion, 0)
+        elseif insertion[2] ==# '>'
+            let insertion[2] = 1
+        endif
         let insertion[0] = String2list(insertion[0])
-        call extend(chars, insertion[0], insertion[1]+offset)
+        call extend(chars, insertion[0], insertion[1]+offset+insertion[2])
         let offset += len(insertion[0])
     endfor
     return join(chars, '')
