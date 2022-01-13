@@ -9,22 +9,35 @@ one you have in the unnamed register (see below).
 
 ![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/demo.gif)
 
+This plugin is currently in an initial testing phase. There are a likely a few
+edge-cases/bugs. If you find any, please tell me about it by raising a [new
+issue](https://github.com/Matt-A-Bennett/surround-funk.vim/issues) according to
+the [contribution guidelines](#contribution-guidelines). The same
+goes for if you would like to see a feature added! To see a list of what I plan
+to add, head on over to the [surround-funk todo
+list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/todo.md).
+
 ## Table of contents
-<!--ts-->
-   * [Usage](#usage)
-      * [What is a surrounding function?](#what-is-a-surrounding-function)
-      * [Deleting, changing and yanking a surrounding function](#deleting-changing-and-yanking-a-surrounding-function)
-      * [Gripping a word or another function](#gripping-a-word-or-another-function)
-      * [Settings](#settings)
-         * [Turn off automatic creation of normal mode mappings](#turn-off-automatic-creation-of-normal-mode-mappings)
-         * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
-   * [Installation](#installation)
-   * [License](#license)
-<!--te-->
+* [Usage](#usage)
+    * [What is a surrounding function?](#what-is-a-surrounding-function)
+    * [Deleting, changing and yanking a surrounding function](#deleting-changing-and-yanking-a-surrounding-function)
+    * [Gripping a word or another function](#gripping-a-word-or-another-function)
+    * [Settings](#settings)
+        * [Turn off automatic creation of normal mode mappings](#turn-off-automatic-creation-of-normal-mode-mappings)
+        * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
+* [Contribution Guidelines](#contribution-guidelines)
+    * [Report a bug](#report-a-bug)
+    * [Request a feature](#request-a-feature)
+* [Installation](#installation)
+* [License](#license)
 
 ## Usage
-(Everything below can also be found with `:help surround-funk`, or just `:help
-funk`)
+In the current version, only in-line functions are supported. Adding multi-line
+support is currently underway [see the surround-funk todo
+list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/todo.md).
+
+(Everything in this section can also be found in Vim's help docs with `:help
+surround-funk`, or just `:help funk`)
 
 ### What is a surrounding function?
 
@@ -277,6 +290,63 @@ Use your favorite plugin manager.
 [vundle]: https://github.com/gmarik/vundle
 [vim-plug]: https://github.com/junegunn/vim-plug
 [pathogen]: https://github.com/tpope/vim-pathogen
+
+## Contribution Guidelines
+
+### Report a bug
+First, check if the bug is already known by seeing whether it's listed on the
+[surround-funk todo list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/todo.md).
+
+If it's not there, then please raise a [new
+issue](https://github.com/Matt-A-Bennett/surround-funk.vim/issues) so I can fix
+it (or submit a pull request). To make it easier, you can use the following
+template (I'm still working on multi-line support, so the fact that this fails
+isn't really a bug):
+
+---
+
+Command used: `dsF`
+
+Reproducible example (with arrows showing where the cursor was, in this case,
+the 'e' in 'mean'):
+
+```
+np.mean(st.std(arg1),     <---
+            arg2, arg3)
+
+    ^
+    |
+```
+
+Result:
+
+```
+np.mean(st.std(arg1),     <---
+    arg2, ar
+
+^
+|
+```
+
+Expected:
+
+```
+st.std(arg1)  <---
+            
+^
+|
+```
+
+---
+
+### Request a feature
+First, check if the feature is already planned by looking at the 
+[surround-funk todo list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/todo.md).
+
+If it's not there, then please raise a [new
+issue](https://github.com/Matt-A-Bennett/surround-funk.vim/issues) describing what
+you would like and I'll see what I can do! If you would like to submit a pull
+request, then do so (please let me know this is your plan first in a [new issue](https://github.com/Matt-A-Bennett/surround-funk.vim/issues)).
 
 ## License
  Copyright (c) Matthew Bennett. Distributed under the same terms as Vim itself.
