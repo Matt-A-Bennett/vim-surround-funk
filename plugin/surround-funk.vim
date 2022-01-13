@@ -162,12 +162,6 @@ function! Move_to_start_of_trailing_args()
     call cursor(l, c)
 endfunction
 
-function! s:remove_substring(str, c1, c2)
-    let chars = s:string2list(a:str)
-    let removed = remove(chars, a:c1-1, a:c2-1)
-    return [join(chars, ''), join(removed, '')]
-endfunction
-
 function! Get_func_markers(word_size)
     " get a list of lists: each list contains the line and column positions of
     " one of the four key function markers (see top of file for explanation of
@@ -182,15 +176,27 @@ function! Get_func_markers(word_size)
            \[l_fclose, c_fclose]]
 endfunction
 
-function! s:get_word_markers(word_size)
-    if a:word_size ==# 'small'
-        let [_, wstart] = searchpos('\<', 'b', line('.'))
-        let [_, wclose] = searchpos('\>', '', line('.'))
-    else
-        let [_, wstart] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
-        let [_, wclose] = searchpos('\('.s:legal_func_name_chars.'\)\@<!\|$', '', line('.'))
+function! s:get_func_markers(word_size)
+    let fstart = s:get_start_of_func_column(a:word_size)
+    let fopen = s:get_func_open_paren_column()
+    let ftrail = s:get_start_of_trailing_args_column()
+    let fclose = s:get_end_of_func_column()
+    return [fstart, fopen, ftrail, fclose]
+endfunction
+
+function! Extract_substring(str, c1, c2)
+    " remove the characters ranging from <c1> to <c2> (inclusive) from <str>
+    " returns: the original with characters removed
+    "          the removed characters as a string
+    let chars = String2list(a:str)
+    " index from 1
+    let [c1, c2] = [a:c1-1, a:c2-1]
+    " unless idexing from the end of the list
+    if a:c2 < 0
+        let c2 = a:c2
     endif
-    return [wstart, wclose-1]
+    let removed = remove(chars, c1, c2)
+    return [join(chars, ''), join(removed, '')]
 endfunction
 
 function! s:extract_func_parts(word_size)
