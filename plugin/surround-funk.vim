@@ -199,48 +199,114 @@ function! Extract_substring(str, c1, c2)
     return [join(chars, ''), join(removed, '')]
 endfunction
 
-function! s:extract_func_parts(word_size)
-    let [fstart, fopen, ftrail, fclose] = s:get_func_markers(a:word_size)
-    let str = getline('.')
-    let [tmp, rm1] = s:remove_substring(str, fstart, fopen) 
-    let offset = fopen-fstart+1
-    let [result, rm2] = s:remove_substring(tmp, ftrail-offset, fclose-offset) 
-    let s:surroundfunk_func_parts = [fstart, result, rm1, rm2]
-    return [fstart, result, rm1, rm2]
+function! Extract_func_name_and_open_paren(word_size)
+    let [start_pos, open_pos, _, _] = Get_func_markers(a:word_size)
+    let str = getline(start_pos[0])
+    return Extract_substring(str, start_pos[1], open_pos[1]) 
 endfunction
 
-" this isn't used, but could allow me to switch to from 'dsf' to 'dsw' if 'dsf'
-" was called with the cursor not on a function (or to gracfully do nothing
-" instead of clobbering the line)...
-function! s:is_cursor_on_func()
-    let [_, _, c_orig, _] = getpos('.')
-    if s:get_char_under_cursor() =~ '(\|)'
-        return 1
+function! Extract_func_name_and_open_paren_and_first_trail(word_size)
+    let [start_pos, open_pos, trail_pos, _] = Get_func_markers(a:word_size)
+    let [tmp, rm1] = Extract_func_name_and_open_paren(a:word_size)
+    let offset = open_pos[1]-start_pos[1]+1
+    let [result, rm2] = Extract_substring(tmp, trail_pos[1]-offset, -1) 
+    return [result, rm1, rm2]
+endfunction
+
+" function! Extract_first_trail_arg(word_size)
+"     let [_, _, trail_pos, close_pos] = Get_func_markers(a:word_size)
+"         let str = getline('.')
+"         return [result, rm2] = Extract_substring(str, trail_pos[1], -1) 
+" endfunction
+
+function! Extract_intervening_trailing_args(word_size)
+    let [_, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
+    let results = []
+    let intervening = []
+    if open_pos[0] == trail_pos[0]
+        let trail_pos[1] = 1
+        let skip = 1
+    else 
+        let skip = 0
     endif
-    let chars = s:string2list('.')
-    let right = chars[col("."):]
-    let on_func_name = s:get_char_under_cursor() =~ s:legal_func_name_chars.'\|('
-    let open_paren_count = 0
-    let close_paren_count = 0
-    for char in right
-        if on_func_name && char !~ s:legal_func_name_chars.'\|('
-            let on_func_name = 0
+    " this loop will only happen if close_pos[0] != trail_pos[0]
+    for l in range(trail_pos[0]+skip, close_pos[0]-1)
+        let str = getline(l)
+        if len(str) == 0
+            let [result, rm2] = ['', '']
+        else
+            let [result, rm2] = Extract_substring(str, trail_pos[1], -1) 
         endif
-        if char ==# '('
-            if on_func_name
-                call cursor('.', c_orig)
-                return 1
-            endif
-            " maybe jump to the matching ')' at this point to speed things up
-            let open_paren_count+=1
-        elseif char ==# '('
-            let close_paren_count+=1
-        endif
+        call add(results, result)
+        call add(intervening, rm2)
+        let trail_pos[1] = 1
     endfor
-    call cursor('.', c_orig)
-    return close_paren_count > open_paren_count
+    return [results, intervening]
 endfunction
 
+function! Extract_last_line_with_closing_paren(word_size)
+    let [_, _,  trail_pos, close_pos] = Get_func_markers(a:word_size)
+    " grab from start of line to close
+    if trail_pos[0] != close_pos[0]
+        let trail_pos[1] = 1
+    endif
+    let str = getline(close_pos[0])
+    let last = Extract_substring(str, trail_pos[1], close_pos[1]) 
+    return last
+endfunction
+
+function! Extract_func_single_line(word_size)
+    let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
+    let str = getline('.')
+    let [tmp, rm1] = Extract_substring(str, start_pos[1], open_pos[1]) 
+    let offset = open_pos[1]-start_pos[1]+1
+    let [result, rm2] = Extract_substring(tmp, trail_pos[1]-offset, close_pos[1]-offset) 
+    return [result, rm1, rm2] " **
+endfunction
+
+function! Extract_func_parts(word_size)
+    let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
+    let parts = {'start_pos':start_pos}
+    if open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
+        let parts['func_name'] = Extract_func_single_line(a:word_size) " **
+        let parts['args'] = [['', ''], ['', '']]
+        let parts['last'] = ['', '']
+    else
+        if open_pos[0] == trail_pos[0]
+            let [result, func_name, trail_arg] = Extract_func_name_and_open_paren_and_first_trail(a:word_size)
+            let parts['func_name'] = func_name
+            let [results, intervening] = Extract_intervening_trailing_args(a:word_size)
+            call insert(intervening, trail_arg, 0)
+            let parts['args'] = [results, intervening]
+        else
+            let parts['func_name'] = Extract_func_name_and_open_paren(a:word_size)
+            let parts['args'] = Extract_intervening_trailing_args(a:word_size)
+        endif
+        let parts['last'] = Extract_last_line_with_closing_paren(a:word_size)
+    endif
+    let g:surroundfunk_func_parts = parts
+    return parts
+endfunction
+
+" function! Extract_func_parts(word_size)
+"     let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
+"     let parts = {'start_pos':start_pos}
+"     if open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
+"         let parts['func_name'] = Extract_func_single_line(a:word_size) " **
+"         let parts['args'] = [['', ''], ['', '']]
+"         let parts['last'] = ['', '']
+"     else
+"         if open_pos[0] == trail_pos[0]
+"             let parts['func_name'] = Extract_func_name_and_open_paren_and_first_trail(a:word_size)
+"         else
+"             let parts['func_name'] = Extract_func_name_and_open_paren(a:word_size)
+"         endif
+"         let parts['args'] = Extract_intervening_trailing_args(a:word_size)
+"         let parts['last'] = Extract_last_line_with_closing_paren(a:word_size)
+"     endif
+"     let g:surroundfunk_func_parts = parts
+"     return parts
+" endfunction
 "- perform the operations -----------------------------------------------------
 function! s:operate_on_surrounding_func(word_size, operation)
     let [fstart, result, rm1, rm2] = s:extract_func_parts(a:word_size)
