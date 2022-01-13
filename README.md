@@ -32,8 +32,12 @@ list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/sur
 * [License](#license)
 
 ## Usage
-(Everything below can also be found with `:help surround-funk`, or just `:help
-funk`)
+In the current version, only in-line functions are supported. Adding multi-line
+support is currently underway [see the surround-funk todo
+list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/todo.md).
+
+(Everything in this section can also be found in Vim's help docs with `:help
+surround-funk`, or just `:help funk`)
 
 ### What is a surrounding function?
 
@@ -296,7 +300,8 @@ First, check if the bug is already known by seeing whether it's listed on the
 If it's not there, then please raise a [new
 issue](https://github.com/Matt-A-Bennett/surround-funk.vim/issues) so I can fix
 it (or submit a pull request). To make it easier, you can use the following
-template:
+template (I'm still working on multi-line support, so the fact that this fails
+isn't really a bug):
 
 ---
 
