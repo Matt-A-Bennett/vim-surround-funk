@@ -355,6 +355,21 @@ endfunction
 "     return close_paren_count > open_paren_count
 " endfunction
 
+function! Insert_into_string(str, insertion_list)
+    " insert a set of new strings into <str>
+    " <insertion_list> is a list of lists where the first element is the string to
+    " be insterted, and the second element is the index of where to insert into
+    " <str>
+    let chars = String2list(a:str)
+    let offset = -1
+    for insertion in a:insertion_list
+        let insertion[0] = String2list(insertion[0])
+        call extend(chars, insertion[0], insertion[1]+offset)
+        let offset += len(insertion[0])
+    endfor
+    return join(chars, '')
+endfunction
+
 "- perform the operations -----------------------------------------------------
 function! Operate_on_surrounding_func(word_size, operation)
     let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
