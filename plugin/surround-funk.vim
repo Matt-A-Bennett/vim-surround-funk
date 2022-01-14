@@ -1,6 +1,10 @@
 " Author:       Matthew Bennett
 " Version:      1.0.0
+" License:      Same as Vim's (see :help license)
 "
+"=== EXPLANATION OF THE APPROACH ==============================================
+
+"{{{---------------------------------------------------------------------------
 " The following 'function markers' are found in the current line:
 "      
 "    np.outer(os.inner(arg1    <----- 1a, 1b, 2
@@ -17,8 +21,11 @@
 "
 " Then we can delete/yank bewteen them, and paste the pieces around markers
 " found for a different function
+"}}}---------------------------------------------------------------------------
 
-"- setup ----------------------------------------------------------------------
+"=== SETUP ====================================================================
+
+"{{{---------------------------------------------------------------------------
 if exists("g:loaded_surround_funk") || &cp || v:version < 700
     finish
 endif
@@ -30,8 +37,13 @@ if ! exists("g:surround_funk_legal_func_name_chars")
 endif
 
 let g:legal_func_name_chars = join(g:surround_funk_legal_func_name_chars, '\|')
+"}}}---------------------------------------------------------------------------
 
-"- helper functions -----------------------------------------------------------
+"=== FOUNDATIONS ==============================================================
+
+"--- Helper functions ---
+"{{{---------------------------------------------------------------------------
+"{{{- Is_greater_or_lesser ----------------------------------------------------
 function! Is_greater_or_lesser(v1, v2, greater_or_lesser)
     if a:greater_or_lesser ==# '>'
         return a:v1 > a:v2
@@ -39,7 +51,9 @@ function! Is_greater_or_lesser(v1, v2, greater_or_lesser)
         return a:v1 < a:v2
     endif
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Searchpairpos2 ----------------------------------------------------------
 function! Searchpairpos2(start, middle, end, flags)
     " like Vim's builtin searchpairpos(), but find the {middle} even when it's
     " in a nested stat-end pair
@@ -66,7 +80,9 @@ function! Searchpairpos2(start, middle, end, flags)
         return [-1, -1]
     endif
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Searchpair2 -------------------------------------------------------------
 function! Searchpair2(start, middle, end, flag)
     " like Vim's builtin searchpair(), but find the {middle} even when it's in
     " a nested stat-end pair
@@ -75,7 +91,12 @@ function! Searchpair2(start, middle, end, flag)
          call cursor(l, c)
      endif
 endfunction
+"}}}---------------------------------------------------------------------------
+"}}}---------------------------------------------------------------------------
 
+"--- Get markers ---
+"{{{---------------------------------------------------------------------------
+"{{{- Get_char_at_pos ---------------------------------------------------------
 function! Get_char_at_pos(l, c)
     let [l, c] = [a:l, a:c]
     if a:l ==# '.'
@@ -86,11 +107,15 @@ function! Get_char_at_pos(l, c)
     endif
     return getline(l)[c-1]
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Get_char_under_cursor ---------------------------------------------------
 function! Get_char_under_cursor()
      return Get_char_at_pos('.', '.')
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- String2list -------------------------------------------------------------
 function! String2list(str)
     " e.g. 'vim' -> ['v', 'i', 'm']
     let str = a:str
@@ -99,8 +124,9 @@ function! String2list(str)
     endif
     return split(str, '\zs')
 endfunction
+"}}}---------------------------------------------------------------------------
 
-"- get marker positions -------------------------------------------------------
+"{{{- Get_func_open_paren_position --------------------------------------------
 function! Get_func_open_paren_position()
     let [_, l_orig, c_orig, _] = getpos('.')
     " move forward to one of function's parentheses (unless already on one)
@@ -113,12 +139,16 @@ function! Get_func_open_paren_position()
     call cursor(l_orig, c_orig)
     return [l, c]
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Move_to_func_open_paren -------------------------------------------------
 function! Move_to_func_open_paren()
     let [l, c] = Get_func_open_paren_position()
     call cursor(l, c)
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Get_start_of_func_position ----------------------------------------------
 function! Get_start_of_func_position(word_size)
     let [_, l_orig, c_orig, _] = getpos('.')
     call Move_to_func_open_paren()
@@ -130,12 +160,16 @@ function! Get_start_of_func_position(word_size)
     call cursor(l_orig, c_orig)
     return [l, c]
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Move_to_start_of_func ---------------------------------------------------
 function! Move_to_start_of_func(word_size)
     let [l, c] = Get_start_of_func_position(a:word_size)
     call cursor(l, c)
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Get_end_of_func_position ------------------------------------------------
 function! Get_end_of_func_position()
     let [_, l_orig, c_orig, _] = getpos('.')
     call Move_to_func_open_paren()
@@ -143,12 +177,16 @@ function! Get_end_of_func_position()
     call cursor(l_orig, c_orig)
     return [l, c]
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Move_to_end_of_func -----------------------------------------------------
 function! Move_to_end_of_func()
     let [l, c] = Get_end_of_func_position()
     call cursor(l, c)
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Get_start_of_trailing_args_position -------------------------------------
 function! Get_start_of_trailing_args_position()
     let [_, l_orig, c_orig, _] = getpos('.')
     call Move_to_func_open_paren()
@@ -166,12 +204,51 @@ function! Get_start_of_trailing_args_position()
     endif
     return [l, c]
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Move_to_start_of_trailing_args ------------------------------------------
 function! Move_to_start_of_trailing_args()
     let [l, c] = Get_start_of_trailing_args_position()
     call cursor(l, c)
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Get_func_markers --------------------------------------------------------
+function! Get_func_markers(word_size)
+    " get a list of lists: each list contains the line and column positions of
+    " one of the four key function markers (see top of file for explanation of
+    " these function markers)
+    let [l_fstart, c_fstart] = Get_start_of_func_position(a:word_size)
+    let [l_fopen, c_fopen] = Get_func_open_paren_position()
+    let [l_ftrail, c_ftrail] = Get_start_of_trailing_args_position()
+    let [l_fclose, c_fclose] = Get_end_of_func_position()
+    return [[l_fstart, c_fstart],
+           \[l_fopen, c_fopen],
+           \[l_ftrail, c_ftrail],
+           \[l_fclose, c_fclose]]
+endfunction
+"}}}---------------------------------------------------------------------------
+
+" "{{{- Get_word_markers ------------------------------------------------------
+function! Get_word_markers(word_size)
+    " get list containing the line and column positions of the word - using the
+    " <s:legal_func_name_chars> if marking a 'big word'
+    if a:word_size ==# 'small'
+        let [fstart, fstart] = searchpos('\<', 'b', line('.'))
+        let [fclose, fclose] = searchpos('\>', '', line('.'))
+    elseif a:word_size ==# 'big'
+        let [fstart, fstart] = searchpos('\('.g:legal_func_name_chars.'\)\@<!', 'b', line('.'))
+        let [fclose, fclose] = searchpos('\('.g:legal_func_name_chars.'\)\@<!\|$', '', line('.'))
+    endif
+    return [[fstart, fstart], [fclose, fclose-1]]
+endfunction
+"}}}---------------------------------------------------------------------------
+
+"}}}---------------------------------------------------------------------------
+
+"--- Extract ---
+"{{{---------------------------------------------------------------------------
+"{{{- Extract_substring -------------------------------------------------------
 function! Extract_substring(str, c1, c2)
     " remove the characters ranging from <c1> to <c2> (inclusive) from <str>
     " returns: the original with characters removed
@@ -182,7 +259,9 @@ function! Extract_substring(str, c1, c2)
     let removed = remove(chars, c1-1, c2-1)
     return [join(chars, ''), join(removed, '')]
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Extract_substrings ------------------------------------------------------
 function! Extract_substrings(str, deletion_ranges)
     let removed = []
     let result = a:str
@@ -200,41 +279,17 @@ function! Extract_substrings(str, deletion_ranges)
     endfor
     return [result, removed]
 endfunction
+"}}}---------------------------------------------------------------------------
 
-function! Get_func_markers(word_size)
-    " get a list of lists: each list contains the line and column positions of
-    " one of the four key function markers (see top of file for explanation of
-    " these function markers)
-    let [l_fstart, c_fstart] = Get_start_of_func_position(a:word_size)
-    let [l_fopen, c_fopen] = Get_func_open_paren_position()
-    let [l_ftrail, c_ftrail] = Get_start_of_trailing_args_position()
-    let [l_fclose, c_fclose] = Get_end_of_func_position()
-    return [[l_fstart, c_fstart],
-           \[l_fopen, c_fopen],
-           \[l_ftrail, c_ftrail],
-           \[l_fclose, c_fclose]]
-endfunction
-
-" maybe need to look at the -1 for big vs small??
-function! Get_word_markers(word_size)
-    " get list containing the line and column positions of the word - using the
-    " <s:legal_func_name_chars> if marking a 'big word'
-    if a:word_size ==# 'small'
-        let [fstart, fstart] = searchpos('\<', 'b', line('.'))
-        let [fclose, fclose] = searchpos('\>', '', line('.'))
-    elseif a:word_size ==# 'big'
-        let [fstart, fstart] = searchpos('\('.g:legal_func_name_chars.'\)\@<!', 'b', line('.'))
-        let [fclose, fclose] = searchpos('\('.g:legal_func_name_chars.'\)\@<!\|$', '', line('.'))
-    endif
-    return [[fstart, fstart], [fclose, fclose-1]]
-endfunction
-
+"{{{- Extract_func_name_and_open_paren ----------------------------------------
 function! Extract_func_name_and_open_paren(word_size)
     let [start_pos, open_pos, _, _] = Get_func_markers(a:word_size)
     let str = getline(start_pos[0])
     return Extract_substrings(str, [[start_pos[1], open_pos[1]]]) 
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Extract_online_args -----------------------------------------------------
 function! Extract_online_args(word_size)
     let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
     let str = getline(start_pos[0])
@@ -246,7 +301,9 @@ function! Extract_online_args(word_size)
         return Extract_substrings(str, [[trail_pos[1], -1]]) 
     end
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Extract_offline_args ----------------------------------------------------
 function! Extract_offline_args(word_size)
     let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
     if open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
@@ -274,7 +331,9 @@ function! Extract_offline_args(word_size)
     endfor
     return [results, intervening]
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Extract_last_line_with_closing_paren ------------------------------------
 function! Extract_last_line_with_closing_paren(word_size)
     let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
     " grab from start of line to close
@@ -287,7 +346,9 @@ function! Extract_last_line_with_closing_paren(word_size)
     let str = getline(close_pos[0])
     return Extract_substrings(str, [[trail_pos[1], close_pos[1]]]) 
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Extract_func_parts ------------------------------------------------------
 function! Extract_func_parts(word_size)
     let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
     let parts = {}
@@ -299,10 +360,11 @@ function! Extract_func_parts(word_size)
     let parts['online_args'][0]    = Extract_online_args(a:word_size)
     let parts['offline_args'][0]   = Extract_offline_args(a:word_size)
     let parts['last'][0]           = Extract_last_line_with_closing_paren(a:word_size)
-    let g:surroundfunk_func_parts = parts
     return parts
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- Parts_2_string ----------------------------------------------------------
 function! Parts_2_string(parts, word_size)
     let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
     if open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
@@ -327,32 +389,20 @@ function! Parts_2_string(parts, word_size)
 
             let rm1 =       a:parts['func_name'][0][1] 
 
-            let rm1 =       a:parts['online_args'][0][1] 
+            let rm2 =       a:parts['online_args'][0][1] 
                         \+  a:parts['offline_args'][0][1]  
                         \+  a:parts['last'][0][1]
         endif
-        call join(result, '\n')
-        call join(rm1, '\n')
-        call join(rm2, '\n')
     endif
-    return [result, rm1[0], rm2[0]]
+    let g:surroundfunk_func_parts = [rm1, rm2]
+    let rm2 = join(rm2, "\n")
+    return [result, rm1, rm2]
 endfunction
+"}}}---------------------------------------------------------------------------
+"}}}---------------------------------------------------------------------------
 
-"- perform the operations -----------------------------------------------------
-function! Operate_on_surrounding_func(word_size, operation)
-    let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
-    let parts = Extract_func_parts(a:word_size)
-    let [result, rm1, rm2] = Parts_2_string(parts, a:word_size)
-    call setreg('"', rm1.rm2)
-    call cursor('start_pos'[0], 'start_pos'[1])
-    if a:operation =~ 'delete\|change'
-        call setline('.', result)
-    endif
-    if a:operation =~ 'change'
-        startinsert
-    endif
-endfunction
-
+"--- Insert ---
+"{{{- Insert_substrings -------------------------------------------------------
 function! Insert_substrings(str, insertion_list)
     " insert a set of new strings into <str>
     " <insertion_list> is a list of lists where:
@@ -376,37 +426,60 @@ function! Insert_substrings(str, insertion_list)
     endfor
     return join(chars, '')
 endfunction
+"}}}---------------------------------------------------------------------------
+
+"=== PERFORM THE OPERATIONS ===================================================
+
+"{{{- Operate_on_surrounding_func ---------------------------------------------
+function! Operate_on_surrounding_func(word_size, operation)
+    let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
+    let parts = Extract_func_parts(a:word_size)
+    let [result, rm1, rm2] = Parts_2_string(parts, a:word_size)
+    call setreg('"', rm1[0].rm2)
+    call cursor('start_pos'[0], 'start_pos'[1])
+    if a:operation =~ 'delete\|change'
+        call setline('.', result)
+    endif
+    if a:operation =~ 'change'
+        startinsert
+    endif
+endfunction
+"}}}---------------------------------------------------------------------------
+
+"{{{- Paste_func_around -------------------------------------------------------
 function! Paste_func_around(word_size, func_or_word)
     if a:func_or_word ==# 'func'
-        let [open_pos, _, _, close_pos] = Get_func_markers(a:word_size)
+        let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
     else
         let [fstart, fclose] = Get_word_markers(a:word_size)
     endif
-    let chars = String2list('.')
-    let rm = g:surroundfunk_func_parts['args'][1] + [g:surroundfunk_func_parts['last'][1]]
-    call join(rm, '\n')
-    call extend(chars, [g:surroundfunk_func_parts['func_name'][1]], open_pos[1]-1)
-    " call extend(chars, rm, close_pos[1]+1) 
-    let chars = join(chars, '')
-    call setline('.', chars)
+
+    let before = g:surroundfunk_func_parts[0][0]
+    let after = g:surroundfunk_func_parts[1][0]
+    let str = getline(start_pos[0])
+
+    if open_pos[0] == close_pos[0]
+        let func_line = Insert_substrings(str, [[before, start_pos[1], '<'],
+                                               \[after, close_pos[1], '>']])
+        call setline(open_pos[0], func_line)
+    else
+        let func_line = Insert_substrings(str, [[before, start_pos[1], '<']])
+        call setline(open_pos[0], func_line)
+        let str = getline(close_pos[0])
+        let trail_line = Insert_substrings(str, [[after, close_pos[1], '>']])
+        call setline(close_pos[0], trail_line)
+        if len(g:surroundfunk_func_parts[1]) > 1
+            let the_rest = g:surroundfunk_func_parts[1][1:-1]
+            call append(close_pos[0], the_rest)
+        endif
+    endif
     call cursor(open_pos[0], open_pos[1])
 endfunction
+"}}}---------------------------------------------------------------------------
 
-" function! s:paste_func_around(word_size, func_or_word)
-"     if a:func_or_word ==# 'func'
-"         let [fstart, _, _, fclose] = s:get_func_markers(a:word_size)
-"     else
-"         let [fstart, fclose] = s:get_word_markers(a:word_size)
-"     endif
-"     let chars = s:string2list('.')
-"     call extend(chars, [s:surroundfunk_func_parts[2]], fstart-1)
-"     call extend(chars, [s:surroundfunk_func_parts[3]], fclose+1) 
-"     let chars = join(chars, '')
-"     call setline('.', chars)
-"     call cursor('.', fstart)
-" endfunction
+"=== CREATE MAPS ==============================================================
 
-"- make maps repeatable -------------------------------------------------------
+"{{{---------------------------------------------------------------------------
 function! s:repeatable_delete(word_size, operation, mapname)
     call s:operate_on_surrounding_func(a:word_size, a:operation)
     silent! call repeat#set("\<Plug>".a:mapname, v:count)
@@ -440,3 +513,4 @@ if !exists("g:surround_funk_no_mappings") || g:surround_funk_no_mappings != 0
     nmap gsw <Plug>PasteFunctionAroundWord
     nmap gsW <Plug>PasteFunctionAroundWORD
 endif
+"}}}---------------------------------------------------------------------------
