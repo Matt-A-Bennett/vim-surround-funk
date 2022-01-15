@@ -189,6 +189,10 @@ For reference, the default mappings are as follows:
     nmap |gsW| <Plug>PasteFunctionAroundWORD
 
 
+N.B. If you're worried about remapping the core vim command |gs|, done't be -
+it does literally nothing.
+
+
 
 
                                 *g:surround_funk_legal_func_name_chars*
