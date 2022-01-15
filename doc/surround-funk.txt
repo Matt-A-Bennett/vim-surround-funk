@@ -45,6 +45,13 @@ sf                      Where the name of the function (e.g. outerfunc) is a
                         np.outerfunc(arg1, arg2, arg3)
                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
   
+                        multi-line functions also work:
+
+                           **********               ***************
+                        np.outerfunc(innerfunc(arg1),   
+ cursor anywhere here >                                 arg2, arg3) 
+                           ^^^^^^^^^^               ^^^^^^^^^^^^^^^
+
 sF                      Where the name of the function (e.g. np.outerfunc) is 
                         any contiguous sequence of characters in
                         |g:surround_funk_legal_func_name_chars|
@@ -65,6 +72,13 @@ sF                      Where the name of the function (e.g. np.outerfunc) is
                         np.outerfunc(arg1, arg2, arg3)
                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   
+                        multi-line functions also work:
+
+                        *************               ***************
+                        np.outerfunc(innerfunc(arg1),   
+ cursor anywhere here >                                 arg2, arg3) 
+                        ^^^^^^^^^^^^^               ^^^^^^^^^^^^^^^
+
 
 DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION
 
@@ -161,6 +175,19 @@ and grip/surround it with |gsw|:
     np.outerfunc(MeNext, arg2, arg3)
     ^
 
+You could also grip a multi-line function (again using |gsF|):
+
+    **************      *******
+    os.multi_line(argA(),
+                    argB, argC) < anywhere on this line is fine too
+    ^^^^^^^^^^^^^^  ^^^^^^^^^^^
+
+To get:
+
+    *************                    *
+    np.outerfunc(os.multi_line(argA(),
+                    argB, argC), arg2, arg3)
+                               *************
 
 SETTINGS
 

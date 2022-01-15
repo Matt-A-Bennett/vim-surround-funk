@@ -63,6 +63,13 @@ np.outerfunc(arg1)
    **********                *
 np.outerfunc(arg1, arg2, arg3)
    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+" multi-line functions also work:
+
+   **********               ***************
+np.outerfunc(innerfunc(arg1),   
+                                arg2, arg3) < anywhere on this line is fine too
+   ^^^^^^^^^^               ^^^^^^^^^^^^^^^
 ```
 
 ```
@@ -85,7 +92,14 @@ np.outerfunc(arg1)
 *************                *
 np.outerfunc(arg1, arg2, arg3)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-```
+
+" multi-line functions also work:
+
+*************               ***************
+np.outerfunc(innerfunc(arg1),   
+                                arg2, arg3) < anywhere on this line is fine too
+^^^^^^^^^^^^^               ^^^^^^^^^^^^^^^
+```                                       
 
 ### Deleting, changing and yanking a surrounding function
 
@@ -175,6 +189,24 @@ and grip/surround it with `gsw`
 *************      *************
 np.outerfunc(MeNext, arg2, arg3)
 ^
+```
+
+You could also grip a multi-line function (again using `gsF`):
+
+```
+**************      *******
+os.multi_line(argA(),
+                argB, argC) < anywhere on this line is fine too
+^^^^^^^^^^^^^^  ^^^^^^^^^^^
+```
+
+To get:
+
+```
+*************                    *
+np.outerfunc(os.multi_line(argA(),
+                argB, argC), arg2, arg3)
+                           *************
 ```
 
 ### Settings
