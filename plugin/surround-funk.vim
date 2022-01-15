@@ -229,14 +229,14 @@ function! Get_func_markers(word_size)
     " get a list of lists: each list contains the line and column positions of
     " one of the four key function markers (see top of file for explanation of
     " these function markers)
-    let [l_fstart, c_fstart] = Get_start_of_func_position(a:word_size)
-    let [l_fopen, c_fopen] = Get_func_open_paren_position()
-    let [l_ftrail, c_ftrail] = Get_start_of_trailing_args_position()
-    let [l_fclose, c_fclose] = Get_end_of_func_position()
-    return [[l_fstart, c_fstart],
-           \[l_fopen, c_fopen],
-           \[l_ftrail, c_ftrail],
-           \[l_fclose, c_fclose]]
+    let [l_start, c_start] = Get_start_of_func_position(a:word_size)
+    let [l_open, c_open] = Get_func_open_paren_position()
+    let [l_trail, c_trail] = Get_start_of_trailing_args_position()
+    let [l_close, c_close] = Get_end_of_func_position()
+    return [[l_start, c_start],
+           \[l_open, c_open],
+           \[l_trail, c_trail],
+           \[l_close, c_close]]
 endfunction
 "}}}---------------------------------------------------------------------------
 
@@ -245,13 +245,13 @@ function! Get_word_markers(word_size)
     " get list containing the line and column positions of the word - using the
     " <s:legal_func_name_chars> if marking a 'big word'
     if a:word_size ==# 'small'
-        let [fstart, fstart] = searchpos('\<', 'b', line('.'))
-        let [fclose, fclose] = searchpos('\>', '', line('.'))
+        let [l_start, c_start] = searchpos('\<', 'b', line('.'))
+        let [l_close, c_close] = searchpos('\>', '', line('.'))
     elseif a:word_size ==# 'big'
-        let [fstart, fstart] = searchpos('\('.g:legal_func_name_chars.'\)\@<!', 'b', line('.'))
-        let [fclose, fclose] = searchpos('\('.g:legal_func_name_chars.'\)\@<!\|$', '', line('.'))
+        let [l_start, c_start] = searchpos('\('.g:legal_func_name_chars.'\)\@<!', 'b', line('.'))
+        let [l_close, c_close] = searchpos('\('.g:legal_func_name_chars.'\)\@<!\|$', '', line('.'))
     endif
-    return [[fstart, fstart], [fclose, fclose-1]]
+    return [[l_start, c_start], [l_close, c_close-1]]
 endfunction
 "}}}---------------------------------------------------------------------------
 
@@ -489,23 +489,24 @@ function! Paste_func_around(word_size, func_or_word)
     if a:func_or_word ==# 'func'
         let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
     else
-        let [fstart, fclose] = Get_word_markers(a:word_size)
+        let [start_pos, close_pos] = Get_word_markers(a:word_size)
+        let open_pos = start_pos
     endif
 
     let before = g:surroundfunk_func_parts[0][0]
     let after = g:surroundfunk_func_parts[1]
     let str = getline(start_pos[0])
 
-    if open_pos[0] == close_pos[0] && len(after) == 1
+    if start_pos[0] == close_pos[0] && len(after) == 1
         let func_line = Insert_substrings(str, [[before, start_pos[1], '<'],
                                                \[after[0], close_pos[1], '>']])
-        call setline(open_pos[0], func_line)
+        call setline(start_pos[0], func_line)
     else
-        if open_pos[0] == close_pos[0]
+        if start_pos[0] == close_pos[0]
             let close_pos[1] += len(before)
         endif
         let func_line = Insert_substrings(str, [[before, start_pos[1], '<']])
-        call setline(open_pos[0], func_line)
+        call setline(start_pos[0], func_line)
         call Insert_substrings_and_split_line(close_pos[0], [[after[0], close_pos[1], '>']])
         let the_rest = g:surroundfunk_func_parts[1][1:]
         call append(close_pos[0], the_rest)
