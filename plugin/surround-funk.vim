@@ -134,6 +134,42 @@ function! s:string2list(str)
     return split(str, '\zs')
 endfunction
 "}}}---------------------------------------------------------------------------
+
+"{{{- is_cursor_on_func -------------------------------------------------------
+" this isn't used (and hasn't been updated for multiline functions), but could
+" allow me to switch to from 'dsf' to 'dsw' if 'dsf' was called with the cursor
+" not on a function (or to gracfully do nothing instead of clobbering the
+" line)...
+function! s:is_cursor_on_func()
+    let [_, _, c_orig, _] = getpos('.')
+    if s:get_char_under_cursor() =~ '(\|)'
+        return 1
+    endif
+    let chars = s:string2list('.')
+    let right = chars[col("."):]
+    let on_func_name = s:get_char_under_cursor() =~ s:legal_func_name_chars.'\|('
+    let open_paren_count = 0
+    let close_paren_count = 0
+    for char in right
+        if on_func_name && char !~ s:legal_func_name_chars.'\|('
+            let on_func_name = 0
+        endif
+        if char ==# '('
+            if on_func_name
+                call cursor('.', c_orig)
+                return 1
+            endif
+            " maybe jump to the matching ')' at this point to speed things up
+            let open_paren_count+=1
+        elseif char ==# '('
+            let close_paren_count+=1
+        endif
+    endfor
+    call cursor('.', c_orig)
+    return close_paren_count > open_paren_count
+endfunction
+"}}}---------------------------------------------------------------------------
+
 "}}}---------------------------------------------------------------------------
 
 "------------------------------- Get Markers ----------------------------------
