@@ -52,6 +52,7 @@ sf                      Where the name of the function (e.g. outerfunc) is a
  cursor anywhere here >                                 arg2, arg3) 
                            ^^^^^^^^^^               ^^^^^^^^^^^^^^^
 
+
 sF                      Where the name of the function (e.g. np.outerfunc) is 
                         any contiguous sequence of characters in
                         |g:surround_funk_legal_func_name_chars|
