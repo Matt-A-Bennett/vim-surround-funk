@@ -390,22 +390,19 @@ function! Parts_2_string(parts, word_size)
                         \+  a:parts['offline_args'][0][0] 
                         \+ [a:parts['last'][0][0]]
 
-            let rm1 =       a:parts['func_name'][0][1] 
-
-            let rm2 =       a:parts['offline_args'][0][1]  
-                        \+  a:parts['last'][0][1]
         else
             let result =   [a:parts['func_name'][0][0]] 
                         \+ [a:parts['online_args'][0][0]] 
                         \+  a:parts['offline_args'][0][0]  
                         \+ [a:parts['last'][0][0]]
-
-            let rm1 =       a:parts['func_name'][0][1] 
-
-            let rm2 =       a:parts['online_args'][0][1] 
-                        \+  a:parts['offline_args'][0][1]  
-                        \+  a:parts['last'][0][1]
         endif
+
+        let rm1 =       a:parts['func_name'][0][1] 
+
+        let rm2 =       a:parts['online_args'][0][1] 
+                    \+  a:parts['offline_args'][0][1]  
+                    \+  a:parts['last'][0][1]
+
     endif
     let g:surroundfunk_func_parts = [rm1, rm2]
     let rm2 = join(rm2, "\n")
