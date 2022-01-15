@@ -382,6 +382,8 @@ function! Parts_2_string(parts, word_size)
         let str = getline('.')
         let [result, removed] = Extract_substrings(str, [[start_pos[1], open_pos[1]], [trail_pos[1], close_pos[1]]]) 
         let [rm1, rm2] = [removed[0], removed[1]]
+        let rm1 = [rm1]
+        let rm2 = [rm2]
     else
         if a:parts['online_args'][1] == 0
             let result =   [a:parts['func_name'][0][0]]
