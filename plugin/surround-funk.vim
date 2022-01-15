@@ -456,6 +456,30 @@ function! Operate_on_surrounding_func(word_size, operation)
 endfunction
 "}}}---------------------------------------------------------------------------
 
+function! Insert_substrings_and_split_line(l, insertion_list)
+    if a:l ==# '.'
+        let l = line('.')
+    else
+        let l = a:l
+    endif
+    let str = getline(l)
+    for insertion in a:insertion_list
+        let offset = insertion[1]+len(insertion[0])
+        if insertion[2] ==# '<'
+            let offset -= 1
+        endif
+        " insert as normal
+        let changed = Insert_substrings(str, [insertion])
+        " delete everything after insertion
+        let changed = String2list(changed)
+        let front = join(changed[:offset-1], '')
+        let back = join(changed[offset:], '')
+        call setline(l, front)
+        " append deleted part one line down
+        call append(l, back)
+    endfor
+endfunction
+
 "{{{- Paste_func_around -------------------------------------------------------
 function! Paste_func_around(word_size, func_or_word)
     if a:func_or_word ==# 'func'
@@ -465,23 +489,22 @@ function! Paste_func_around(word_size, func_or_word)
     endif
 
     let before = g:surroundfunk_func_parts[0][0]
-    let after = g:surroundfunk_func_parts[1][0]
+    let after = g:surroundfunk_func_parts[1]
     let str = getline(start_pos[0])
 
-    if open_pos[0] == close_pos[0]
+    if open_pos[0] == close_pos[0] && len(after) == 1
         let func_line = Insert_substrings(str, [[before, start_pos[1], '<'],
-                                               \[after, close_pos[1], '>']])
+                                               \[after[0], close_pos[1], '>']])
         call setline(open_pos[0], func_line)
     else
+        if open_pos[0] == close_pos[0]
+            let close_pos[1] += len(before)
+        endif
         let func_line = Insert_substrings(str, [[before, start_pos[1], '<']])
         call setline(open_pos[0], func_line)
-        let str = getline(close_pos[0])
-        let trail_line = Insert_substrings(str, [[after, close_pos[1], '>']])
-        call setline(close_pos[0], trail_line)
-        if len(g:surroundfunk_func_parts[1]) > 1
-            let the_rest = g:surroundfunk_func_parts[1][1:-1]
-            call append(close_pos[0], the_rest)
-        endif
+        call Insert_substrings_and_split_line(close_pos[0], [[after[0], close_pos[1], '>']])
+        let the_rest = g:surroundfunk_func_parts[1][1:]
+        call append(close_pos[0], the_rest)
     endif
     call cursor(open_pos[0], open_pos[1])
 endfunction
