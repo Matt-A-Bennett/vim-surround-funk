@@ -1,4 +1,4 @@
-*surround-funk.txt* (Version 1.0.0) Delete, change and yank a surrounding
+*surround-funk.txt* (Version 1.1.0) Delete, change and yank a surrounding
 function along with its additional arguments. Then 'grip' a word or function
 with the surrounding function.
 
