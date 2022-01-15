@@ -54,7 +54,7 @@ let s:legal_func_name_chars = join(g:surround_funk_legal_func_name_chars, '\|')
 
 "----------------------------- Helper functions -------------------------------
 "{{{---------------------------------------------------------------------------
-"{{{- Is_greater_or_lesser ----------------------------------------------------
+"{{{- is_greater_or_lesser ----------------------------------------------------
 function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
     if a:greater_or_lesser ==# '>'
         return a:v1 > a:v2
@@ -64,18 +64,18 @@ function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Searchpairpos2 ----------------------------------------------------------
+"{{{- searchpairpos2 ----------------------------------------------------------
 function! s:searchpairpos2(start, middle, end, flags)
-    " like Vim's builtin searchpairpos(), but find the {middle} even when it's
+    " like vim's builtin searchpairpos(), but find the {middle} even when it's
     " in a nested stat-end pair
     let [_, l_orig, c_orig, _] = getpos('.')
     if a:flags =~# 'b'
-        let f1 = 'bW'
+        let f1 = 'bw'
         let f2 = ''
         let g_or_l = '>'
     else
         let f1 = ''
-        let f2 = 'bW'
+        let f2 = 'bw'
         let g_or_l = '<'
     endif
     call searchpair(a:start, '', a:end, f1)
@@ -93,9 +93,9 @@ function! s:searchpairpos2(start, middle, end, flags)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Searchpair2 -------------------------------------------------------------
+"{{{- searchpair2 -------------------------------------------------------------
 function! s:searchpair2(start, middle, end, flag)
-    " like Vim's builtin searchpair(), but find the {middle} even when it's in
+    " like vim's builtin searchpair(), but find the {middle} even when it's in
     " a nested stat-end pair
      let [l, c]  = s:searchpairpos2(a:start, a:middle, a:end, a:flag)
      if l > 0 || c > 0
@@ -107,7 +107,7 @@ endfunction
 
 "------------------------------- Get markers ----------------------------------
 "{{{---------------------------------------------------------------------------
-"{{{- Get_char_at_pos ---------------------------------------------------------
+"{{{- get_char_at_pos ---------------------------------------------------------
 function! s:get_char_at_pos(l, c)
     let [l, c] = [a:l, a:c]
     if a:l ==# '.'
@@ -120,13 +120,13 @@ function! s:get_char_at_pos(l, c)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Get_char_under_cursor ---------------------------------------------------
+"{{{- get_char_under_cursor ---------------------------------------------------
 function! s:get_char_under_cursor()
      return s:get_char_at_pos('.', '.')
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- String2list -------------------------------------------------------------
+"{{{- string2list -------------------------------------------------------------
 function! s:string2list(str)
     " e.g. 'vim' -> ['v', 'i', 'm']
     let str = a:str
@@ -137,7 +137,7 @@ function! s:string2list(str)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Get_func_open_paren_position --------------------------------------------
+"{{{- get_func_open_paren_position --------------------------------------------
 function! s:get_func_open_paren_position()
     let [_, l_orig, c_orig, _] = getpos('.')
     " move forward to one of function's parentheses (unless already on one)
@@ -152,14 +152,14 @@ function! s:get_func_open_paren_position()
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Move_to_func_open_paren -------------------------------------------------
+"{{{- move_to_func_open_paren -------------------------------------------------
 function! s:move_to_func_open_paren()
     let [l, c] = s:get_func_open_paren_position()
     call cursor(l, c)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Get_start_of_func_position ----------------------------------------------
+"{{{- get_start_of_func_position ----------------------------------------------
 function! s:get_start_of_func_position(word_size)
     let [_, l_orig, c_orig, _] = getpos('.')
     call s:move_to_func_open_paren()
@@ -173,14 +173,14 @@ function! s:get_start_of_func_position(word_size)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Move_to_start_of_func ---------------------------------------------------
+"{{{- move_to_start_of_func ---------------------------------------------------
 function! s:move_to_start_of_func(word_size)
     let [l, c] = s:get_start_of_func_position(a:word_size)
     call cursor(l, c)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Get_end_of_func_position ------------------------------------------------
+"{{{- get_end_of_func_position ------------------------------------------------
 function! s:get_end_of_func_position()
     let [_, l_orig, c_orig, _] = getpos('.')
     call s:move_to_func_open_paren()
@@ -190,14 +190,14 @@ function! s:get_end_of_func_position()
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Move_to_end_of_func -----------------------------------------------------
+"{{{- move_to_end_of_func -----------------------------------------------------
 function! s:move_to_end_of_func()
     let [l, c] = s:get_end_of_func_position()
     call cursor(l, c)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Get_start_of_trailing_args_position -------------------------------------
+"{{{- get_start_of_trailing_args_position -------------------------------------
 function! s:get_start_of_trailing_args_position()
     let [_, l_orig, c_orig, _] = getpos('.')
     call s:move_to_func_open_paren()
@@ -217,14 +217,14 @@ function! s:get_start_of_trailing_args_position()
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Move_to_start_of_trailing_args ------------------------------------------
+"{{{- move_to_start_of_trailing_args ------------------------------------------
 function! s:move_to_start_of_trailing_args()
     let [l, c] = s:get_start_of_trailing_args_position()
     call cursor(l, c)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Get_func_markers --------------------------------------------------------
+"{{{- get_func_markers --------------------------------------------------------
 function! s:get_func_markers(word_size)
     " get a list of lists: each list contains the line and column positions of
     " one of the four key function markers (see top of file for explanation of
@@ -240,7 +240,7 @@ function! s:get_func_markers(word_size)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-" "{{{- Get_word_markers ------------------------------------------------------
+" "{{{- get_word_markers ------------------------------------------------------
 function! s:get_word_markers(word_size)
     " get list containing the line and column positions of the word - using the
     " <s:legal_func_name_chars> if marking a 'big word'
@@ -259,7 +259,7 @@ endfunction
 
 "--------------------------------- Extract ------------------------------------
 "{{{---------------------------------------------------------------------------
-"{{{- Extract_substring -------------------------------------------------------
+"{{{- extract_substring -------------------------------------------------------
 function! s:extract_substring(str, c1, c2)
     " remove the characters ranging from <c1> to <c2> (inclusive) from <str>
     " returns: the original with characters removed
@@ -272,7 +272,7 @@ function! s:extract_substring(str, c1, c2)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Extract_substrings ------------------------------------------------------
+"{{{- extract_substrings ------------------------------------------------------
 function! s:extract_substrings(str, deletion_ranges)
     let removed = []
     let result = a:str
@@ -292,7 +292,7 @@ function! s:extract_substrings(str, deletion_ranges)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Extract_func_name_and_open_paren ----------------------------------------
+"{{{- extract_func_name_and_open_paren ----------------------------------------
 function! s:extract_func_name_and_open_paren(word_size)
     let [start_pos, open_pos, _, _] = s:get_func_markers(a:word_size)
     let str = getline(start_pos[0])
@@ -300,7 +300,7 @@ function! s:extract_func_name_and_open_paren(word_size)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Extract_online_args -----------------------------------------------------
+"{{{- extract_online_args -----------------------------------------------------
 function! s:extract_online_args(word_size)
     let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
     let str = getline(start_pos[0])
@@ -314,7 +314,7 @@ function! s:extract_online_args(word_size)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Extract_offline_args ----------------------------------------------------
+"{{{- extract_offline_args ----------------------------------------------------
 function! s:extract_offline_args(word_size)
     let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
     if open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
@@ -344,7 +344,7 @@ function! s:extract_offline_args(word_size)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Extract_last_line_with_closing_paren ------------------------------------
+"{{{- extract_last_line_with_closing_paren ------------------------------------
 function! s:extract_last_line_with_closing_paren(word_size)
     let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
     " grab from start of line to close
@@ -359,7 +359,7 @@ function! s:extract_last_line_with_closing_paren(word_size)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Extract_func_parts ------------------------------------------------------
+"{{{- extract_func_parts ------------------------------------------------------
 function! s:extract_func_parts(word_size)
     let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
     let parts = {}
@@ -375,8 +375,8 @@ function! s:extract_func_parts(word_size)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Parts_2_string ----------------------------------------------------------
-function! s:parts_2_string(parts, word_size)
+"{{{- parts2string ----------------------------------------------------------
+function! s:parts2string(parts, word_size)
     let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
     if open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
         let str = getline('.')
@@ -413,7 +413,7 @@ endfunction
 
 "--------------------------------- Insert -------------------------------------
 "{{{---------------------------------------------------------------------------
-"{{{- Insert_substrings -------------------------------------------------------
+"{{{- insert_substrings -------------------------------------------------------
 function! s:insert_substrings(str, insertion_list)
     " insert a set of new strings into <str>
     " <insertion_list> is a list of lists where:
@@ -439,7 +439,7 @@ function! s:insert_substrings(str, insertion_list)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Insert_substrings_and_split_line ----------------------------------------
+"{{{- insert_substrings_and_split_line ----------------------------------------
 function! s:insert_substrings_and_split_line(l, insertion_list)
     if a:l ==# '.'
         let l = line('.')
@@ -468,11 +468,11 @@ endfunction
 
 "========================== PERFORM THE OPERATIONS ============================
 
-"{{{- Operate_on_surrounding_func ---------------------------------------------
+"{{{- operate_on_surrounding_func ---------------------------------------------
 function! s:operate_on_surrounding_func(word_size, operation)
     let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
     let parts = s:extract_func_parts(a:word_size)
-    let [result, rm1, rm2] = s:parts_2_string(parts, a:word_size)
+    let [result, rm1, rm2] = s:parts2string(parts, a:word_size)
     call setreg('"', rm1[0].rm2)
     call cursor(start_pos[0], start_pos[1])
     if a:operation =~ 'delete\|change'
@@ -484,7 +484,7 @@ function! s:operate_on_surrounding_func(word_size, operation)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- Paste_func_around -------------------------------------------------------
+"{{{- paste_func_around -------------------------------------------------------
 function! s:paste_func_around(word_size, func_or_word)
     if a:func_or_word ==# 'func'
         let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
