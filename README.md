@@ -7,8 +7,8 @@ surrounding function in the unnamed register, you can 'grip' a word or another
 function with it. 'Gripping' will wrap/encompass a word or function with the
 one you have in the unnamed register (see below).
 
-![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/demo.gif)
-
+![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/multi_line_demo.gif)
+  
 This plugin is currently in an initial testing phase. There are a likely a few
 edge-cases/bugs. If you find any, please tell me about it by raising a [new
 issue](https://github.com/Matt-A-Bennett/surround-funk.vim/issues) according to
