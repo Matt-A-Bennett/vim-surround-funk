@@ -412,6 +412,7 @@ endfunction
 "}}}---------------------------------------------------------------------------
 
 "--------------------------------- Insert -------------------------------------
+"{{{---------------------------------------------------------------------------
 "{{{- Insert_substrings -------------------------------------------------------
 function! Insert_substrings(str, insertion_list)
     " insert a set of new strings into <str>
@@ -438,24 +439,7 @@ function! Insert_substrings(str, insertion_list)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"========================== PERFORM THE OPERATIONS ============================
-
-"{{{- Operate_on_surrounding_func ---------------------------------------------
-function! Operate_on_surrounding_func(word_size, operation)
-    let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
-    let parts = Extract_func_parts(a:word_size)
-    let [result, rm1, rm2] = Parts_2_string(parts, a:word_size)
-    call setreg('"', rm1[0].rm2)
-    call cursor('start_pos'[0], 'start_pos'[1])
-    if a:operation =~ 'delete\|change'
-        call setline('.', result)
-    endif
-    if a:operation =~ 'change'
-        startinsert
-    endif
-endfunction
-"}}}---------------------------------------------------------------------------
-
+"{{{- Insert_substrings_and_split_line ----------------------------------------
 function! Insert_substrings_and_split_line(l, insertion_list)
     if a:l ==# '.'
         let l = line('.')
@@ -479,6 +463,26 @@ function! Insert_substrings_and_split_line(l, insertion_list)
         call append(l, back)
     endfor
 endfunction
+"}}}---------------------------------------------------------------------------
+"}}}---------------------------------------------------------------------------
+
+"========================== PERFORM THE OPERATIONS ============================
+
+"{{{- Operate_on_surrounding_func ---------------------------------------------
+function! Operate_on_surrounding_func(word_size, operation)
+    let [start_pos, open_pos, trail_pos, close_pos] = Get_func_markers(a:word_size)
+    let parts = Extract_func_parts(a:word_size)
+    let [result, rm1, rm2] = Parts_2_string(parts, a:word_size)
+    call setreg('"', rm1[0].rm2)
+    call cursor('start_pos'[0], 'start_pos'[1])
+    if a:operation =~ 'delete\|change'
+        call setline('.', result)
+    endif
+    if a:operation =~ 'change'
+        startinsert
+    endif
+endfunction
+"}}}---------------------------------------------------------------------------
 
 "{{{- Paste_func_around -------------------------------------------------------
 function! Paste_func_around(word_size, func_or_word)
