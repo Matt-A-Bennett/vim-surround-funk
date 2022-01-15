@@ -1,4 +1,4 @@
-# surround-funk.vim (version 1.0.0)
+# surround-funk.vim (version 1.1.0)
 
 This was inspired by tpope's [surround.vim
 plugin](https://github.com/tpope/vim-surround) and allows you to delete, change
@@ -7,7 +7,8 @@ surrounding function in the unnamed register, you can 'grip' a word or another
 function with it. 'Gripping' will wrap/encompass a word or function with the
 one you have in the unnamed register (see below).
 
-![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/demo.gif)
+
+![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/multi_line_demo.gif)
 
 This plugin is currently in an initial testing phase. There are a likely a few
 edge-cases/bugs. If you find any, please tell me about it by raising a [new
@@ -25,7 +26,7 @@ list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/sur
     * [Settings](#settings)
         * [Turn off automatic creation of normal mode mappings](#turn-off-automatic-creation-of-normal-mode-mappings)
         * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
-* [Contribution Guidelines](#contribution-guidelines)
+* [Contribution guidelines](#contribution-guidelines)
     * [Report a bug](#report-a-bug)
     * [Request a feature](#request-a-feature)
 * [Installation](#installation)
@@ -63,6 +64,13 @@ np.outerfunc(arg1)
    **********                *
 np.outerfunc(arg1, arg2, arg3)
    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+" multi-line functions also work:
+
+   **********               ***************
+np.outerfunc(innerfunc(arg1),   
+                                arg2, arg3) < anywhere on this line is fine too
+   ^^^^^^^^^^               ^^^^^^^^^^^^^^^
 ```
 
 ```
@@ -85,7 +93,14 @@ np.outerfunc(arg1)
 *************                *
 np.outerfunc(arg1, arg2, arg3)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-```
+
+" multi-line functions also work:
+
+*************               ***************
+np.outerfunc(innerfunc(arg1),   
+                                arg2, arg3) < anywhere on this line is fine too
+^^^^^^^^^^^^^               ^^^^^^^^^^^^^^^
+```                                       
 
 ### Deleting, changing and yanking a surrounding function
 
@@ -175,6 +190,24 @@ and grip/surround it with `gsw`
 *************      *************
 np.outerfunc(MeNext, arg2, arg3)
 ^
+```
+
+You could also grip a multi-line function (again using `gsF`):
+
+```
+**************      *******
+os.multi_line(argA(),
+                argB, argC) < anywhere on this line is fine too
+^^^^^^^^^^^^^^  ^^^^^^^^^^^
+```
+
+To get:
+
+```
+*************                    *
+np.outerfunc(os.multi_line(argA(),
+                argB, argC), arg2, arg3)
+                           *************
 ```
 
 ### Settings
@@ -291,7 +324,7 @@ Use your favorite plugin manager.
 [vim-plug]: https://github.com/junegunn/vim-plug
 [pathogen]: https://github.com/tpope/vim-pathogen
 
-## Contribution Guidelines
+## Contribution guidelines
 
 ### Report a bug
 First, check if the bug is already known by seeing whether it's listed on the
