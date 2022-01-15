@@ -65,7 +65,7 @@ np.outerfunc(arg1)
 np.outerfunc(arg1, arg2, arg3)
    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-" multi-line functions also work:
+# multi-line functions also work:
 
    **********               ***************
 np.outerfunc(innerfunc(arg1),   
@@ -94,7 +94,7 @@ np.outerfunc(arg1)
 np.outerfunc(arg1, arg2, arg3)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-" multi-line functions also work:
+# multi-line functions also work:
 
 *************               ***************
 np.outerfunc(innerfunc(arg1),   
