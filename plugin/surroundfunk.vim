@@ -607,12 +607,12 @@ vnoremap <silent> <Plug>GripFunctionAroundMotion :<C-U>call <SID>grip_surroundin
 
 xnoremap <silent> <Plug>SelectFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
 onoremap <silent> <Plug>SelectFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
-xnoremap <silent> <Plug>SelectFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
-onoremap <silent> <Plug>SelectFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
-xnoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
-onoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
-xnoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
-onoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
+" xnoremap <silent> <Plug>SelectFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
+" onoremap <silent> <Plug>SelectFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
+" xnoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+" onoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+" xnoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
+" onoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
 "}}}---------------------------------------------------------------------------
 
 "{{{- create maps and text objects --------------------------------------------
@@ -635,22 +635,22 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     vmap gs <Plug>GripFunctionAroundMotion
 
     " visual selection and operator pending modes
-    xmap <silent> aF <Plug>SelectFUNCTION
-    omap <silent> aF <Plug>SelectFUNCTION
     xmap <silent> af <Plug>SelectFunction
     omap <silent> af <Plug>SelectFunction
-    xmap <silent> if <Plug>SelectFunction
-    omap <silent> if <Plug>SelectFunction
-    xmap <silent> iF <Plug>SelectFUNCTION
-    omap <silent> iF <Plug>SelectFUNCTION
-    xmap <silent> an <Plug>SelectFunctionName
-    omap <silent> an <Plug>SelectFunctionName
-    xmap <silent> aN <Plug>SelectFunctionNAME
-    omap <silent> aN <Plug>SelectFunctionNAME
-    xmap <silent> in <Plug>SelectFunctionName
-    omap <silent> in <Plug>SelectFunctionName
-    xmap <silent> iN <Plug>SelectFunctionNAME
-    omap <silent> iN <Plug>SelectFunctionNAME
+    " xmap <silent> aF <Plug>SelectFUNCTION
+    " omap <silent> aF <Plug>SelectFUNCTION
+    " xmap <silent> if <Plug>SelectFunction
+    " omap <silent> if <Plug>SelectFunction
+    " xmap <silent> iF <Plug>SelectFUNCTION
+    " omap <silent> iF <Plug>SelectFUNCTION
+    " xmap <silent> an <Plug>SelectFunctionName
+    " omap <silent> an <Plug>SelectFunctionName
+    " xmap <silent> aN <Plug>SelectFunctionNAME
+    " omap <silent> aN <Plug>SelectFunctionNAME
+    " xmap <silent> in <Plug>SelectFunctionName
+    " omap <silent> in <Plug>SelectFunctionName
+    " xmap <silent> iN <Plug>SelectFunctionNAME
+    " omap <silent> iN <Plug>SelectFunctionNAME
 endif
 "}}}---------------------------------------------------------------------------
 
