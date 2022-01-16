@@ -634,21 +634,21 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
 
     " visual selection and operator pending modes
     xmap <silent> af <Plug>SelectFunction
-    omap <silent> af <Plug>SelectFunction
-    xmap <silent> aF <Plug>SelectFUNCTION
-    omap <silent> aF <Plug>SelectFUNCTION
-    xmap <silent> if <Plug>SelectFunction
-    omap <silent> if <Plug>SelectFunction
-    xmap <silent> iF <Plug>SelectFUNCTION
-    omap <silent> iF <Plug>SelectFUNCTION
-    xmap <silent> an <Plug>SelectFunctionName
-    omap <silent> an <Plug>SelectFunctionName
-    xmap <silent> aN <Plug>SelectFunctionNAME
-    omap <silent> aN <Plug>SelectFunctionNAME
-    xmap <silent> in <Plug>SelectFunctionName
-    omap <silent> in <Plug>SelectFunctionName
-    xmap <silent> iN <Plug>SelectFunctionNAME
-    omap <silent> iN <Plug>SelectFunctionNAME
+    " omap <silent> af <Plug>SelectFunction
+    " xmap <silent> aF <Plug>SelectFUNCTION
+    " omap <silent> aF <Plug>SelectFUNCTION
+    " xmap <silent> if <Plug>SelectFunction
+    " omap <silent> if <Plug>SelectFunction
+    " xmap <silent> iF <Plug>SelectFUNCTION
+    " omap <silent> iF <Plug>SelectFUNCTION
+    " xmap <silent> an <Plug>SelectFunctionName
+    " omap <silent> an <Plug>SelectFunctionName
+    " xmap <silent> aN <Plug>SelectFunctionNAME
+    " omap <silent> aN <Plug>SelectFunctionNAME
+    " xmap <silent> in <Plug>SelectFunctionName
+    " omap <silent> in <Plug>SelectFunctionName
+    " xmap <silent> iN <Plug>SelectFunctionNAME
+    " omap <silent> iN <Plug>SelectFunctionNAME
 endif
 "}}}---------------------------------------------------------------------------
 
