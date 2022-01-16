@@ -217,9 +217,13 @@ function! s:get_start_of_func_position(word_size)
     let [_, l_orig, c_orig, _] = getpos('.')
     call s:move_to_func_open_paren()
     if a:word_size ==# 'small'
+        echo 'small1'
         let [l, c] = searchpos('\<', 'b', line('.'))
+        echo 'small2'
     elseif a:word_size ==# 'big'
+        echo 'big1'
         let [l, c] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
+        echo 'big2'
     endif
     call cursor(l_orig, c_orig)
     return [l, c]
@@ -605,10 +609,10 @@ nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surro
 nnoremap <silent> <Plug>GripFunctionAroundMotion :set operatorfunc=<SID>grip_surrounding_object<CR>g@
 vnoremap <silent> <Plug>GripFunctionAroundMotion :<C-U>call <SID>grip_surrounding_object(visualmode())<CR>
 
-xnoremap <silent> <Plug>SelectFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
-onoremap <silent> <Plug>SelectFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
-xnoremap <silent> <Plug>SelectFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
-onoremap <silent> <Plug>SelectFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
+xnoremap <Plug>SelectFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
+onoremap <Plug>SelectFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
+xnoremap <Plug>SelectFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
+onoremap <Plug>SelectFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
 xnoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
 onoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
 xnoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
@@ -635,14 +639,14 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     vmap gs <Plug>GripFunctionAroundMotion
 
     " visual selection and operator pending modes
-    xmap <silent> af <Plug>SelectFunction
-    omap <silent> af <Plug>SelectFunction
-    xmap <silent> aF <Plug>SelectFUNCTION
-    omap <silent> aF <Plug>SelectFUNCTION
-    xmap <silent> if <Plug>SelectFunction
-    omap <silent> if <Plug>SelectFunction
-    xmap <silent> iF <Plug>SelectFUNCTION
-    omap <silent> iF <Plug>SelectFUNCTION
+    xmap af <Plug>SelectFunction
+    omap af <Plug>SelectFunction
+    xmap aF <Plug>SelectFUNCTION
+    omap aF <Plug>SelectFUNCTION
+    xmap if <Plug>SelectFunction
+    omap if <Plug>SelectFunction
+    xmap iF <Plug>SelectFUNCTION
+    omap iF <Plug>SelectFUNCTION
     xmap <silent> an <Plug>SelectFunctionName
     omap <silent> an <Plug>SelectFunctionName
     xmap <silent> aN <Plug>SelectFunctionNAME
