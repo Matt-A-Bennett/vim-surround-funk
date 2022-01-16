@@ -1,4 +1,4 @@
-# surround-funk.vim (version 1.1.0)
+# surround-funk.vim (version 1.1.1)
 
 This was inspired by tpope's [surround.vim
 plugin](https://github.com/tpope/vim-surround) and allows you to delete, change
