@@ -503,6 +503,20 @@ endfunction
 
 "========================== PERFORM THE OPERATIONS ============================
 
+"{{{- visually_select_func ----------------------------------------------------
+function! surroundfunk#visually_select_func(word_size)
+    call s:move_to_end_of_func()
+    normal! v
+    call s:move_to_start_of_func(a:word_size)
+endfunction
+
+function! surroundfunk#visually_select_func_name(word_size)
+    call s:move_to_func_open_paren()
+    normal! hv
+    call s:move_to_start_of_func(a:word_size)
+endfunction
+"}}}---------------------------------------------------------------------------
+
 "{{{- operate_on_surrounding_func ---------------------------------------------
 function! s:operate_on_surrounding_func(word_size, operation)
     let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
@@ -519,14 +533,25 @@ function! s:operate_on_surrounding_func(word_size, operation)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- paste_func_around -------------------------------------------------------
-function! s:paste_func_around(word_size, func_or_word)
-    if a:func_or_word ==# 'func'
-        let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
-    else
-        let [start_pos, close_pos] = s:get_word_markers(a:word_size)
-        let open_pos = start_pos
+"{{{- get_motion --------------------------------------------------------------
+function! s:get_motion(type)
+    " visually select the motion
+    if a:type ==? 'v'
+        let [_, l_start, c_start, _] = getpos("'<")
+        let [_, l_end, c_end, _] = getpos("'>")
+    elseif a:type ==# 'char'
+        let [_, l_start, c_start, _] = getpos("'[")
+        let [_, l_end, c_end, _] = getpos("']")
+    else " we don't do blockwise visual selections
+        return
     endif
+    return [[l_start, c_start], [l_end, c_end]]
+endfunction
+"}}}---------------------------------------------------------------------------
+
+"{{{- grip_surrounding_object -------------------------------------------------
+function! s:grip_surrounding_object(type)
+    let [start_pos, close_pos] = s:get_motion(a:type)
 
     let before = s:surroundfunk_func_parts[0][0]
     let after = s:surroundfunk_func_parts[1]
@@ -534,7 +559,7 @@ function! s:paste_func_around(word_size, func_or_word)
 
     if start_pos[0] == close_pos[0] && len(after) == 1
         let func_line = s:insert_substrings(str, [[before, start_pos[1], '<'],
-                                               \[after[0], close_pos[1], '>']])
+                    \[after[0], close_pos[1], '>']])
         call setline(start_pos[0], func_line)
     else
         if start_pos[0] == close_pos[0]
@@ -546,21 +571,7 @@ function! s:paste_func_around(word_size, func_or_word)
         let the_rest = s:surroundfunk_func_parts[1][1:]
         call append(close_pos[0], the_rest)
     endif
-    call cursor(open_pos[0], open_pos[1])
-endfunction
-"}}}---------------------------------------------------------------------------
-
-"{{{- visually_select_func ----------------------------------------------------
-function! surroundfunk#visually_select_func(word_size)
-    call s:move_to_end_of_func()
-    normal! v
-    call s:move_to_start_of_func(a:word_size)
-endfunction
-
-function! surroundfunk#visually_select_func_name(word_size)
-    call s:move_to_func_open_paren()
-    normal! hv
-    call s:move_to_start_of_func(a:word_size)
+    call cursor(start_pos[0], start_pos[1])
 endfunction
 "}}}---------------------------------------------------------------------------
 
@@ -572,8 +583,8 @@ function! s:repeatable_delete(word_size, operation, mapname)
     silent! call repeat#set("\<Plug>".a:mapname, v:count)
 endfunction
 
-function! s:repeatable_paste(word_size, func_or_word, mapname)
-    call s:paste_func_around(a:word_size, a:func_or_word)
+function! s:repeatable_grip(word_size, func_or_word, mapname)
+    call s:grip_surrounding_object(a:word_size, a:func_or_word)
     silent! call repeat#set("\<Plug>".a:mapname, v:count)
 endfunction
 "}}}---------------------------------------------------------------------------
@@ -585,10 +596,13 @@ nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>operate_on_sur
 nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "change")<CR>
 nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
 nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "yank")<CR>
-nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>repeatable_paste("small", "func", "PasteFunctionAroundFunction")<CR>
-nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>repeatable_paste("big", "func", "PasteFunctionAroundFUNCTION")<CR>
-nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>repeatable_paste("small", "word", "PasteFunctionAroundWord")<CR>
-nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>repeatable_paste("big", "word", "PasteFunctionAroundWORD")<CR>
+" nnoremap <silent> <Plug>GripFunctionAroundFunction :<C-U>call <SID>repeatable_grip("small", "func", "GripFunctionAroundFunction")<CR>
+" nnoremap <silent> <Plug>GripFunctionAroundFUNCTION :<C-U>call <SID>repeatable_grip("big", "func", "GripFunctionAroundFUNCTION")<CR>
+" nnoremap <silent> <Plug>GripFunctionAroundWord :<C-U>call <SID>repeatable_grip("small", "word", "GripFunctionAroundWord")<CR>
+" nnoremap <silent> <Plug>GripFunctionAroundWORD :<C-U>call <SID>repeatable_grip("big", "word", "GripFunctionAroundWORD")<CR>
+
+nnoremap <silent> <Plug>GripFunctionAroundMotion :set operatorfunc=<SID>grip_surrounding_object<CR>g@
+vnoremap <silent> <Plug>GripFunctionAroundMotion :<C-U>call <SID>grip_surrounding_object(visualmode())<CR>
 
 xnoremap <silent> <Plug>SelectFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
 onoremap <silent> <Plug>SelectFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
@@ -609,10 +623,13 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     nmap csF <Plug>ChangeSurroundingFUNCTION
     nmap ysf <Plug>YankSurroundingFunction
     nmap ysF <Plug>YankSurroundingFUNCTION
-    nmap gsf <Plug>PasteFunctionAroundFunction
-    nmap gsF <Plug>PasteFunctionAroundFUNCTION
-    nmap gsw <Plug>PasteFunctionAroundWord
-    nmap gsW <Plug>PasteFunctionAroundWORD
+    " nmap gsf <Plug>PasteFunctionAroundFunction
+    " nmap gsF <Plug>PasteFunctionAroundFUNCTION
+    " nmap gsw <Plug>PasteFunctionAroundWord
+    " nmap gsW <Plug>PasteFunctionAroundWORD
+
+    nmap gs <Plug>GripFunctionAroundMotion
+    vmap gs <Plug>GripFunctionAroundMotion
 
     " visual selection and operator pending modes
     xmap <silent> af <Plug>SelectFunction
