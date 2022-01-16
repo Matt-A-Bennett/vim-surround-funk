@@ -557,10 +557,10 @@ function! surroundfunk#visually_select_func(word_size)
     call s:move_to_start_of_func(a:word_size)
 endfunction
 
-function! surroundfunk#visually_select_trailing_args()
-    call s:move_to_end_of_func()
-    normal! v
-    call s:move_to_start_of_trailing_args()
+function! surroundfunk#visually_select_func_name(word_size)
+    call s:move_to_func_open_paren()
+    normal! hv
+    call s:move_to_start_of_func(a:word_size)
 endfunction
 "}}}---------------------------------------------------------------------------
 
@@ -592,8 +592,10 @@ xnoremap <silent> <Plug>SelectAroundFunction :<C-U>call surroundfunk#visually_se
 onoremap <silent> <Plug>SelectAroundFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
 xnoremap <silent> <Plug>SelectAroundFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
 onoremap <silent> <Plug>SelectAroundFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
-xnoremap <silent> <Plug>SelectFunctionTrailingArgs :<C-U>call surroundfunk#visually_select_trailing_args()<CR>
-onoremap <silent> <Plug>SelectFunctionTrailingArgs :<C-U>call surroundfunk#visually_select_trailing_args()<CR>
+xnoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+onoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+xnoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+onoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
 
 "}}}---------------------------------------------------------------------------
 
@@ -614,10 +616,18 @@ if !exists("g:surround_funk_no_mappings") || g:surround_funk_no_mappings != 0
     omap <silent> af <Plug>SelectAroundFunction
     xmap <silent> aF <Plug>SelectAroundFUNCTION
     omap <silent> aF <Plug>SelectAroundFUNCTION
-    xmap <silent> if <Plug>SelectFunctionTrailingArgs 
-    omap <silent> if <Plug>SelectFunctionTrailingArgs 
-    xmap <silent> iF <Plug>SelectFunctionTrailingArgs 
-    omap <silent> iF <Plug>SelectFunctionTrailingArgs 
+    xmap <silent> if <Plug>SelectAroundFunction
+    omap <silent> if <Plug>SelectAroundFunction
+    xmap <silent> iF <Plug>SelectAroundFUNCTION
+    omap <silent> iF <Plug>SelectAroundFUNCTION
+    xmap <silent> an <Plug>SelectFunctionName
+    omap <silent> an <Plug>SelectFunctionName
+    xmap <silent> aN <Plug>SelectFunctionNAME
+    omap <silent> aN <Plug>SelectFunctionNAME
+    xmap <silent> in <Plug>SelectFunctionName
+    omap <silent> in <Plug>SelectFunctionName
+    xmap <silent> iN <Plug>SelectFunctionNAME
+    omap <silent> iN <Plug>SelectFunctionNAME
 endif
 "}}}---------------------------------------------------------------------------
 
