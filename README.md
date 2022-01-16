@@ -108,7 +108,7 @@ are repeatable with the dot command.
 
 To prevent these mappings from being generated, and define your own custom
 ones, see `g:surround_funk_create_mappings`
-[below](#specify-what-characters-are-allowed-in-a-function-name).
+[below](#turn-off-automatic-creation-of-normal-mode-mappings).
 
 ```
 dsf: Delete surrounding function
@@ -135,7 +135,7 @@ repeatable with the dot command.
 
 To prevent these mappings from being generated, and define your own see
 `g:surround_funk_create_mappings`
-[below](#specify-what-characters-are-allowed-in-a-function-name).
+[below](#turn-off-automatic-creation-of-normal-mode-mappings).
 
 ```
 gsf: Grip (i.e wrap/encompass) another function with the function in the
