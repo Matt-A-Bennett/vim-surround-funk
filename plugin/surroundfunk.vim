@@ -172,15 +172,12 @@ endfunction
 
 "{{{- get_motion --------------------------------------------------------------
 function! s:get_motion(type)
-    " visually select the motion
-    if a:type ==? 'v'
+    if a:type ==? 'v' || a:type ==# "\<C-V>"
         let [_, l_start, c_start, _] = getpos("'<")
         let [_, l_end, c_end, _] = getpos("'>")
     else
         let [_, l_start, c_start, _] = getpos("'[")
         let [_, l_end, c_end, _] = getpos("']")
-    else " we don't do blockwise visual selections
-        return
     endif
     if a:type ==# 'V' || a:type ==# 'line'
         let c_start = 1
