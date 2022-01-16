@@ -176,7 +176,7 @@ function! s:get_motion(type)
     if a:type ==# 'v'
         let [_, l_start, c_start, _] = getpos("'<")
         let [_, l_end, c_end, _] = getpos("'>")
-    elseif a:type ==# 'V'
+    elseif a:type ==# 'V' || a:type ==# 'line' 
         let [_, l_start, _, _] = getpos("'<")
         let [_, l_end, _, _] = getpos("'>")
         let c_start = 1
