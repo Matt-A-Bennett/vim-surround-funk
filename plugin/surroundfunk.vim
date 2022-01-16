@@ -602,6 +602,7 @@ onoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_sele
 
 "{{{- create maps and text objects --------------------------------------------
 if !exists("g:surround_funk_no_mappings") || g:surround_funk_no_mappings != 0
+    " normal mode
     nmap dsf <Plug>DeleteSurroundingFunction
     nmap dsF <Plug>DeleteSurroundingFUNCTION
     nmap csf <Plug>ChangeSurroundingFunction
@@ -613,6 +614,7 @@ if !exists("g:surround_funk_no_mappings") || g:surround_funk_no_mappings != 0
     nmap gsw <Plug>PasteFunctionAroundWord
     nmap gsW <Plug>PasteFunctionAroundWORD
 
+    " visual selection and operator pending modes
     xmap <silent> af <Plug>SelectAroundFunction
     omap <silent> af <Plug>SelectAroundFunction
     xmap <silent> aF <Plug>SelectAroundFUNCTION
