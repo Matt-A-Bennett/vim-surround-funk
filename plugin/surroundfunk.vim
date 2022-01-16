@@ -557,7 +557,7 @@ function! surroundfunk#visually_select_func(word_size)
     call s:move_to_start_of_func(a:word_size)
 endfunction
 
-function! surroundfunk#visually_select_trailing_args(word_size)
+function! surroundfunk#visually_select_trailing_args()
     call s:move_to_end_of_func()
     normal! v
     call s:move_to_start_of_trailing_args()
@@ -592,7 +592,7 @@ xnoremap <silent> <Plug>SelectAroundFunction :<C-U>call surroundfunk#visually_se
 onoremap <silent> <Plug>SelectAroundFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
 xnoremap <silent> <Plug>SelectAroundFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
 onoremap <silent> <Plug>SelectAroundFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
-xnoremap <silent> <Plug>SelectFunctionTrailingArgs :<C-U>call surroundfunk#visually_select_func("small")<CR>
+xnoremap <silent> <Plug>SelectFunctionTrailingArgs :<C-U>call surroundfunk#visually_select_trailing_args()<CR>
 onoremap <silent> <Plug>SelectFunctionTrailingArgs :<C-U>call surroundfunk#visually_select_trailing_args()<CR>
 
 "}}}---------------------------------------------------------------------------
