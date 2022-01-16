@@ -556,6 +556,12 @@ function! surroundfunk#visually_select_func(word_size)
     normal! v
     call s:move_to_start_of_func(a:word_size)
 endfunction
+
+function! surroundfunk#visually_select_trailing_args(word_size)
+    call s:move_to_end_of_func()
+    normal! v
+    call s:move_to_start_of_trailing_args()
+endfunction
 "}}}---------------------------------------------------------------------------
 
 "======================= CREATE MAPS AND TEXT OBJECTS =========================
@@ -582,10 +588,13 @@ nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>repeatable_p
 nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>repeatable_paste("small", "word", "PasteFunctionAroundWord")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>repeatable_paste("big", "word", "PasteFunctionAroundWORD")<CR>
 
-xnoremap <silent> <Plug>SelectSurroundingFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
-onoremap <silent> <Plug>SelectSurroundingFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
-xnoremap <silent> <Plug>SelectSurroundingFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
-onoremap <silent> <Plug>SelectSurroundingFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
+xnoremap <silent> <Plug>SelectAroundFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
+onoremap <silent> <Plug>SelectAroundFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
+xnoremap <silent> <Plug>SelectAroundFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
+onoremap <silent> <Plug>SelectAroundFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
+xnoremap <silent> <Plug>SelectFunctionTrailingArgs :<C-U>call surroundfunk#visually_select_func("small")<CR>
+onoremap <silent> <Plug>SelectFunctionTrailingArgs :<C-U>call surroundfunk#visually_select_trailing_args()<CR>
+
 "}}}---------------------------------------------------------------------------
 
 "{{{- create maps and text objects --------------------------------------------
@@ -601,10 +610,14 @@ if !exists("g:surround_funk_no_mappings") || g:surround_funk_no_mappings != 0
     nmap gsw <Plug>PasteFunctionAroundWord
     nmap gsW <Plug>PasteFunctionAroundWORD
 
-    xmap <silent> if <Plug>SelectSurroundingFunction
-    omap <silent> if <Plug>SelectSurroundingFunction
-    xmap <silent> iF <Plug>SelectSurroundingFUNCTION
-    omap <silent> iF <Plug>SelectSurroundingFUNCTION
+    xmap <silent> af <Plug>SelectAroundFunction
+    omap <silent> af <Plug>SelectAroundFunction
+    xmap <silent> aF <Plug>SelectAroundFUNCTION
+    omap <silent> aF <Plug>SelectAroundFUNCTION
+    xmap <silent> if <Plug>SelectFunctionTrailingArgs 
+    omap <silent> if <Plug>SelectFunctionTrailingArgs 
+    xmap <silent> iF <Plug>SelectFunctionTrailingArgs 
+    omap <silent> iF <Plug>SelectFunctionTrailingArgs 
 endif
 "}}}---------------------------------------------------------------------------
 
