@@ -582,11 +582,10 @@ nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>repeatable_p
 nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>repeatable_paste("small", "word", "PasteFunctionAroundWord")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>repeatable_paste("big", "word", "PasteFunctionAroundWORD")<CR>
 
-
 xnoremap <silent> <Plug>SelectSurroundingFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
 onoremap <silent> <Plug>SelectSurroundingFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
-
-
+xnoremap <silent> <Plug>SelectSurroundingFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
+onoremap <silent> <Plug>SelectSurroundingFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
 "}}}---------------------------------------------------------------------------
 
 "{{{- create maps and text objects --------------------------------------------
@@ -604,8 +603,8 @@ if !exists("g:surround_funk_no_mappings") || g:surround_funk_no_mappings != 0
 
     xmap <silent> if <Plug>SelectSurroundingFunction
     omap <silent> if <Plug>SelectSurroundingFunction
-    " xnoremap <silent> iF :<C-u>call s:visually_select_func('big')<CR>
-    " onoremap <silent> iF :<C-u>call s:visually_select_func('big')<CR>
+    xmap <silent> if <Plug>SelectSurroundingFUNCTION
+    omap <silent> if <Plug>SelectSurroundingFUNCTION
 endif
 "}}}---------------------------------------------------------------------------
 
