@@ -73,7 +73,8 @@ np.outerfunc(innerfunc(arg1),
 ```
 sF: Where the name of the function (e.g. np.outerfunc) is similar to a Vim
     WORD, but is additionally delimited by any character not in
-    'g:surround_funk_legal_func_name_chars' (see below)
+    'g:surround_funk_legal_func_name_chars' (see
+    [below](#specify-what-characters-are-allowed-in-a-function-name))
 
 *************               *
 np.outerfunc(innerfunc(arg1))
@@ -106,7 +107,8 @@ plugin](https://github.com/tpope/vim-repeat), then the `dsf` and `dsF` commands
 are repeatable with the dot command.
 
 To prevent these mappings from being generated, and define your own custom
-ones, see `g:surround_funk_create_mappings` below.
+ones, see `g:surround_funk_create_mappings`
+[below](#specify-what-characters-are-allowed-in-a-function-name).
 
 ```
 dsf: Delete surrounding function
@@ -132,7 +134,8 @@ plugin](https://github.com/tpope/vim-repeat), then the following commands are
 repeatable with the dot command.
 
 To prevent these mappings from being generated, and define your own see
-`g:surround_funk_create_mappings` below.
+`g:surround_funk_create_mappings`
+[below](#specify-what-characters-are-allowed-in-a-function-name).
 
 ```
 gsf: Grip (i.e wrap/encompass) another function with the function in the
