@@ -170,21 +170,21 @@ function! s:is_cursor_on_func()
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- get_motion --------------------------------------------------------------
-function! s:get_motion(type)
-    " visually select the motion
-    if a:type ==? 'v'
-        let [_, l_start, c_start, _] = getpos("'<")
-        let [_, l_end, c_end, _] = getpos("'>")
-    elseif a:type ==# 'char'
-        let [_, l_start, c_start, _] = getpos("'[")
-        let [_, l_end, c_end, _] = getpos("']")
-    else " we don't do blockwise visual selections
-        return
-    endif
-    return [[l_start, c_start], [l_end, c_end]]
-endfunction
-"}}}---------------------------------------------------------------------------
+""{{{- get_motion --------------------------------------------------------------
+"function! s:get_motion(type)
+"    " visually select the motion
+"    if a:type ==? 'v'
+"        let [_, l_start, c_start, _] = getpos("'<")
+"        let [_, l_end, c_end, _] = getpos("'>")
+"    elseif a:type ==# 'char'
+"        let [_, l_start, c_start, _] = getpos("'[")
+"        let [_, l_end, c_end, _] = getpos("']")
+"    else " we don't do blockwise visual selections
+"        return
+"    endif
+"    return [[l_start, c_start], [l_end, c_end]]
+"endfunction
+""}}}---------------------------------------------------------------------------
 
 "}}}---------------------------------------------------------------------------
 
