@@ -613,7 +613,7 @@ xnoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_sele
 onoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
 xnoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
 onoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
-}}}---------------------------------------------------------------------------
+"}}}---------------------------------------------------------------------------
 
 "{{{- create maps and text objects --------------------------------------------
 if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings != 0
