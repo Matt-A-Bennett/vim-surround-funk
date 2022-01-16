@@ -603,8 +603,8 @@ if !exists("g:surround_funk_no_mappings") || g:surround_funk_no_mappings != 0
 
     xmap <silent> if <Plug>SelectSurroundingFunction
     omap <silent> if <Plug>SelectSurroundingFunction
-    xmap <silent> if <Plug>SelectSurroundingFUNCTION
-    omap <silent> if <Plug>SelectSurroundingFUNCTION
+    xmap <silent> iF <Plug>SelectSurroundingFUNCTION
+    omap <silent> iF <Plug>SelectSurroundingFUNCTION
 endif
 "}}}---------------------------------------------------------------------------
 
