@@ -575,7 +575,7 @@ endfunction
 ""}}}---------------------------------------------------------------------------
 
 "======================= CREATE MAPS AND TEXT OBJECTS =========================
-
+sdafasdf 
 "{{{- make maps repeatable ----------------------------------------------------
 function! s:repeatable_delete(word_size, operation, mapname)
     call s:operate_on_surrounding_func(a:word_size, a:operation)
