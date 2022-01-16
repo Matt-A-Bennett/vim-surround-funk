@@ -169,6 +169,23 @@ function! s:is_cursor_on_func()
     return close_paren_count > open_paren_count
 endfunction
 "}}}---------------------------------------------------------------------------
+
+"{{{- get_motion --------------------------------------------------------------
+function! s:get_motion(type)
+    " visually select the motion
+    if a:type ==? 'v'
+        let [_, l_start, c_start, _] = getpos("'<")
+        let [_, l_end, c_end, _] = getpos("'>")
+    elseif a:type ==# 'char'
+        let [_, l_start, c_start, _] = getpos("'[")
+        let [_, l_end, c_end, _] = getpos("']")
+    else " we don't do blockwise visual selections
+        return
+    endif
+    return [[l_start, c_start], [l_end, c_end]]
+endfunction
+"}}}---------------------------------------------------------------------------
+
 "}}}---------------------------------------------------------------------------
 
 "------------------------------- Get Markers ----------------------------------
@@ -533,22 +550,6 @@ function! s:operate_on_surrounding_func(word_size, operation)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- get_motion --------------------------------------------------------------
-function! s:get_motion(type)
-    " visually select the motion
-    if a:type ==? 'v'
-        let [_, l_start, c_start, _] = getpos("'<")
-        let [_, l_end, c_end, _] = getpos("'>")
-    elseif a:type ==# 'char'
-        let [_, l_start, c_start, _] = getpos("'[")
-        let [_, l_end, c_end, _] = getpos("']")
-    else " we don't do blockwise visual selections
-        return
-    endif
-    return [[l_start, c_start], [l_end, c_end]]
-endfunction
-"}}}---------------------------------------------------------------------------
-
 "{{{- grip_surrounding_object -------------------------------------------------
 function! s:grip_surrounding_object(type)
     let [start_pos, close_pos] = s:get_motion(a:type)
@@ -583,8 +584,13 @@ function! s:repeatable_delete(word_size, operation, mapname)
     silent! call repeat#set("\<Plug>".a:mapname, v:count)
 endfunction
 
-function! s:repeatable_grip(word_size, func_or_word, mapname)
-    call s:grip_surrounding_object(a:word_size, a:func_or_word)
+" function! s:repeatable_grip(word_size, func_or_word, mapname)
+"     call s:grip_surrounding_object(a:word_size, a:func_or_word)
+"     silent! call repeat#set("\<Plug>".a:mapname, v:count)
+" endfunction
+
+function! s:repeatable_grip(type, mapname)
+    call s:grip_surrounding_object(a:type)
     silent! call repeat#set("\<Plug>".a:mapname, v:count)
 endfunction
 "}}}---------------------------------------------------------------------------
