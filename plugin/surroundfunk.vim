@@ -576,7 +576,9 @@ function! s:repeatable_paste(word_size, func_or_word, mapname)
     call s:paste_func_around(a:word_size, a:func_or_word)
     silent! call repeat#set("\<Plug>".a:mapname, v:count)
 endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- define plug function calls ----------------------------------------------
 nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>repeatable_delete("small", "delete", "DeleteSurroundingFunction")<CR>
 nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>repeatable_delete("big", "delete", "DeleteSurroundingFunction")<CR>
 nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "change")<CR>
@@ -596,7 +598,6 @@ xnoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_sele
 onoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
 xnoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
 onoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
-
 "}}}---------------------------------------------------------------------------
 
 "{{{- create maps and text objects --------------------------------------------
