@@ -635,12 +635,12 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     vmap gs <Plug>GripFunctionAroundMotion
 
     " visual selection and operator pending modes
-    xmap <silent> ao <Plug>SelectFunction
-    omap <silent> ao <Plug>SelectFunction
     xmap <silent> aF <Plug>SelectFUNCTION
     omap <silent> aF <Plug>SelectFUNCTION
-    xmap <silent> io <Plug>SelectFunction
-    omap <silent> io <Plug>SelectFunction
+    xmap <silent> af <Plug>SelectFunction
+    omap <silent> af <Plug>SelectFunction
+    xmap <silent> if <Plug>SelectFunction
+    omap <silent> if <Plug>SelectFunction
     xmap <silent> iF <Plug>SelectFUNCTION
     omap <silent> iF <Plug>SelectFUNCTION
     xmap <silent> an <Plug>SelectFunctionName
