@@ -602,8 +602,8 @@ if !exists("g:surround_funk_no_mappings") || g:surround_funk_no_mappings != 0
     nmap gsw <Plug>PasteFunctionAroundWord
     nmap gsW <Plug>PasteFunctionAroundWORD
 
-    xnoremap <silent> if <Plug>SelectSurroundingFunction
-    onoremap <silent> if <Plug>SelectSurroundingFunction
+    xmap <silent> if <Plug>SelectSurroundingFunction
+    omap <silent> if <Plug>SelectSurroundingFunction
     " xnoremap <silent> iF :<C-u>call s:visually_select_func('big')<CR>
     " onoremap <silent> iF :<C-u>call s:visually_select_func('big')<CR>
 endif
