@@ -558,8 +558,8 @@ endfunction
 "{{{- grip_surround_object -------------------------------------------------
 function! s:grip_surround_object(type)
     let [start_pos, close_pos] = s:get_motion(a:type)
-    echo start_pos
-    echo close_pos
+    echomsg start_pos
+    echomsg close_pos
     let before = s:surroundfunk_func_parts[0][0]
     let after = s:surroundfunk_func_parts[1]
     let str = getline(start_pos[0])
