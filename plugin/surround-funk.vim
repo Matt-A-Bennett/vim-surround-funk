@@ -551,7 +551,7 @@ endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- visually_select_func ----------------------------------------------------
-function! s:visually_select_func(word_size)
+function! surroundfunc#visually_select_func(word_size)
     call s:move_to_end_of_func()
     normal! v
     call s:move_to_start_of_func(a:word_size)
@@ -583,7 +583,7 @@ nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>repeatable_paste
 nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>repeatable_paste("big", "word", "PasteFunctionAroundWORD")<CR>
 
 
-nnoremap <silent> <Plug>SelectSurroundingFunction :<C-U>call <SID>visually_select_func("small")<CR>
+nnoremap <silent> <Plug>SelectSurroundingFunction :<C-U>call surroundfunc#visually_select_func("small")<CR>
 
 
 "}}}---------------------------------------------------------------------------
@@ -602,9 +602,9 @@ if !exists("g:surround_funk_no_mappings") || g:surround_funk_no_mappings != 0
     nmap gsW <Plug>PasteFunctionAroundWORD
 
     xmap <silent> if <Plug>SelectSurroundingFunction
-    onoremap <silent> if :<C-u>call s:visually_select_func('small')<CR>
-    xnoremap <silent> iF :<C-u>call s:visually_select_func('big')<CR>
-    onoremap <silent> iF :<C-u>call s:visually_select_func('big')<CR>
+    onoremap <silent> if <Plug>SelectSurroundingFunction
+    " xnoremap <silent> iF :<C-u>call s:visually_select_func('big')<CR>
+    " onoremap <silent> iF :<C-u>call s:visually_select_func('big')<CR>
 endif
 "}}}---------------------------------------------------------------------------
 
