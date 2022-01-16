@@ -105,8 +105,8 @@ If you have tpope's excellent [repeat.vim
 plugin](https://github.com/tpope/vim-repeat), then the `dsf` and `dsF` commands
 are repeatable with the dot command.
 
-To prevent these mappings from being generated, and define your own see
-`g:surround_funk_create_mappings` below.
+To prevent these mappings from being generated, and define your own custom
+ones, see `g:surround_funk_create_mappings` below.
 
 ```
 dsf: Delete surrounding function
@@ -243,7 +243,7 @@ nmap gsW <Plug>PasteFunctionAroundWORD
 #### Specify what characters are allowed in a function name
 
 By default the 'surround-funk' plugin defines any vim word character
-(`[0-9A-Za-z_]`) and any period symbols as valid parts of a functions name.
+(`[0-9A-Za-z_]`) and any period symbols as valid parts of a function's name.
 These characters are used to find the function name when using the capitalised
 (e.g. `dsF`, but not `dsf`) versions of the above commands. You can add to or
 remove from these groups.
