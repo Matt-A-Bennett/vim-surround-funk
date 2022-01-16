@@ -558,9 +558,16 @@ endfunction
 "{{{- grip_surround_object -------------------------------------------------
 function! s:grip_surround_object(type)
     let [start_pos, close_pos] = s:get_motion(a:type)
+    let g:start_pos = start_pos
+    let g:close_pos = close_pos
+    let g:surroundfunk_func_parts = s:surroundfunk_func_parts
+    echo '1'
     let before = s:surroundfunk_func_parts[0][0]
+    echo '2'
     let after = s:surroundfunk_func_parts[1]
+    echo '3'
     let str = getline(start_pos[0])
+    echo '4'
     if start_pos[0] == close_pos[0] && len(after) == 1
         let func_line = s:insert_substrings(str, [[before, start_pos[1], '<'],
                     \[after[0], close_pos[1], '>']])
@@ -575,6 +582,7 @@ function! s:grip_surround_object(type)
         let the_rest = s:surroundfunk_func_parts[1][1:]
         call append(close_pos[0], the_rest)
     endif
+    echo '5'
     call cursor(start_pos[0], start_pos[1])
 endfunction
 "}}}---------------------------------------------------------------------------
