@@ -605,15 +605,15 @@ nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surro
 nnoremap <silent> <Plug>GripFunctionAroundMotion :set operatorfunc=<SID>grip_surrounding_object<CR>g@
 vnoremap <silent> <Plug>GripFunctionAroundMotion :<C-U>call <SID>grip_surrounding_object(visualmode())<CR>
 
+xnoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+onoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+xnoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
+onoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
 xnoremap <silent> <Plug>SelectFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
 onoremap <silent> <Plug>SelectFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
 xnoremap <silent> <Plug>SelectFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
 onoremap <silent> <Plug>SelectFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
-" xnoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
-" onoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
-" xnoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
-" onoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
-"}}}---------------------------------------------------------------------------
+" }}}---------------------------------------------------------------------------
 
 "{{{- create maps and text objects --------------------------------------------
 if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings != 0
