@@ -204,7 +204,7 @@ af                      From the first letter of the function's name to the
                                                 *aF*
 aF                      Like 'af', but the function name is delimited by any
                         character not in
-                        'g:surround_funk_legal_func_name_chars'
+                        |g:surround_funk_legal_func_name_chars|
 
                                                 *if*  
 if                      Alias of 'af'
@@ -218,7 +218,7 @@ an                      The function's name
                                                 *aN*  
 aN                      Like 'an', but the function name is delimited by any
                         character not in
-                        'g:surround_funk_legal_func_name_chars'
+                        |g:surround_funk_legal_func_name_chars|
 
 
 For example, with the cursor anywhere indicated by the `^` symbols, doing |vif|
