@@ -590,10 +590,10 @@ nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>repeatable_p
 nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>repeatable_paste("small", "word", "PasteFunctionAroundWord")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>repeatable_paste("big", "word", "PasteFunctionAroundWORD")<CR>
 
-xnoremap <silent> <Plug>SelectAroundFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
-onoremap <silent> <Plug>SelectAroundFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
-xnoremap <silent> <Plug>SelectAroundFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
-onoremap <silent> <Plug>SelectAroundFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
+xnoremap <silent> <Plug>SelectFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
+onoremap <silent> <Plug>SelectFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
+xnoremap <silent> <Plug>SelectFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
+onoremap <silent> <Plug>SelectFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
 xnoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
 onoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
 xnoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
@@ -615,14 +615,14 @@ if !exists("g:surround_funk_no_mappings") || g:surround_funk_no_mappings != 0
     nmap gsW <Plug>PasteFunctionAroundWORD
 
     " visual selection and operator pending modes
-    xmap <silent> af <Plug>SelectAroundFunction
-    omap <silent> af <Plug>SelectAroundFunction
-    xmap <silent> aF <Plug>SelectAroundFUNCTION
-    omap <silent> aF <Plug>SelectAroundFUNCTION
-    xmap <silent> if <Plug>SelectAroundFunction
-    omap <silent> if <Plug>SelectAroundFunction
-    xmap <silent> iF <Plug>SelectAroundFUNCTION
-    omap <silent> iF <Plug>SelectAroundFUNCTION
+    xmap <silent> af <Plug>SelectFunction
+    omap <silent> af <Plug>SelectFunction
+    xmap <silent> aF <Plug>SelectFUNCTION
+    omap <silent> aF <Plug>SelectFUNCTION
+    xmap <silent> if <Plug>SelectFunction
+    omap <silent> if <Plug>SelectFunction
+    xmap <silent> iF <Plug>SelectFUNCTION
+    omap <silent> iF <Plug>SelectFUNCTION
     xmap <silent> an <Plug>SelectFunctionName
     omap <silent> an <Plug>SelectFunctionName
     xmap <silent> aN <Plug>SelectFunctionNAME
