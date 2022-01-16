@@ -202,27 +202,27 @@ af                      From the first letter of the function's name to the
                         closing parenthesis of that function call
 
                                                 *aF*
-aF                      Like 'af', but the function name is delimited by any
+aF                      Like |af|, but the function name is delimited by any
                         character not in
                         |g:surround_funk_legal_func_name_chars|
 
                                                 *if*  
-if                      Alias of 'af'
+if                      Alias of |af|
 
                                                 *iF*  
-iF                      Alias of 'aF'
+iF                      Alias of |aF|
 
                                                 *an*  
 an                      The function's name
 
                                                 *aN*  
-aN                      Like 'an', but the function name is delimited by any
+aN                      Like |an|, but the function name is delimited by any
                         character not in
                         |g:surround_funk_legal_func_name_chars|
 
 
-For example, with the cursor anywhere indicated by the `^` symbols, doing |vif|
-will visually select the entire function, indicated by the `*` symbols (to
+For example, with the cursor anywhere indicated by the ^ symbols, doing |vif|
+will visually select the entire function, indicated by the * symbols (to
 include the 'np.' part of the function, use |viF|):
 
        **************************************
