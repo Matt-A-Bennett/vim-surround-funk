@@ -624,6 +624,8 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     nmap csF <Plug>ChangeSurroundingFUNCTION
     nmap ysf <Plug>YankSurroundingFunction
     nmap ysF <Plug>YankSurroundingFUNCTION
+
+    " " maybe keep these and expose them according to user g:flag
     " nmap gsf <Plug>PasteFunctionAroundFunction
     " nmap gsF <Plug>PasteFunctionAroundFUNCTION
     " nmap gsw <Plug>PasteFunctionAroundWord
