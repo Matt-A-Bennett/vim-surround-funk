@@ -601,7 +601,7 @@ onoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_sele
 "}}}---------------------------------------------------------------------------
 
 "{{{- create maps and text objects --------------------------------------------
-if !exists("g:surround_funk_no_mappings") || g:surround_funk_no_mappings != 0
+if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings != 0
     " normal mode
     nmap dsf <Plug>DeleteSurroundingFunction
     nmap dsF <Plug>DeleteSurroundingFUNCTION
