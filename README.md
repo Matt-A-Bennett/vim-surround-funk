@@ -10,12 +10,11 @@ one you have in the unnamed register (see below).
 
 ![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/multi_line_demo.gif)
 
-This plugin is currently in an initial testing phase. There are a likely a few
-edge-cases/bugs. If you find any, please tell me about it by raising a [new
+In case you find any edge-cases/bugs, please tell me about it by raising a [new
 issue](https://github.com/Matt-A-Bennett/surround-funk.vim/issues) according to
-the [contribution guidelines](#contribution-guidelines). The same
-goes for if you would like to see a feature added! To see a list of what I plan
-to add, head on over to the [surround-funk todo
+the [contribution guidelines](#contribution-guidelines). The same goes for if
+you would like to see a feature added! To see a list of what I plan to add,
+head on over to the [surround-funk todo
 list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/todo.md).
 
 ## Table of contents
