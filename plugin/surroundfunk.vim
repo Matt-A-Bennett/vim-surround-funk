@@ -555,9 +555,11 @@ function! s:operate_on_surrounding_func(word_size, operation)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- grip_surrounding_object -------------------------------------------------
-function! s:grip_surrounding_object(type)
+"{{{- grip_surround_object -------------------------------------------------
+function! s:grip_surround_object(type)
     let [start_pos, close_pos] = s:get_motion(a:type)
+    echo start_pos
+    echo close_pos
     let before = s:surroundfunk_func_parts[0][0]
     let after = s:surroundfunk_func_parts[1]
     let str = getline(start_pos[0])
@@ -588,7 +590,7 @@ function! s:repeatable_delete(word_size, operation, mapname)
 endfunction
 
 function! s:repeatable_grip(type, mapname)
-    call s:grip_surrounding_object(a:type)
+    call s:grip_surround_object(a:type)
     silent! call repeat#set("\<Plug>".a:mapname, v:count)
 endfunction
 "}}}---------------------------------------------------------------------------
@@ -607,8 +609,8 @@ nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surro
 " nnoremap <silent> <Plug>GripFunctionAroundWord :<C-U>call <SID>repeatable_grip("small", "word", "GripFunctionAroundWord")<CR>
 " nnoremap <silent> <Plug>GripFunctionAroundWORD :<C-U>call <SID>repeatable_grip("big", "word", "GripFunctionAroundWORD")<CR>
 
-nnoremap <silent> <Plug>GripFunctionAroundMotion :set operatorfunc=<SID>grip_surrounding_object<CR>g@
-vnoremap <silent> <Plug>GripFunctionAroundMotion :<C-U>call <SID>grip_surrounding_object(visualmode())<CR>
+nnoremap <Plug>GripFunctionAroundMotion :set operatorfunc=<SID>grip_surround_object<CR>g@
+vnoremap <Plug>GripFunctionAroundMotion :<C-U>call <SID>grip_surround_object(visualmode())<CR>
 
 xnoremap <silent> <Plug>SelectWholeFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
 onoremap <silent> <Plug>SelectWholeFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
