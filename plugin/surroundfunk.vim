@@ -173,9 +173,14 @@ endfunction
 "{{{- get_motion --------------------------------------------------------------
 function! s:get_motion(type)
     " visually select the motion
-    if a:type ==? 'v'
+    if a:type ==# 'v'
         let [_, l_start, c_start, _] = getpos("'<")
         let [_, l_end, c_end, _] = getpos("'>")
+    elseif a:type ==# 'V'
+        let [_, l_start, _, _] = getpos("'<")
+        let [_, l_end, _, _] = getpos("'>")
+        let c_start = 1
+        let c_end = len(getline(l_end))
     elseif a:type ==# 'char'
         let [_, l_start, c_start, _] = getpos("'[")
         let [_, l_end, c_end, _] = getpos("']")
