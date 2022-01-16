@@ -227,7 +227,7 @@ iF: Alias of 'aF'
 
 an: The function's name
 
-an: Like 'an', but the function name is delimited by any character not in 
+aN: Like 'an', but the function name is delimited by any character not in 
     'g:surround_funk_legal_func_name_chars' (see below)
 ```
 
