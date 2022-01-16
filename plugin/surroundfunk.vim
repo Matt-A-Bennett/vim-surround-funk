@@ -583,7 +583,8 @@ nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>repeatable_paste
 nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>repeatable_paste("big", "word", "PasteFunctionAroundWORD")<CR>
 
 
-nnoremap <silent> <Plug>SelectSurroundingFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
+xnoremap <silent> <Plug>SelectSurroundingFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
+onoremap <silent> <Plug>SelectSurroundingFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
 
 
 "}}}---------------------------------------------------------------------------
