@@ -608,7 +608,7 @@ nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surro
 " nnoremap <silent> <Plug>GripFunctionAroundWORD :<C-U>call <SID>repeatable_grip("big", "word", "GripFunctionAroundWORD")<CR>
 
 nnoremap <silent> <Plug>GripFunctionAroundMotion :set operatorfunc=<SID>grip_surrounding_object<CR>g@
-onoremap <silent> <Plug>GripFunctionAroundMotion :<C-U>call <SID>grip_surrounding_object(visualmode())<CR>
+vnoremap <silent> <Plug>GripFunctionAroundMotion :<C-U>call <SID>grip_surrounding_object(visualmode())<CR>
 
 xnoremap <silent> <Plug>SelectFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
 onoremap <silent> <Plug>SelectFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
@@ -635,7 +635,7 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     " nmap gsW <Plug>PasteFunctionAroundWORD
 
     nmap gs <Plug>GripFunctionAroundMotion
-    omap gs <Plug>GripFunctionAroundMotion
+    vmap gs <Plug>GripFunctionAroundMotion
 
     " visual selection and operator pending modes
     xmap <silent> af <Plug>SelectFunction
