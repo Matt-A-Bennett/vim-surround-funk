@@ -558,8 +558,6 @@ endfunction
 "{{{- grip_surround_object -------------------------------------------------
 function! s:grip_surround_object(type)
     let [start_pos, close_pos] = s:get_motion(a:type)
-    echomsg start_pos
-    echomsg close_pos
     let before = s:surroundfunk_func_parts[0][0]
     let after = s:surroundfunk_func_parts[1]
     let str = getline(start_pos[0])
@@ -609,8 +607,8 @@ nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surro
 " nnoremap <silent> <Plug>GripFunctionAroundWord :<C-U>call <SID>repeatable_grip("small", "word", "GripFunctionAroundWord")<CR>
 " nnoremap <silent> <Plug>GripFunctionAroundWORD :<C-U>call <SID>repeatable_grip("big", "word", "GripFunctionAroundWORD")<CR>
 
-nnoremap <Plug>GripFunctionAroundMotion :set operatorfunc=<SID>grip_surround_object<CR>g@
-vnoremap <Plug>GripFunctionAroundMotion :<C-U>call <SID>grip_surround_object(visualmode())<CR>
+nnoremap <silent> <Plug>GripFunctionAroundMotion :set operatorfunc=<SID>grip_surround_object<CR>g@
+vnoremap <silent> <Plug>GripFunctionAroundMotion :<C-U>call <SID>grip_surround_object(visualmode())<CR>
 
 xnoremap <silent> <Plug>SelectWholeFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
 onoremap <silent> <Plug>SelectWholeFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
@@ -625,12 +623,12 @@ onoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_sele
 "{{{- create maps and text objects --------------------------------------------
 if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings != 0
     " normal mode
-    nmap dsf <Plug>DeleteSurroundingFunction
-    nmap dsF <Plug>DeleteSurroundingFUNCTION
-    nmap csf <Plug>ChangeSurroundingFunction
-    nmap csF <Plug>ChangeSurroundingFUNCTION
-    nmap ysf <Plug>YankSurroundingFunction
-    nmap ysF <Plug>YankSurroundingFUNCTION
+    nmap <silent> dsf <Plug>DeleteSurroundingFunction
+    nmap <silent> dsF <Plug>DeleteSurroundingFUNCTION
+    nmap <silent> csf <Plug>ChangeSurroundingFunction
+    nmap <silent> csF <Plug>ChangeSurroundingFUNCTION
+    nmap <silent> ysf <Plug>YankSurroundingFunction
+    nmap <silent> ysF <Plug>YankSurroundingFUNCTION
 
     " " maybe keep these and expose them according to user g:flag
     " nmap gsf <Plug>PasteFunctionAroundFunction
@@ -638,8 +636,8 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     " nmap gsw <Plug>PasteFunctionAroundWord
     " nmap gsW <Plug>PasteFunctionAroundWORD
 
-    nmap gs <Plug>GripFunctionAroundMotion
-    vmap gs <Plug>GripFunctionAroundMotion
+    nmap <silent> gs <Plug>GripFunctionAroundMotion
+    vmap <silent> gs <Plug>GripFunctionAroundMotion
 
     " visual selection and operator pending modes
     xmap <silent> af <Plug>SelectWholeFunction
