@@ -22,6 +22,7 @@ list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/sur
     * [What is a surrounding function?](#what-is-a-surrounding-function)
     * [Deleting, changing and yanking a surrounding function](#deleting-changing-and-yanking-a-surrounding-function)
     * [Gripping a word or another function](#gripping-a-word-or-another-function)
+    * [Text objects](#text-objects)
     * [Settings](#settings)
         * [Turn off automatic creation of normal mode mappings](#turn-off-automatic-creation-of-normal-mode-mappings)
         * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
@@ -112,16 +113,16 @@ ones, see `g:surround_funk_create_mappings`
 ```
 dsf: Delete surrounding function
 
-dsF: Like `dsf`, but the function name is delimited by any character not in 
+dsF: Like 'dsf', but the function name is delimited by any character not in 
      'g:surround_funk_legal_func_name_chars' (see below)
 
-csf: Like `dsf` but start instert mode where the opening parenthesis of the
+csf: Like 'dsf' but start instert mode where the opening parenthesis of the
      changed function used to be
 
-csF: Like `csf`, but the function name is delimited by any character not in 
+csF: Like 'csf', but the function name is delimited by any character not in 
      'g:surround_funk_legal_func_name_chars' (see below)
 
-ysf: Yank surrounding function ysF: Like `ysf`, but the function name is
+ysf: Yank surrounding function ysF: Like 'ysf', but the function name is
      delimited by any character not in 'g:surround_funk_legal_func_name_chars'
      (see below)
 ```
@@ -209,6 +210,46 @@ np.outerfunc(os.multi_line(argA(),
                            *************
 ```
 
+### Text objects
+
+The following text objects are made available by surround-funk:
+
+```
+af: From the first letter of the function's name to the closing parenthesis of
+    that function call
+
+aF: Like 'af', but the function name is delimited by any character not in 
+    'g:surround_funk_legal_func_name_chars' (see below)
+
+if: Alias of 'af'
+
+iF: Alias of 'aF'
+
+an: The function's name
+
+an: Like 'an', but the function name is delimited by any character not in 
+    'g:surround_funk_legal_func_name_chars' (see below)
+```
+
+For example, with the cursor anywhere indicated by the `^` symbols, doing `vif`
+will visually select the entire function, indicated by the `*` symbols (to
+include the `np.` part of the function, use `viF`):
+
+```
+   **************************************
+np.outerfunc(innerfunc(arg1), arg2, arg3)
+   ^^^^^^^^^^               ^^^^^^^^^^^^^
+```
+
+To select just the function's name, use `vin` (again, use `viN` to include the
+`np.` part):
+
+```
+   *********
+np.outerfunc(innerfunc(arg1), arg2, arg3)
+   ^^^^^^^^^^               ^^^^^^^^^^^^^
+```
+
 ### Settings
 
 #### Turn off automatic creation of normal mode mappings
@@ -230,6 +271,7 @@ nmap <your-map-here> <Plug><OperationToMap>
 For reference, the default mappings are as follows:
 
 ```vim
+" normal mode
 nmap dsf <Plug>DeleteSurroundingFunction
 nmap dsF <Plug>DeleteSurroundingFUNCTION
 nmap csf <Plug>ChangeSurroundingFunction
@@ -240,6 +282,24 @@ nmap gsf <Plug>PasteFunctionAroundFunction
 nmap gsF <Plug>PasteFunctionAroundFUNCTION
 nmap gsw <Plug>PasteFunctionAroundWord
 nmap gsW <Plug>PasteFunctionAroundWORD
+
+" visual selection and operator pending modes
+xmap <silent> af <Plug>SelectFunction
+omap <silent> af <Plug>SelectFunction
+xmap <silent> aF <Plug>SelectFUNCTION
+omap <silent> aF <Plug>SelectFUNCTION
+xmap <silent> if <Plug>SelectFunction
+omap <silent> if <Plug>SelectFunction
+xmap <silent> iF <Plug>SelectFUNCTION
+omap <silent> iF <Plug>SelectFUNCTION
+xmap <silent> an <Plug>SelectFunctionName
+omap <silent> an <Plug>SelectFunctionName
+xmap <silent> aN <Plug>SelectFunctionNAME
+omap <silent> aN <Plug>SelectFunctionNAME
+xmap <silent> in <Plug>SelectFunctionName
+omap <silent> in <Plug>SelectFunctionName
+xmap <silent> iN <Plug>SelectFunctionNAME
+omap <silent> iN <Plug>SelectFunctionNAME
 ```
 
 #### Specify what characters are allowed in a function name

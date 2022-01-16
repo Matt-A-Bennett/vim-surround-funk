@@ -176,6 +176,7 @@ and grip/surround it with |gsw|:
     np.outerfunc(MeNext, arg2, arg3)
     ^
 
+
 You could also grip a multi-line function (again using |gsF|):
 
     **************      *******
@@ -183,12 +184,59 @@ You could also grip a multi-line function (again using |gsF|):
                     argB, argC) < anywhere on this line is fine too
     ^^^^^^^^^^^^^^  ^^^^^^^^^^^
 
+
 To get:
 
     *************                    *
     np.outerfunc(os.multi_line(argA(),
                     argB, argC), arg2, arg3)
                                *************
+
+
+TEXT OBJECTS
+
+The following text objects are made available by |surround-funk|:
+
+                                                *af*
+af                      From the first letter of the function's name to the
+                        closing parenthesis of that function call
+
+                                                *aF*
+aF                      Like 'af', but the function name is delimited by any
+                        character not in
+                        'g:surround_funk_legal_func_name_chars'
+
+                                                *if*  
+if                      Alias of 'af'
+
+                                                *iF*  
+iF                      Alias of 'aF'
+
+                                                *an*  
+an                      The function's name
+
+                                                *aN*  
+an                      Like 'an', but the function name is delimited by any
+                        character not in
+                        'g:surround_funk_legal_func_name_chars'
+
+
+For example, with the cursor anywhere indicated by the `^` symbols, doing |vif|
+will visually select the entire function, indicated by the `*` symbols (to
+include the 'np.' part of the function, use |viF|):
+
+       **************************************
+    np.outerfunc(innerfunc(arg1), arg2, arg3)
+       ^^^^^^^^^^               ^^^^^^^^^^^^^
+
+
+To select just the function's name, use |vin| (again, use |viN| to include the
+'np.' part):
+
+       *********
+    np.outerfunc(innerfunc(arg1), arg2, arg3)
+       ^^^^^^^^^^               ^^^^^^^^^^^^^
+
 
 SETTINGS
 
@@ -205,6 +253,7 @@ And map them to something different with:
 
 For reference, the default mappings are as follows:
 
+    " normal mode
     nmap |dsf| <Plug>DeleteSurroundingFunction
     nmap |dsF| <Plug>DeleteSurroundingFUNCTION
     nmap |csf| <Plug>ChangeSurroundingFunction
@@ -216,6 +265,23 @@ For reference, the default mappings are as follows:
     nmap |gsw| <Plug>PasteFunctionAroundWord
     nmap |gsW| <Plug>PasteFunctionAroundWORD
 
+    " visual selection and operator pending modes
+    xmap <silent> |af| <Plug>SelectFunction
+    omap <silent> |af| <Plug>SelectFunction
+    xmap <silent> |aF| <Plug>SelectFUNCTION
+    omap <silent> |aF| <Plug>SelectFUNCTION
+    xmap <silent> |if| <Plug>SelectFunction
+    omap <silent> |if| <Plug>SelectFunction
+    xmap <silent> |iF| <Plug>SelectFUNCTION
+    omap <silent> |iF| <Plug>SelectFUNCTION
+    xmap <silent> |an| <Plug>SelectFunctionName
+    omap <silent> |an| <Plug>SelectFunctionName
+    xmap <silent> |aN| <Plug>SelectFunctionNAME
+    omap <silent> |aN| <Plug>SelectFunctionNAME
+    xmap <silent> |in| <Plug>SelectFunctionName
+    omap <silent> |in| <Plug>SelectFunctionName
+    xmap <silent> |iN| <Plug>SelectFunctionNAME
+    omap <silent> |iN| <Plug>SelectFunctionNAME
 
 N.B. If you're worried about remapping the core vim command |gs|, done't be -
 it literally does nothing.
@@ -235,13 +301,11 @@ The default:
 g:surround_funk_legal_func_name_chars = ['[0-9]', '[A-Z]', '[a-z]', '_', '\.']
 
 
-
     will match function names like:
 
           *********  *************  **************
     ...), pd.mean(), np2.my_func(), 8np.my._func(), ...
           ^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^
-
 
 
     but would stop at characters not in the legal name set (e.g. @, #, /):
@@ -254,7 +318,6 @@ g:surround_funk_legal_func_name_chars = ['[0-9]', '[A-Z]', '[a-z]', '_', '\.']
 To make numbers illegal, and to introduce # and @ as legal characters, use:
 
 g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.', '#', '@']
-
 
 
     will match function names like:
