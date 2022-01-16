@@ -582,11 +582,11 @@ function! s:repeatable_delete(word_size, operation, mapname)
     silent! call repeat#set("\<Plug>".a:mapname, v:count)
 endfunction
 
- function! s:repeatable_grip(type, mapname)
-     call s:grip_surrounding_object(a:type)
-     silent! call repeat#set("\<Plug>".a:mapname, v:count)
- endfunction
-}}}---------------------------------------------------------------------------
+function! s:repeatable_grip(type, mapname)
+    call s:grip_surrounding_object(a:type)
+    silent! call repeat#set("\<Plug>".a:mapname, v:count)
+endfunction
+"}}}---------------------------------------------------------------------------
 
 "{{{- define plug function calls ----------------------------------------------
 nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>repeatable_delete("small", "delete", "DeleteSurroundingFunction")<CR>
