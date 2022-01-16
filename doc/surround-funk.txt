@@ -218,7 +218,7 @@ For reference, the default mappings are as follows:
 
 
 N.B. If you're worried about remapping the core vim command |gs|, done't be -
-it does literally nothing.
+it literally does nothing.
 
 
 
