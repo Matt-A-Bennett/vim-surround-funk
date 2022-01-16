@@ -245,8 +245,8 @@ nmap gsW <Plug>PasteFunctionAroundWORD
 By default the 'surround-funk' plugin defines any vim word character
 (`[0-9A-Za-z_]`) and any period symbols as valid parts of a function's name.
 These characters are used to find the function name when using the capitalised
-(e.g. `dsF`, but not `dsf`) versions of the above commands. You can add to or
-remove from these groups.
+(e.g. `dsF`, but not `dsf`) versions of the above commands. You can add to, or
+remove from, these groups.
 
 The default:
 
