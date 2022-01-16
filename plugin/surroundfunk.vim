@@ -217,13 +217,9 @@ function! s:get_start_of_func_position(word_size)
     let [_, l_orig, c_orig, _] = getpos('.')
     call s:move_to_func_open_paren()
     if a:word_size ==# 'small'
-        echo 'small1'
         let [l, c] = searchpos('\<', 'b', line('.'))
-        echo 'small2'
     elseif a:word_size ==# 'big'
-        echo 'big1'
         let [l, c] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
-        echo 'big2'
     endif
     call cursor(l_orig, c_orig)
     return [l, c]
@@ -526,9 +522,13 @@ endfunction
 
 "{{{- visually_select_func ----------------------------------------------------
 function! surroundfunk#visually_select_func(word_size)
+    echo 'moving to end of func'
     call s:move_to_end_of_func()
+    echo 'starting visual mode'
     normal! v
+    echo 'moving to start of func'
     call s:move_to_start_of_func(a:word_size)
+    echo 'done'
 endfunction
 
 function! surroundfunk#visually_select_func_name(word_size)
