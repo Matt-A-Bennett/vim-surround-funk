@@ -637,8 +637,8 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     " visual selection and operator pending modes
     xmap <silent> af <Plug>SelectFunction
     omap <silent> af <Plug>SelectFunction
-    " xmap <silent> aF <Plug>SelectFUNCTION
-    " omap <silent> aF <Plug>SelectFUNCTION
+    xmap <silent> aF <Plug>SelectFUNCTION
+    omap <silent> aF <Plug>SelectFUNCTION
     " xmap <silent> if <Plug>SelectFunction
     " omap <silent> if <Plug>SelectFunction
     " xmap <silent> iF <Plug>SelectFUNCTION
