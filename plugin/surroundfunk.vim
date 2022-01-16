@@ -551,7 +551,7 @@ endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- visually_select_func ----------------------------------------------------
-function! surroundfunk#visually_select_func(word_size)
+function! s:visually_select_func(word_size)
     call s:move_to_end_of_func()
     normal! v
     call s:move_to_start_of_func(a:word_size)
@@ -583,8 +583,8 @@ nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>repeatable_paste
 nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>repeatable_paste("big", "word", "PasteFunctionAroundWORD")<CR>
 
 
-xnoremap <silent> <Plug>SelectSurroundingFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
-onoremap <silent> <Plug>SelectSurroundingFunction :<C-U>call surroundfunk#visually_select_func("small")<CR>
+xnoremap <silent> <Plug>SelectSurroundingFunction :<C-U>call s:visually_select_func("small")<CR>
+onoremap <silent> <Plug>SelectSurroundingFunction :<C-U>call s:visually_select_func("small")<CR>
 
 
 "}}}---------------------------------------------------------------------------
