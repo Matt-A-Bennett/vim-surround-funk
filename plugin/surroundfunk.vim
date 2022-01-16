@@ -594,8 +594,8 @@ xnoremap <silent> <Plug>SelectAroundFUNCTION :<C-U>call surroundfunk#visually_se
 onoremap <silent> <Plug>SelectAroundFUNCTION :<C-U>call surroundfunk#visually_select_func("big")<CR>
 xnoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
 onoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
-xnoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
-onoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+xnoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
+onoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
 
 "}}}---------------------------------------------------------------------------
 
