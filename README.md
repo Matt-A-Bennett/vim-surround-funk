@@ -21,8 +21,8 @@ list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/sur
 * [Usage](#usage)
     * [What is a surrounding function?](#what-is-a-surrounding-function)
     * [Deleting, changing and yanking a surrounding function](#deleting-changing-and-yanking-a-surrounding-function)
-    * [Gripping a word or another function](#gripping-a-word-or-another-function)
     * [Text objects](#text-objects)
+    * [Gripping a text object or motion with a function](#gripping-a-text-object-or-motion-with-a-function)
     * [Settings](#settings)
         * [Turn off automatic creation of normal mode mappings](#turn-off-automatic-creation-of-normal-mode-mappings)
         * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
@@ -127,92 +127,13 @@ ysf: Yank surrounding function ysF: Like 'ysf', but the function name is
      (see below)
 ```
 
-### Gripping a word or another function
-
-If you have tpope's excellent [repeat.vim
-plugin](https://github.com/tpope/vim-repeat), then the following commands are
-repeatable with the dot command.
-
-To prevent these mappings from being generated, and define your own see
-`g:surround_funk_create_mappings`
-[below](#turn-off-automatic-creation-of-normal-mode-mappings).
-
-```
-gsf: Grip (i.e wrap/encompass) another function with the function in the
-     unnamed register.
-
-gsF: Like 'gsf', but the function name is delimited by any character not in 
-     'g:surround_funk_legal_func_name_chars' (see below)
-
-gsw: Grip (i.e wrap/encompass) a word with the function in the unnamed 
-     register.
-
-gsW: Like 'gsw', but the function name is delimited by of 
-     'g:surround_funk_legal_func_name_chars' (see below)
-```
-
-In the example below, with the cursor anywhere with a `^` symbol, you can do
-`ysF` to 'yank the surrounding function' (which is all the stuff with `*` above
-it):
-
-```
-*************               *************
-np.outerfunc(innerfunc(arg1), arg2, arg3)
-^^^^^^^^^^^^^               ^^^^^^^^^^^^^
-```
-
-Then go to some other function (or just a word) (the cursor can be anywhere in
-this case)
-
-```
-os.lonelyfunc(argA, argB)
-^^^^^^^^^^^^^^^^^^^^^^^^^
-```
-
-And do `gsF` to 'grip/surround' the lonely function with the yanked one:
-
-```
-*************                         *************
-np.outerfunc(os.lonelyfunc(argA, argB), arg2, arg3)
-^
-```
-
-You could then move to a word:
-
-```
-MeNext
-^^^^^^
-```
-
-and grip/surround it with `gsw`
-
-```
-*************      *************
-np.outerfunc(MeNext, arg2, arg3)
-^
-```
-
-You could also grip a multi-line function (again using `gsF`):
-
-```
-**************      *******
-os.multi_line(argA(),
-                argB, argC) < anywhere on this line is fine too
-^^^^^^^^^^^^^^  ^^^^^^^^^^^
-```
-
-To get:
-
-```
-*************                    *
-np.outerfunc(os.multi_line(argA(),
-                argB, argC), arg2, arg3)
-                           *************
-```
-
 ### Text objects
 
 The following text objects are made available by surround-funk:
+
+To prevent these mappings from being generated, and define your own, see
+`g:surround_funk_create_mappings`
+[below](#turn-off-automatic-creation-of-normal-mode-mappings).
 
 ```
 af: From the first letter of the function's name to the closing parenthesis of
@@ -229,6 +150,10 @@ an: The function's name
 
 aN: Like 'an', but the function name is delimited by any character not in 
     'g:surround_funk_legal_func_name_chars' (see below)
+
+in: Alias of 'an'
+
+iN: Alias of 'aN'
 ```
 
 For example, with the cursor anywhere indicated by the `^` symbols, doing `vif`
@@ -250,8 +175,82 @@ np.outerfunc(innerfunc(arg1), arg2, arg3)
    ^^^^^^^^^^               ^^^^^^^^^^^^^
 ```
 
-### Settings
+### Gripping a text object or motion with a function
 
+If you have tpope's excellent [repeat.vim
+plugin](https://github.com/tpope/vim-repeat), then the following commands are
+repeatable with the dot command.
+
+To prevent these mappings from being generated, and define your own see
+`g:surround_funk_create_mappings`
+[below](#turn-off-automatic-creation-of-normal-mode-mappings).
+
+```
+gs: Grip (i.e wrap/encompass) any text object or motion with with the function
+    in the unnamed register.
+```
+
+In the example below, with the cursor anywhere with a `^` symbol, you can do
+`ysF` to 'yank the surrounding function' (which is all the stuff with `*` above
+it):
+
+```
+*************               *************
+np.outerfunc(innerfunc(arg1), arg2, arg3)
+^^^^^^^^^^^^^               ^^^^^^^^^^^^^
+```
+
+Then go to some other function (or just a word) (the cursor can be anywhere in
+this case)
+
+```
+os.lonelyfunc(argA, argB)
+^^^^^^^^^^^^^^^^^^^^^^^^^
+```
+
+And do `gsiF` or `gsaF` to 'grip/surround' the lonely function with the yanked
+one:
+
+```
+*************                         *************
+np.outerfunc(os.lonelyfunc(argA, argB), arg2, arg3)
+^
+```
+
+You could then move to a word:
+
+```
+MeNext
+^^^^^^
+```
+
+and grip/surround it with `gsiw`
+
+```
+*************      *************
+np.outerfunc(MeNext, arg2, arg3)
+^
+```
+
+You could also grip a multi-line function (again using `gsiF` or `gsaF`):
+
+```
+**************      *******
+os.multi_line(argA(),
+                argB, argC) < anywhere on this line is fine too
+^^^^^^^^^^^^^^  ^^^^^^^^^^^
+```
+
+To get:
+
+```
+*************                    *
+np.outerfunc(os.multi_line(argA(),
+                argB, argC), arg2, arg3)
+                           *************
+```
+
+### Settings
 #### Turn off automatic creation of normal mode mappings
 
 By default surround-funk creates the above normal mode mappings. If you would
@@ -384,7 +383,6 @@ Use your favorite plugin manager.
 [pathogen]: https://github.com/tpope/vim-pathogen
 
 ## Contribution guidelines
-
 ### Report a bug
 First, check if the bug is already known by seeing whether it's listed on the
 [surround-funk todo list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/todo.md).
