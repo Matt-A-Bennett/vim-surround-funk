@@ -24,7 +24,7 @@ list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/sur
     * [Text objects](#text-objects)
     * [Gripping a text object or motion with a function](#gripping-a-text-object-or-motion-with-a-function)
     * [Settings](#settings)
-        * [Turn off automatic creation of normal mode mappings](#turn-off-automatic-creation-of-normal-mode-mappings)
+        * [Turn off automatic creation of mappings](#turn-off-automatic-creation-of-mappings)
         * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
 * [Contribution guidelines](#contribution-guidelines)
     * [Report a bug](#report-a-bug)
@@ -251,9 +251,9 @@ np.outerfunc(os.multi_line(argA(),
 ```
 
 ### Settings
-#### Turn off automatic creation of normal mode mappings
+#### Turn off automatic creation of mappings
 
-By default surround-funk creates the above normal mode mappings. If you would
+By default surround-funk creates the above mappings. If you would
 rather it didn't do this (for instance if you already have those key
 combinations mapped to something else) you can turn them off with:
 
@@ -277,20 +277,16 @@ nmap csf <Plug>ChangeSurroundingFunction
 nmap csF <Plug>ChangeSurroundingFUNCTION
 nmap ysf <Plug>YankSurroundingFunction
 nmap ysF <Plug>YankSurroundingFUNCTION
-nmap gsf <Plug>PasteFunctionAroundFunction
-nmap gsF <Plug>PasteFunctionAroundFUNCTION
-nmap gsw <Plug>PasteFunctionAroundWord
-nmap gsW <Plug>PasteFunctionAroundWORD
 
-" visual selection and operator pending modes
-xmap <silent> af <Plug>SelectFunction
-omap <silent> af <Plug>SelectFunction
-xmap <silent> aF <Plug>SelectFUNCTION
-omap <silent> aF <Plug>SelectFUNCTION
-xmap <silent> if <Plug>SelectFunction
-omap <silent> if <Plug>SelectFunction
-xmap <silent> iF <Plug>SelectFUNCTION
-omap <silent> iF <Plug>SelectFUNCTION
+" visual mode
+xmap <silent> af <Plug>SelectWholeFunction
+omap <silent> af <Plug>SelectWholeFunction
+xmap <silent> aF <Plug>SelectWholeFUNCTION
+omap <silent> aF <Plug>SelectWholeFUNCTION
+xmap <silent> if <Plug>SelectWholeFunction
+omap <silent> if <Plug>SelectWholeFunction
+xmap <silent> iF <Plug>SelectWholeFUNCTION
+omap <silent> iF <Plug>SelectWholeFUNCTION
 xmap <silent> an <Plug>SelectFunctionName
 omap <silent> an <Plug>SelectFunctionName
 xmap <silent> aN <Plug>SelectFunctionNAME
@@ -299,6 +295,10 @@ xmap <silent> in <Plug>SelectFunctionName
 omap <silent> in <Plug>SelectFunctionName
 xmap <silent> iN <Plug>SelectFunctionNAME
 omap <silent> iN <Plug>SelectFunctionNAME
+
+" operator pending mode
+nmap <silent> gs <Plug>GripSurroundObject
+vmap <silent> gs <Plug>GripSurroundObject
 ```
 
 #### Specify what characters are allowed in a function name
