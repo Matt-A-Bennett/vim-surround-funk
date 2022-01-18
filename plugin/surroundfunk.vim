@@ -522,22 +522,6 @@ endfunction
 
 "========================== PERFORM THE OPERATIONS ============================
 
-"{{{- visually_select_func_name -----------------------------------------------
-function! surroundfunk#visually_select_func_name(word_size)
-    call s:move_to_func_open_paren()
-    normal! hv
-    call s:move_to_start_of_func(a:word_size)
-endfunction
-"}}}---------------------------------------------------------------------------
-
-"{{{- visually_select_whole_func ----------------------------------------------
-function! surroundfunk#visually_select_whole_func(word_size)
-    call s:move_to_end_of_func()
-    normal! v
-    call s:move_to_start_of_func(a:word_size)
-endfunction
-"}}}---------------------------------------------------------------------------
-
 "{{{- operate_on_surrounding_func ---------------------------------------------
 function! s:operate_on_surrounding_func(word_size, operation)
     let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
@@ -551,6 +535,22 @@ function! s:operate_on_surrounding_func(word_size, operation)
     if a:operation =~ 'change'
         startinsert
     endif
+endfunction
+"}}}---------------------------------------------------------------------------
+
+"{{{- visually_select_func_name -----------------------------------------------
+function! surroundfunk#visually_select_func_name(word_size)
+    call s:move_to_func_open_paren()
+    normal! hv
+    call s:move_to_start_of_func(a:word_size)
+endfunction
+"}}}---------------------------------------------------------------------------
+
+"{{{- visually_select_whole_func ----------------------------------------------
+function! surroundfunk#visually_select_whole_func(word_size)
+    call s:move_to_end_of_func()
+    normal! v
+    call s:move_to_start_of_func(a:word_size)
 endfunction
 "}}}---------------------------------------------------------------------------
 
@@ -621,7 +621,16 @@ vnoremap <silent> <Plug>GripSurroundObject :<C-U>call <SID>grip_surround_object(
 
 "{{{- create maps and text objects --------------------------------------------
 if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings != 0
-    " visual selection and operator pending modes
+
+    " normal mode
+    nmap <silent> dsf <Plug>DeleteSurroundingFunction
+    nmap <silent> dsF <Plug>DeleteSurroundingFUNCTION
+    nmap <silent> csf <Plug>ChangeSurroundingFunction
+    nmap <silent> csF <Plug>ChangeSurroundingFUNCTION
+    nmap <silent> ysf <Plug>YankSurroundingFunction
+    nmap <silent> ysF <Plug>YankSurroundingFUNCTION
+
+    " visual mode
     xmap <silent> af <Plug>SelectWholeFunction
     omap <silent> af <Plug>SelectWholeFunction
     xmap <silent> aF <Plug>SelectWholeFUNCTION
@@ -638,16 +647,10 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     omap <silent> in <Plug>SelectFunctionName
     xmap <silent> iN <Plug>SelectFunctionNAME
     omap <silent> iN <Plug>SelectFunctionNAME
+
+    " operator pending mode
     nmap <silent> gs <Plug>GripSurroundObject
     vmap <silent> gs <Plug>GripSurroundObject
-
-    " normal mode
-    nmap <silent> dsf <Plug>DeleteSurroundingFunction
-    nmap <silent> dsF <Plug>DeleteSurroundingFUNCTION
-    nmap <silent> csf <Plug>ChangeSurroundingFunction
-    nmap <silent> csF <Plug>ChangeSurroundingFUNCTION
-    nmap <silent> ysf <Plug>YankSurroundingFunction
-    nmap <silent> ysF <Plug>YankSurroundingFUNCTION
 
     " " maybe keep these and expose them according to user g:flag
     " nmap gsf <Plug>PasteFunctionAroundFunction
