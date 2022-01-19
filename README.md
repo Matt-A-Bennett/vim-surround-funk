@@ -73,8 +73,7 @@ np.outerfunc(innerfunc(arg1),
 ```
 sF: Where the name of the function (e.g. np.outerfunc) is similar to a Vim
     WORD, but is additionally delimited by any character not in
-    'g:surround_funk_legal_func_name_chars' (see
-    [below](#specify-what-characters-are-allowed-in-a-function-name))
+    'g:surround_funk_legal_func_name_chars' (see below)
 
 *************               *
 np.outerfunc(innerfunc(arg1))
