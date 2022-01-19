@@ -9,11 +9,11 @@ This plugin is only available if 'compatible' is not set.
 
 INTRODUCTION                                    *surround-funk*
 
-This was inspired by tpope's |surround| plugin and allows you to delete,
-change and yank a surrounding function along with its additional arguments.
-With the surrounding function in the unnamed register, you can 'grip' a word or
-another function with it. 'Gripping' will wrap/encompass a word or function
-with the one you have in the unnamed register (see below).
+This was inspired by tpope's |surround| plugin and allows you to delete, change
+and yank a surrounding function along with its additional arguments. With the
+surrounding function in the unnamed register, you can 'grip' a word or another
+function with it. 'Gripping' will wrap/encompass a word or function with the
+one you have in the unnamed register (see below).
 
 
 USAGE
@@ -21,9 +21,9 @@ USAGE
 
 WHAT IS A SURROUNDING FUNCTION?
 
-Below, the * symbols show what would be deleted (or yanked) with the
-|surround-funk#dsf| (or |surround-funk#ysf|) command. The ^ symbols show
-where the cursor can be when issuing the command:
+Below, the * symbols show what would be deleted (or yanked) with the dsf (or
+ysf) command. The ^ symbols show where the cursor can be when issuing the
+command:
 
 
 sf                      Where the name of the function (e.g. outerfunc) is a 
@@ -83,9 +83,8 @@ sF                      Where the name of the function (e.g. np.outerfunc) is
 
 DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION
 
-If you have tpope's excellent repeat.vim plugin, then the |surround-funk#dsf|
-and |surround-funk#dsF| commands are repeatable with the dot command (see
-|single-repeat|).
+If you have tpope's excellent repeat.vim plugin, then the dsf and dsF commands
+are repeatable with the dot command (see |single-repeat|).
 
 To prevent these mappings from being generated, and define your own custom
 ones, see |g:surround_funk_create_mappings| below.
@@ -94,26 +93,25 @@ ones, see |g:surround_funk_create_mappings| below.
 dsf                     Delete surrounding function
 
                                         *surround-funk#dsF*
-dsF                     Like |surround-funk#dsf|, but the function name is
-                        delimited by any character not in
+dsF                     Like dsf, but the function name is delimited by any
+                        character not in
                         |g:surround_funk_legal_func_name_chars|
 
                                         *surround-funk#csf*
-csf                     Like |surround-funk#dsf| but start instert mode where
-                        the opening parenthesis of the changed function used to
-                        be.
+csf                     Like dsf but start instert mode where the opening
+                        parenthesis of the changed function used to be.
 
                                         *surround-funk#csF*
-csF                     Like |surround-funk#csf|, but the function name is
-                        delimited by any character not in
+csF                     Like csf, but the function name is delimited by any
+                        character not in
                         |g:surround_funk_legal_func_name_chars|
 
                                         *surround-funk#ysf*
 ysf                     Yank surrounding function
 
                                         *surround-funk#ysF*
-ysF                     Like |surround-funk#ysf|, but the function name is
-                        delimited by any character not in
+ysF                     Like ysf, but the function name is delimited by any
+                        character not in
                         |g:surround_funk_legal_func_name_chars|
 
 
@@ -129,29 +127,29 @@ af                      From the first letter of the function's name to the
                         closing parenthesis of that function call
 
                                         *surround-funk#aF*
-aF                      Like |surround-funk#af|, but the function name is
-                        delimited by any character not in
+aF                      Like af, but the function name is delimited by any
+                        character not in
                         |g:surround_funk_legal_func_name_chars|
 
                                         *surround-funk#if*  
-if                      Alias of |surround-funk#af|
+if                      Alias of af
 
                                         *surround-funk#iF*  
-iF                      Alias of |surround-funk#aF|
+iF                      Alias of aF
 
                                         *surround-funk#an*  
 an                      The function's name
 
                                         *surround-funk#aN*  
-aN                      Like |surround-funk#an|, but the function name is
-                        delimited by any character not in
+aN                      Like an, but the function name is delimited by any
+                        character not in
                         |g:surround_funk_legal_func_name_chars|
 
                                         *surround-funk#in*  
-in                      Alias of |surround-funk#an|
+in                      Alias of an
 
                                         *surround-funk#iN*  
-iN                      Alias of |surround-funk#aN|
+iN                      Alias of aN
 
 
 
@@ -185,9 +183,8 @@ gs                     Grip (i.e wrap/encompass) any text object or motion with
                        with the function in the unnamed register.
 
 
-In the example below, with the cursor anywhere with a ^ symbol, you can do
-|surround-funk#ysF| to 'yank the surrounding function' (which is all the stuff with * above
-it):
+In the example below, with the cursor anywhere with a ^ symbol, you can do ysF
+to 'yank the surrounding function' (which is all the stuff with * above it):
 
     *************               *************
     np.outerfunc(innerfunc(arg1), arg2, arg3)
@@ -201,8 +198,7 @@ this case):
     ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-And do gsiF or gsaF to 'grip/surround' the lonely function with the yanked
-one:
+And do gsiF or gsaF to 'grip/surround' the lonely function with the yanked one:
 
     *************                         *************
     np.outerfunc(os.lonelyfunc(argA, argB), arg2, arg3)
