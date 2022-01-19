@@ -1,4 +1,4 @@
-*surround-funk.txt* (Version 1.1.1) Delete, change and yank a surrounding
+*surround-funk.txt* (Version 2.0.0) Delete, change and yank a surrounding
 function along with its additional arguments. Then 'grip' a word or function
 with the surrounding function.
 
@@ -115,30 +115,72 @@ ysF                     Like |ysf|, but the function name is delimited by
                         |g:surround_funk_legal_func_name_chars|
 
 
-GRIPPING A WORD OR ANOTHER FUNCTION
+TEXT OBJECTS
 
-If you have tpope's excellent repeat.vim plugin, then the following commands
-are repeatable with the dot command (see |single-repeat|).
+The following text objects are made available by |surround-funk|:
 
 To prevent these mappings from being generated, and define your own, see
 |g:surround_funk_create_mappings| below.
 
-                                                *gsf*
-gsf                     Grip (i.e wrap/encompass) another function with the
-                        function in the unnamed register.
+                                                *af*
+af                      From the first letter of the function's name to the
+                        closing parenthesis of that function call
 
-                                                *gsF*
-gsF                     Like |gsf|, but the function name is delimited by
-                        any character not in
+                                                *aF*
+aF                      Like |af|, but the function name is delimited by any
+                        character not in
                         |g:surround_funk_legal_func_name_chars|
 
-                                                *gsw*
-gsw                     Grip (i.e wrap/encompass) a word with the function in 
-                        the unnamed register.
+                                                *if*  
+if                      Alias of |af|
 
-                                                *gsW*
-gsW                     Like |gsw|, but the word is delimited by any character
-                        not in |g:surround_funk_legal_func_name_chars|
+                                                *iF*  
+iF                      Alias of |aF|
+
+                                                *an*  
+an                      The function's name
+
+                                                *aN*  
+aN                      Like |an|, but the function name is delimited by any
+                        character not in
+                        |g:surround_funk_legal_func_name_chars|
+
+                                                *in*  
+in                      Alias of |an|
+
+                                                *iN*  
+iN                      Alias of |aN|
+
+
+
+For example, with the cursor anywhere indicated by the ^ symbols, doing |vif|
+will visually select the entire function, indicated by the * symbols (to
+include the 'np.' part of the function, use |viF|):
+
+       **************************************
+    np.outerfunc(innerfunc(arg1), arg2, arg3)
+       ^^^^^^^^^^               ^^^^^^^^^^^^^
+
+
+To select just the function's name, use |vin| (again, use |viN| to include the
+'np.' part):
+
+       *********
+    np.outerfunc(innerfunc(arg1), arg2, arg3)
+       ^^^^^^^^^^               ^^^^^^^^^^^^^
+
+
+GRIPPING A TEXT OBJECT OR MOTION WITH A FUNCTION
+
+If you have tpope's excellent repeat.vim plugin, then the following command is
+repeatable with the dot command (see |single-repeat|).
+
+To prevent this mapping from being generated, and define your own, see
+|g:surround_funk_create_mappings| below.
+
+                                                *gs*
+gs                     Grip (i.e wrap/encompass) any text object or motion with
+                       with the function in the unnamed register.
 
 
 In the example below, with the cursor anywhere with a ^ symbol, you can do
@@ -157,7 +199,8 @@ this case):
     ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-And do |gsF| to 'grip/surround' the lonely function with the yanked one:
+And do gsiF or gsaF to 'grip/surround' the lonely function with the yanked
+one:
 
     *************                         *************
     np.outerfunc(os.lonelyfunc(argA, argB), arg2, arg3)
@@ -170,18 +213,20 @@ You could then move to a word:
     ^^^^^^
 
 
-and grip/surround it with |gsw|:
+and grip/surround it with gsiw:
 
     *************      *************
     np.outerfunc(MeNext, arg2, arg3)
     ^
 
-You could also grip a multi-line function (again using |gsF|):
+
+You could also grip a multi-line function (again using gsiF or gsaF):
 
     **************      *******
     os.multi_line(argA(),
                     argB, argC) < anywhere on this line is fine too
     ^^^^^^^^^^^^^^  ^^^^^^^^^^^
+
 
 To get:
 
@@ -190,12 +235,13 @@ To get:
                     argB, argC), arg2, arg3)
                                *************
 
+
 SETTINGS
 
                                    *g:surround_funk_create_mappings*
-By default |surround-funk| creates the above normal mode mappings. If you would
-rather it didn't do this (for instance if you already have those key
-combinations mapped to something else) you can turn them off with:
+By default |surround-funk| creates the above mappings. If you would rather it
+didn't do this (for instance if you already have those key combinations mapped
+to something else) you can turn them off with:
 
     let g:surround_funk_create_mappings = 0
 
@@ -205,21 +251,38 @@ And map them to something different with:
 
 For reference, the default mappings are as follows:
 
+    " normal mode
     nmap |dsf| <Plug>DeleteSurroundingFunction
     nmap |dsF| <Plug>DeleteSurroundingFUNCTION
     nmap |csf| <Plug>ChangeSurroundingFunction
     nmap |csF| <Plug>ChangeSurroundingFUNCTION
     nmap |ysf| <Plug>YankSurroundingFunction
     nmap |ysF| <Plug>YankSurroundingFUNCTION
-    nmap |gsf| <Plug>PasteFunctionAroundFunction
-    nmap |gsF| <Plug>PasteFunctionAroundFUNCTION
-    nmap |gsw| <Plug>PasteFunctionAroundWord
-    nmap |gsW| <Plug>PasteFunctionAroundWORD
 
+    " visual mode
+    xmap <silent> |af| <Plug>SelectWholeFunction
+    omap <silent> |af| <Plug>SelectWholeFunction
+    xmap <silent> |aF| <Plug>SelectWholeFUNCTION
+    omap <silent> |aF| <Plug>SelectWholeFUNCTION
+    xmap <silent> |if| <Plug>SelectWholeFunction
+    omap <silent> |if| <Plug>SelectWholeFunction
+    xmap <silent> |iF| <Plug>SelectWholeFUNCTION
+    omap <silent> |iF| <Plug>SelectWholeFUNCTION
+    xmap <silent> |an| <Plug>SelectFunctionName
+    omap <silent> |an| <Plug>SelectFunctionName
+    xmap <silent> |aN| <Plug>SelectFunctionNAME
+    omap <silent> |aN| <Plug>SelectFunctionNAME
+    xmap <silent> |in| <Plug>SelectFunctionName
+    omap <silent> |in| <Plug>SelectFunctionName
+    xmap <silent> |iN| <Plug>SelectFunctionNAME
+    omap <silent> |iN| <Plug>SelectFunctionNAME
+
+    " operator pending mode
+    nmap <silent> gs <Plug>GripSurroundObject
+    vmap <silent> gs <Plug>GripSurroundObject
 
 N.B. If you're worried about remapping the core vim command |gs|, done't be -
 it literally does nothing.
-
 
 
 
@@ -235,13 +298,11 @@ The default:
 g:surround_funk_legal_func_name_chars = ['[0-9]', '[A-Z]', '[a-z]', '_', '\.']
 
 
-
     will match function names like:
 
           *********  *************  **************
     ...), pd.mean(), np2.my_func(), 8np.my._func(), ...
           ^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^
-
 
 
     but would stop at characters not in the legal name set (e.g. @, #, /):
@@ -254,7 +315,6 @@ g:surround_funk_legal_func_name_chars = ['[0-9]', '[A-Z]', '[a-z]', '_', '\.']
 To make numbers illegal, and to introduce # and @ as legal characters, use:
 
 g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.', '#', '@']
-
 
 
     will match function names like:

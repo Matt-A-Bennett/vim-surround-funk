@@ -1,4 +1,4 @@
-# surround-funk.vim (version 1.1.1)
+# surround-funk.vim (version 2.0.0)
 
 This was inspired by tpope's [surround.vim
 plugin](https://github.com/tpope/vim-surround) and allows you to delete, change
@@ -7,24 +7,21 @@ surrounding function in the unnamed register, you can 'grip' a word or another
 function with it. 'Gripping' will wrap/encompass a word or function with the
 one you have in the unnamed register (see below).
 
+## Features
+### Text objects for function body and name
+![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/textobjects_1100_775_annotated.gif)
 
-![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/multi_line_demo.gif)
-
-This plugin is currently in an initial testing phase. There are a likely a few
-edge-cases/bugs. If you find any, please tell me about it by raising a [new
-issue](https://github.com/Matt-A-Bennett/surround-funk.vim/issues) according to
-the [contribution guidelines](#contribution-guidelines). The same
-goes for if you would like to see a feature added! To see a list of what I plan
-to add, head on over to the [surround-funk todo
-list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/todo.md).
-
+### Commands for stripping functions and gripping other objects
+![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/operator_1100_775_annotated.gif)
+         
 ## Table of contents
 * [Usage](#usage)
     * [What is a surrounding function?](#what-is-a-surrounding-function)
     * [Deleting, changing and yanking a surrounding function](#deleting-changing-and-yanking-a-surrounding-function)
-    * [Gripping a word or another function](#gripping-a-word-or-another-function)
+    * [Text objects](#text-objects)
+    * [Gripping a text object or motion with a function](#gripping-a-text-object-or-motion-with-a-function)
     * [Settings](#settings)
-        * [Turn off automatic creation of normal mode mappings](#turn-off-automatic-creation-of-normal-mode-mappings)
+        * [Turn off automatic creation of mappings](#turn-off-automatic-creation-of-mappings)
         * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
 * [Contribution guidelines](#contribution-guidelines)
     * [Report a bug](#report-a-bug)
@@ -113,21 +110,69 @@ ones, see `g:surround_funk_create_mappings`
 ```
 dsf: Delete surrounding function
 
-dsF: Like `dsf`, but the function name is delimited by any character not in 
+dsF: Like 'dsf', but the function name is delimited by any character not in 
      'g:surround_funk_legal_func_name_chars' (see below)
 
-csf: Like `dsf` but start instert mode where the opening parenthesis of the
+csf: Like 'dsf' but start instert mode where the opening parenthesis of the
      changed function used to be
 
-csF: Like `csf`, but the function name is delimited by any character not in 
+csF: Like 'csf', but the function name is delimited by any character not in 
      'g:surround_funk_legal_func_name_chars' (see below)
 
-ysf: Yank surrounding function ysF: Like `ysf`, but the function name is
+ysf: Yank surrounding function ysF: Like 'ysf', but the function name is
      delimited by any character not in 'g:surround_funk_legal_func_name_chars'
      (see below)
 ```
 
-### Gripping a word or another function
+### Text objects
+
+The following text objects are made available by surround-funk:
+
+To prevent these mappings from being generated, and define your own, see
+`g:surround_funk_create_mappings`
+[below](#turn-off-automatic-creation-of-normal-mode-mappings).
+
+```
+af: From the first letter of the function's name to the closing parenthesis of
+    that function call
+
+aF: Like 'af', but the function name is delimited by any character not in 
+    'g:surround_funk_legal_func_name_chars' (see below)
+
+if: Alias of 'af'
+
+iF: Alias of 'aF'
+
+an: The function's name
+
+aN: Like 'an', but the function name is delimited by any character not in 
+    'g:surround_funk_legal_func_name_chars' (see below)
+
+in: Alias of 'an'
+
+iN: Alias of 'aN'
+```
+
+For example, with the cursor anywhere indicated by the `^` symbols, doing `vif`
+will visually select the entire function, indicated by the `*` symbols (to
+include the `np.` part of the function, use `viF`):
+
+```
+   **************************************
+np.outerfunc(innerfunc(arg1), arg2, arg3)
+   ^^^^^^^^^^               ^^^^^^^^^^^^^
+```
+
+To select just the function's name, use `vin` (again, use `viN` to include the
+`np.` part):
+
+```
+   *********
+np.outerfunc(innerfunc(arg1), arg2, arg3)
+   ^^^^^^^^^^               ^^^^^^^^^^^^^
+```
+
+### Gripping a text object or motion with a function
 
 If you have tpope's excellent [repeat.vim
 plugin](https://github.com/tpope/vim-repeat), then the following commands are
@@ -138,17 +183,8 @@ To prevent these mappings from being generated, and define your own see
 [below](#turn-off-automatic-creation-of-normal-mode-mappings).
 
 ```
-gsf: Grip (i.e wrap/encompass) another function with the function in the
-     unnamed register.
-
-gsF: Like 'gsf', but the function name is delimited by any character not in 
-     'g:surround_funk_legal_func_name_chars' (see below)
-
-gsw: Grip (i.e wrap/encompass) a word with the function in the unnamed 
-     register.
-
-gsW: Like 'gsw', but the function name is delimited by of 
-     'g:surround_funk_legal_func_name_chars' (see below)
+gs: Grip (i.e wrap/encompass) any text object or motion with with the function
+    in the unnamed register.
 ```
 
 In the example below, with the cursor anywhere with a `^` symbol, you can do
@@ -169,7 +205,8 @@ os.lonelyfunc(argA, argB)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
 
-And do `gsF` to 'grip/surround' the lonely function with the yanked one:
+And do `gsiF` or `gsaF` to 'grip/surround' the lonely function with the yanked
+one:
 
 ```
 *************                         *************
@@ -184,7 +221,7 @@ MeNext
 ^^^^^^
 ```
 
-and grip/surround it with `gsw`
+and grip/surround it with `gsiw`
 
 ```
 *************      *************
@@ -192,7 +229,7 @@ np.outerfunc(MeNext, arg2, arg3)
 ^
 ```
 
-You could also grip a multi-line function (again using `gsF`):
+You could also grip a multi-line function (again using `gsiF` or `gsaF`):
 
 ```
 **************      *******
@@ -211,10 +248,9 @@ np.outerfunc(os.multi_line(argA(),
 ```
 
 ### Settings
+#### Turn off automatic creation of mappings
 
-#### Turn off automatic creation of normal mode mappings
-
-By default surround-funk creates the above normal mode mappings. If you would
+By default surround-funk creates the above mappings. If you would
 rather it didn't do this (for instance if you already have those key
 combinations mapped to something else) you can turn them off with:
 
@@ -231,16 +267,35 @@ nmap <your-map-here> <Plug><OperationToMap>
 For reference, the default mappings are as follows:
 
 ```vim
+" normal mode
 nmap dsf <Plug>DeleteSurroundingFunction
 nmap dsF <Plug>DeleteSurroundingFUNCTION
 nmap csf <Plug>ChangeSurroundingFunction
 nmap csF <Plug>ChangeSurroundingFUNCTION
 nmap ysf <Plug>YankSurroundingFunction
 nmap ysF <Plug>YankSurroundingFUNCTION
-nmap gsf <Plug>PasteFunctionAroundFunction
-nmap gsF <Plug>PasteFunctionAroundFUNCTION
-nmap gsw <Plug>PasteFunctionAroundWord
-nmap gsW <Plug>PasteFunctionAroundWORD
+
+" visual mode
+xmap <silent> af <Plug>SelectWholeFunction
+omap <silent> af <Plug>SelectWholeFunction
+xmap <silent> aF <Plug>SelectWholeFUNCTION
+omap <silent> aF <Plug>SelectWholeFUNCTION
+xmap <silent> if <Plug>SelectWholeFunction
+omap <silent> if <Plug>SelectWholeFunction
+xmap <silent> iF <Plug>SelectWholeFUNCTION
+omap <silent> iF <Plug>SelectWholeFUNCTION
+xmap <silent> an <Plug>SelectFunctionName
+omap <silent> an <Plug>SelectFunctionName
+xmap <silent> aN <Plug>SelectFunctionNAME
+omap <silent> aN <Plug>SelectFunctionNAME
+xmap <silent> in <Plug>SelectFunctionName
+omap <silent> in <Plug>SelectFunctionName
+xmap <silent> iN <Plug>SelectFunctionNAME
+omap <silent> iN <Plug>SelectFunctionNAME
+
+" operator pending mode
+nmap <silent> gs <Plug>GripSurroundObject
+vmap <silent> gs <Plug>GripSurroundObject
 ```
 
 #### Specify what characters are allowed in a function name
@@ -333,8 +388,7 @@ First, check if the bug is already known by seeing whether it's listed on the
 If it's not there, then please raise a [new
 issue](https://github.com/Matt-A-Bennett/surround-funk.vim/issues) so I can fix
 it (or submit a pull request). To make it easier, you can use the following
-template (I'm still working on multi-line support, so the fact that this fails
-isn't really a bug):
+template (If multi-line was broken, you could show me something like this):
 
 ---
 

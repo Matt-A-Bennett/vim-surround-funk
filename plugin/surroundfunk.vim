@@ -9,7 +9,7 @@
 "
 "
 " Author:       Matthew Bennett
-" Version:      1.1.1
+" Version:      2.0.0
 " License:      Same as Vim's (see :help license)
 "
 "
@@ -169,6 +169,24 @@ function! s:is_cursor_on_func()
     return close_paren_count > open_paren_count
 endfunction
 "}}}---------------------------------------------------------------------------
+
+"{{{- get_motion --------------------------------------------------------------
+function! s:get_motion(type)
+    if a:type ==? 'v' || a:type ==# "\<C-V>"
+        let [_, l_start, c_start, _] = getpos("'<")
+        let [_, l_end, c_end, _] = getpos("'>")
+    else
+        let [_, l_start, c_start, _] = getpos("'[")
+        let [_, l_end, c_end, _] = getpos("']")
+    endif
+    if a:type ==# 'V' || a:type ==# 'line'
+        let c_start = 1
+        let c_end = len(getline(l_end))
+    endif
+    return [[l_start, c_start], [l_end, c_end]]
+endfunction
+"}}}---------------------------------------------------------------------------
+
 "}}}---------------------------------------------------------------------------
 
 "------------------------------- Get Markers ----------------------------------
@@ -262,7 +280,7 @@ endfunction
 
 "{{{- get_func_markers --------------------------------------------------------
 function! s:get_func_markers(word_size)
-    " get a list of lists: each list contains the line and column positions of
+    " get a list of list each list contains the line and column positions of
     " one of the four key function markers (see top of file for explanation of
     " these function markers)
     let [l_start, c_start] = s:get_start_of_func_position(a:word_size)
@@ -276,20 +294,21 @@ function! s:get_func_markers(word_size)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-" "{{{- get_word_markers ------------------------------------------------------
-function! s:get_word_markers(word_size)
-    " get list containing the line and column positions of the word - using the
-    " <s:legal_func_name_chars> if marking a 'big word'
-    if a:word_size ==# 'small'
-        let [l_start, c_start] = searchpos('\<', 'b', line('.'))
-        let [l_close, c_close] = searchpos('\>', '', line('.'))
-    elseif a:word_size ==# 'big'
-        let [l_start, c_start] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
-        let [l_close, c_close] = searchpos('\('.s:legal_func_name_chars.'\)\@<!\|$', '', line('.'))
-    endif
-    return [[l_start, c_start], [l_close, c_close-1]]
-endfunction
-"}}}---------------------------------------------------------------------------
+" " maybe keep these and expose them according to user g:flag
+""{{{- get_word_markers --------------------------------------------------------
+"function! s:get_word_markers(word_size)
+"    " get list containing the line and column positions of the word - using the
+"    " <s:legal_func_name_chars> if marking a 'big word'
+"    if a:word_size ==# 'small'
+"        let [l_start, c_start] = searchpos('\<', 'b', line('.'))
+"        let [l_close, c_close] = searchpos('\>', '', line('.'))
+"    elseif a:word_size ==# 'big'
+"        let [l_start, c_start] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
+"        let [l_close, c_close] = searchpos('\('.s:legal_func_name_chars.'\)\@<!\|$', '', line('.'))
+"    endif
+"    return [[l_start, c_start], [l_close, c_close-1]]
+"endfunction
+""}}}---------------------------------------------------------------------------
 "}}}---------------------------------------------------------------------------
 
 "--------------------------------- Extract ------------------------------------
@@ -519,22 +538,31 @@ function! s:operate_on_surrounding_func(word_size, operation)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- paste_func_around -------------------------------------------------------
-function! s:paste_func_around(word_size, func_or_word)
-    if a:func_or_word ==# 'func'
-        let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
-    else
-        let [start_pos, close_pos] = s:get_word_markers(a:word_size)
-        let open_pos = start_pos
-    endif
+"{{{- visually_select_func_name -----------------------------------------------
+function! surroundfunk#visually_select_func_name(word_size)
+    call s:move_to_func_open_paren()
+    normal! hv
+    call s:move_to_start_of_func(a:word_size)
+endfunction
+"}}}---------------------------------------------------------------------------
 
+"{{{- visually_select_whole_func ----------------------------------------------
+function! surroundfunk#visually_select_whole_func(word_size)
+    call s:move_to_end_of_func()
+    normal! v
+    call s:move_to_start_of_func(a:word_size)
+endfunction
+"}}}---------------------------------------------------------------------------
+
+"{{{- grip_surround_object ----------------------------------------------------
+function! s:grip_surround_object(type)
+    let [start_pos, close_pos] = s:get_motion(a:type)
     let before = s:surroundfunk_func_parts[0][0]
     let after = s:surroundfunk_func_parts[1]
     let str = getline(start_pos[0])
-
     if start_pos[0] == close_pos[0] && len(after) == 1
         let func_line = s:insert_substrings(str, [[before, start_pos[1], '<'],
-                                               \[after[0], close_pos[1], '>']])
+                    \[after[0], close_pos[1], '>']])
         call setline(start_pos[0], func_line)
     else
         if start_pos[0] == close_pos[0]
@@ -546,22 +574,33 @@ function! s:paste_func_around(word_size, func_or_word)
         let the_rest = s:surroundfunk_func_parts[1][1:]
         call append(close_pos[0], the_rest)
     endif
-    call cursor(open_pos[0], open_pos[1])
+    call cursor(start_pos[0], start_pos[1])
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"=============================== CREATE MAPS ==================================
+"======================= CREATE MAPS AND TEXT OBJECTS =========================
 
-"{{{---------------------------------------------------------------------------
+"{{{- make maps repeatable ----------------------------------------------------
 function! s:repeatable_delete(word_size, operation, mapname)
     call s:operate_on_surrounding_func(a:word_size, a:operation)
     silent! call repeat#set("\<Plug>".a:mapname, v:count)
 endfunction
 
-function! s:repeatable_paste(word_size, func_or_word, mapname)
-    call s:paste_func_around(a:word_size, a:func_or_word)
-    silent! call repeat#set("\<Plug>".a:mapname, v:count)
-endfunction
+" function! s:repeatable_grip(type, mapname)
+"     call s:grip_surround_object(a:type)
+"     silent! call repeat#set("\<Plug>".a:mapname, v:count)
+" endfunction
+"}}}---------------------------------------------------------------------------
+
+"{{{- define plug function calls ----------------------------------------------
+xnoremap <silent> <Plug>SelectWholeFunction :<C-U>call surroundfunk#visually_select_whole_func("small")<CR>
+onoremap <silent> <Plug>SelectWholeFunction :<C-U>call surroundfunk#visually_select_whole_func("small")<CR>
+xnoremap <silent> <Plug>SelectWholeFUNCTION :<C-U>call surroundfunk#visually_select_whole_func("big")<CR>
+onoremap <silent> <Plug>SelectWholeFUNCTION :<C-U>call surroundfunk#visually_select_whole_func("big")<CR>
+xnoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+onoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+xnoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
+onoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
 
 nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>repeatable_delete("small", "delete", "DeleteSurroundingFunction")<CR>
 nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>repeatable_delete("big", "delete", "DeleteSurroundingFunction")<CR>
@@ -569,6 +608,7 @@ nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>operate_on_sur
 nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "change")<CR>
 nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
 nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "yank")<CR>
+<<<<<<< HEAD:plugin/surround-funk.vim
 nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>repeatable_paste("small", "func", "PasteFunctionAroundFunction")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>repeatable_paste("big", "func", "PasteFunctionAroundFUNCTION")<CR>
 nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>repeatable_paste("small", "word", "PasteFunctionAroundWord")<CR>
@@ -585,6 +625,56 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     nmap gsF <Plug>PasteFunctionAroundFUNCTION
     nmap gsw <Plug>PasteFunctionAroundWord
     nmap gsW <Plug>PasteFunctionAroundWORD
+=======
+
+" " maybe keep these and expose them according to user g:flag
+" nnoremap <silent> <Plug>GripFunctionAroundFunction :<C-U>call <SID>repeatable_grip("small", "func", "GripFunctionAroundFunction")<CR>
+" nnoremap <silent> <Plug>GripFunctionAroundFUNCTION :<C-U>call <SID>repeatable_grip("big", "func", "GripFunctionAroundFUNCTION")<CR>
+" nnoremap <silent> <Plug>GripFunctionAroundWord :<C-U>call <SID>repeatable_grip("small", "word", "GripFunctionAroundWord")<CR>
+" nnoremap <silent> <Plug>GripFunctionAroundWORD :<C-U>call <SID>repeatable_grip("big", "word", "GripFunctionAroundWORD")<CR>
+
+nnoremap <silent> <Plug>GripSurroundObject :set operatorfunc=<SID>grip_surround_object<CR>g@
+vnoremap <silent> <Plug>GripSurroundObject :<C-U>call <SID>grip_surround_object(visualmode())<CR>
+"}}}---------------------------------------------------------------------------
+
+"{{{- create maps and text objects --------------------------------------------
+if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings != 0
+
+    " normal mode
+    nmap <silent> dsf <Plug>DeleteSurroundingFunction
+    nmap <silent> dsF <Plug>DeleteSurroundingFUNCTION
+    nmap <silent> csf <Plug>ChangeSurroundingFunction
+    nmap <silent> csF <Plug>ChangeSurroundingFUNCTION
+    nmap <silent> ysf <Plug>YankSurroundingFunction
+    nmap <silent> ysF <Plug>YankSurroundingFUNCTION
+
+    " visual mode
+    xmap <silent> af <Plug>SelectWholeFunction
+    omap <silent> af <Plug>SelectWholeFunction
+    xmap <silent> aF <Plug>SelectWholeFUNCTION
+    omap <silent> aF <Plug>SelectWholeFUNCTION
+    xmap <silent> if <Plug>SelectWholeFunction
+    omap <silent> if <Plug>SelectWholeFunction
+    xmap <silent> iF <Plug>SelectWholeFUNCTION
+    omap <silent> iF <Plug>SelectWholeFUNCTION
+    xmap <silent> an <Plug>SelectFunctionName
+    omap <silent> an <Plug>SelectFunctionName
+    xmap <silent> aN <Plug>SelectFunctionNAME
+    omap <silent> aN <Plug>SelectFunctionNAME
+    xmap <silent> in <Plug>SelectFunctionName
+    omap <silent> in <Plug>SelectFunctionName
+    xmap <silent> iN <Plug>SelectFunctionNAME
+    omap <silent> iN <Plug>SelectFunctionNAME
+
+    " operator pending mode
+    nmap <silent> gs <Plug>GripSurroundObject
+    vmap <silent> gs <Plug>GripSurroundObject
+
+    " " maybe keep these and expose them according to user g:flag
+    " nmap gsf <Plug>PasteFunctionAroundFunction
+    " nmap gsF <Plug>PasteFunctionAroundFUNCTION
+    " nmap gsw <Plug>PasteFunctionAroundWord
+    " nmap gsW <Plug>PasteFunctionAroundWORD
 endif
 "}}}---------------------------------------------------------------------------
 
