@@ -22,7 +22,7 @@ USAGE
 WHAT IS A SURROUNDING FUNCTION?
 
 Below, the * symbols show what would be deleted (or yanked) with the
-|surround-funk: dsf| (or |surround-funk: ysf|) command. The ^ symbols show
+|surround-funk#dsf| (or |surround-funk#ysf|) command. The ^ symbols show
 where the cursor can be when issuing the command:
 
 
@@ -83,8 +83,8 @@ sF                      Where the name of the function (e.g. np.outerfunc) is
 
 DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION
 
-If you have tpope's excellent repeat.vim plugin, then the |surround-funk: dsf|
-and |surround-funk: dsF| commands are repeatable with the dot command (see
+If you have tpope's excellent repeat.vim plugin, then the |surround-funk#dsf|
+and |surround-funk#dsF| commands are repeatable with the dot command (see
 |single-repeat|).
 
 To prevent these mappings from being generated, and define your own custom
@@ -93,26 +93,26 @@ ones, see |g:surround_funk_create_mappings| below.
                                         *surround-funk#dsf*
 dsf                     Delete surrounding function
 
-                                        *surround-funk: dsF*
+                                        *surround-funk#dsF*
 dsF                     Like |surround-funk#dsf|, but the function name is
                         delimited by any character not in
                         |g:surround_funk_legal_func_name_chars|
 
-                                        *surround-funk: csf*
-csf                     Like |surround-funk: dsf| but start instert mode where
+                                        *surround-funk#csf*
+csf                     Like |surround-funk#dsf| but start instert mode where
                         the opening parenthesis of the changed function used to
                         be.
 
-                                        *surround-funk: csF*
-csF                     Like |surround-funk: csf|, but the function name is
+                                        *surround-funk#csF*
+csF                     Like |surround-funk#csf|, but the function name is
                         delimited by any character not in
                         |g:surround_funk_legal_func_name_chars|
 
-                                        *surround-funk: ysf*
+                                        *surround-funk#ysf*
 ysf                     Yank surrounding function
 
-                                        *surround-funk: ysF*
-ysF                     Like |surround-funk: ysf|, but the function name is
+                                        *surround-funk#ysF*
+ysF                     Like |surround-funk#ysf|, but the function name is
                         delimited by any character not in
                         |g:surround_funk_legal_func_name_chars|
 
@@ -124,34 +124,34 @@ The following text objects are made available by |surround-funk|:
 To prevent these mappings from being generated, and define your own, see
 |g:surround_funk_create_mappings| below.
 
-                                        *surround-funk: af*
+                                        *surround-funk#af*
 af                      From the first letter of the function's name to the
                         closing parenthesis of that function call
 
-                                        *surround-funk: aF*
-aF                      Like |surround-funk: af|, but the function name is
+                                        *surround-funk#aF*
+aF                      Like |surround-funk#af|, but the function name is
                         delimited by any character not in
                         |g:surround_funk_legal_func_name_chars|
 
-                                        *surround-funk: if*  
-if                      Alias of |surround-funk: af|
+                                        *surround-funk#if*  
+if                      Alias of |surround-funk#af|
 
-                                        *surround-funk: iF*  
-iF                      Alias of |surround-funk: aF|
+                                        *surround-funk#iF*  
+iF                      Alias of |surround-funk#aF|
 
-                                        *surround-funk: an*  
+                                        *surround-funk#an*  
 an                      The function's name
 
-                                        *surround-funk: aN*  
-aN                      Like |surround-funk: an|, but the function name is
+                                        *surround-funk#aN*  
+aN                      Like |surround-funk#an|, but the function name is
                         delimited by any character not in
                         |g:surround_funk_legal_func_name_chars|
 
-                                        *surround-funk: in*  
-in                      Alias of |surround-funk: an|
+                                        *surround-funk#in*  
+in                      Alias of |surround-funk#an|
 
-                                        *surround-funk: iN*  
-iN                      Alias of |surround-funk: aN|
+                                        *surround-funk#iN*  
+iN                      Alias of |surround-funk#aN|
 
 
 
@@ -180,13 +180,13 @@ repeatable with the dot command (see |single-repeat|).
 To prevent this mapping from being generated, and define your own, see
 |g:surround_funk_create_mappings| below.
 
-                                        *surround-funk: gs*
+                                        *surround-funk#gs*
 gs                     Grip (i.e wrap/encompass) any text object or motion with
                        with the function in the unnamed register.
 
 
 In the example below, with the cursor anywhere with a ^ symbol, you can do
-|surround-funk: ysF| to 'yank the surrounding function' (which is all the stuff with * above
+|surround-funk#ysF| to 'yank the surrounding function' (which is all the stuff with * above
 it):
 
     *************               *************
