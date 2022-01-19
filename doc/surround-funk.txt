@@ -21,9 +21,9 @@ USAGE
 
 WHAT IS A SURROUNDING FUNCTION?
 
-Below, the * symbols show what would be deleted (or yanked) with the |dsf| (or
-|ysf|) command. The ^ symbols show where the cursor can be when issuing the
-command:
+Below, the * symbols show what would be deleted (or yanked) with the
+|surround-funk: dsf| (or |surround-funk: ysf|) command. The ^ symbols show
+where the cursor can be when issuing the command:
 
 
 sf                      Where the name of the function (e.g. outerfunc) is a 
@@ -83,35 +83,37 @@ sF                      Where the name of the function (e.g. np.outerfunc) is
 
 DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION
 
-If you have tpope's excellent repeat.vim plugin, then the |dsf| and |dsF|
-commands are repeatable with the dot command (see |single-repeat|).
+If you have tpope's excellent repeat.vim plugin, then the |surround-funk: dsf|
+and |surround-funk: dsF| commands are repeatable with the dot command (see
+|single-repeat|).
 
 To prevent these mappings from being generated, and define your own custom
 ones, see |g:surround_funk_create_mappings| below.
 
-                                                *dsf*
+                                        *surround-funk: dsf*
 dsf                     Delete surrounding function
 
-                                                *dsF*
-dsF                     Like |dsf|, but the function name is delimited by
-                        any character not in
+                                        *surround-funk: dsF*
+dsF                     Like |surround-funk: dsf|, but the function name is
+                        delimited by any character not in
                         |g:surround_funk_legal_func_name_chars|
 
-                                                *csf*
-csf                     Like |dsf| but start instert mode where the opening
-                        parenthesis of the changed function used to be.
+                                        *surround-funk: csf*
+csf                     Like |surround-funk: dsf| but start instert mode where
+                        the opening parenthesis of the changed function used to
+                        be.
 
-                                                *csF*
-csF                     Like |csf|, but the function name is delimited by
-                        any character not in
+                                        *surround-funk: csF*
+csF                     Like |surround-funk: csf|, but the function name is
+                        delimited by any character not in
                         |g:surround_funk_legal_func_name_chars|
 
-                                                *ysf*
+                                        *surround-funk: ysf*
 ysf                     Yank surrounding function
 
-                                                *ysF*
-ysF                     Like |ysf|, but the function name is delimited by
-                        any character not in
+                                        *surround-funk: ysF*
+ysF                     Like |surround-funk: ysf|, but the function name is
+                        delimited by any character not in
                         |g:surround_funk_legal_func_name_chars|
 
 
@@ -122,34 +124,34 @@ The following text objects are made available by |surround-funk|:
 To prevent these mappings from being generated, and define your own, see
 |g:surround_funk_create_mappings| below.
 
-                                                *af*
+                                        *surround-funk: af*
 af                      From the first letter of the function's name to the
                         closing parenthesis of that function call
 
-                                                *aF*
-aF                      Like |af|, but the function name is delimited by any
-                        character not in
+                                        *surround-funk: aF*
+aF                      Like |surround-funk: af|, but the function name is
+                        delimited by any character not in
                         |g:surround_funk_legal_func_name_chars|
 
-                                                *if*  
-if                      Alias of |af|
+                                        *surround-funk: if*  
+if                      Alias of |surround-funk: af|
 
-                                                *iF*  
-iF                      Alias of |aF|
+                                        *surround-funk: iF*  
+iF                      Alias of |surround-funk: aF|
 
-                                                *an*  
+                                        *surround-funk: an*  
 an                      The function's name
 
-                                                *aN*  
-aN                      Like |an|, but the function name is delimited by any
-                        character not in
+                                        *surround-funk: aN*  
+aN                      Like |surround-funk: an|, but the function name is
+                        delimited by any character not in
                         |g:surround_funk_legal_func_name_chars|
 
-                                                *in*  
-in                      Alias of |an|
+                                        *surround-funk: in*  
+in                      Alias of |surround-funk: an|
 
-                                                *iN*  
-iN                      Alias of |aN|
+                                        *surround-funk: iN*  
+iN                      Alias of |surround-funk: aN|
 
 
 
@@ -178,13 +180,13 @@ repeatable with the dot command (see |single-repeat|).
 To prevent this mapping from being generated, and define your own, see
 |g:surround_funk_create_mappings| below.
 
-                                                *gs*
+                                        *surround-funk: gs*
 gs                     Grip (i.e wrap/encompass) any text object or motion with
                        with the function in the unnamed register.
 
 
 In the example below, with the cursor anywhere with a ^ symbol, you can do
-|ysF| to 'yank the surrounding function' (which is all the stuff with * above
+|surround-funk: ysF| to 'yank the surrounding function' (which is all the stuff with * above
 it):
 
     *************               *************
@@ -252,30 +254,30 @@ And map them to something different with:
 For reference, the default mappings are as follows:
 
     " normal mode
-    nmap |dsf| <Plug>DeleteSurroundingFunction
-    nmap |dsF| <Plug>DeleteSurroundingFUNCTION
-    nmap |csf| <Plug>ChangeSurroundingFunction
-    nmap |csF| <Plug>ChangeSurroundingFUNCTION
-    nmap |ysf| <Plug>YankSurroundingFunction
-    nmap |ysF| <Plug>YankSurroundingFUNCTION
+    nmap dsf <Plug>DeleteSurroundingFunction
+    nmap dsF <Plug>DeleteSurroundingFUNCTION
+    nmap csf <Plug>ChangeSurroundingFunction
+    nmap csF <Plug>ChangeSurroundingFUNCTION
+    nmap ysf <Plug>YankSurroundingFunction
+    nmap ysF <Plug>YankSurroundingFUNCTION
 
     " visual mode
-    xmap <silent> |af| <Plug>SelectWholeFunction
-    omap <silent> |af| <Plug>SelectWholeFunction
-    xmap <silent> |aF| <Plug>SelectWholeFUNCTION
-    omap <silent> |aF| <Plug>SelectWholeFUNCTION
-    xmap <silent> |if| <Plug>SelectWholeFunction
-    omap <silent> |if| <Plug>SelectWholeFunction
-    xmap <silent> |iF| <Plug>SelectWholeFUNCTION
-    omap <silent> |iF| <Plug>SelectWholeFUNCTION
-    xmap <silent> |an| <Plug>SelectFunctionName
-    omap <silent> |an| <Plug>SelectFunctionName
-    xmap <silent> |aN| <Plug>SelectFunctionNAME
-    omap <silent> |aN| <Plug>SelectFunctionNAME
-    xmap <silent> |in| <Plug>SelectFunctionName
-    omap <silent> |in| <Plug>SelectFunctionName
-    xmap <silent> |iN| <Plug>SelectFunctionNAME
-    omap <silent> |iN| <Plug>SelectFunctionNAME
+    xmap <silent> af <Plug>SelectWholeFunction
+    omap <silent> af <Plug>SelectWholeFunction
+    xmap <silent> aF <Plug>SelectWholeFUNCTION
+    omap <silent> aF <Plug>SelectWholeFUNCTION
+    xmap <silent> if <Plug>SelectWholeFunction
+    omap <silent> if <Plug>SelectWholeFunction
+    xmap <silent> iF <Plug>SelectWholeFUNCTION
+    omap <silent> iF <Plug>SelectWholeFUNCTION
+    xmap <silent> an <Plug>SelectFunctionName
+    omap <silent> an <Plug>SelectFunctionName
+    xmap <silent> aN <Plug>SelectFunctionNAME
+    omap <silent> aN <Plug>SelectFunctionNAME
+    xmap <silent> in <Plug>SelectFunctionName
+    omap <silent> in <Plug>SelectFunctionName
+    xmap <silent> iN <Plug>SelectFunctionNAME
+    omap <silent> iN <Plug>SelectFunctionNAME
 
     " operator pending mode
     nmap <silent> gs <Plug>GripSurroundObject
