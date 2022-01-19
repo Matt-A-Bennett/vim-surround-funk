@@ -7,16 +7,13 @@ surrounding function in the unnamed register, you can 'grip' a word or another
 function with it. 'Gripping' will wrap/encompass a word or function with the
 one you have in the unnamed register (see below).
 
+## Features
+### Text objects for function body and name
+![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/textobjects_1100_775_annotated.gif)
 
-![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/multi_line_demo.gif)
-
-In case you find any edge-cases/bugs, please tell me about it by raising a [new
-issue](https://github.com/Matt-A-Bennett/surround-funk.vim/issues) according to
-the [contribution guidelines](#contribution-guidelines). The same goes for if
-you would like to see a feature added! To see a list of what I plan to add,
-head on over to the [surround-funk todo
-list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/todo.md).
-
+### Commands and operators for stripping functions and gripping other objects
+![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/operator_1100_775_annotated.gif)
+         
 ## Table of contents
 * [Usage](#usage)
     * [What is a surrounding function?](#what-is-a-surrounding-function)
@@ -383,6 +380,7 @@ Use your favorite plugin manager.
 [pathogen]: https://github.com/tpope/vim-pathogen
 
 ## Contribution guidelines
+
 ### Report a bug
 First, check if the bug is already known by seeing whether it's listed on the
 [surround-funk todo list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/todo.md).
