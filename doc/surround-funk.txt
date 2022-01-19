@@ -90,11 +90,11 @@ and |surround-funk: dsF| commands are repeatable with the dot command (see
 To prevent these mappings from being generated, and define your own custom
 ones, see |g:surround_funk_create_mappings| below.
 
-                                        *surround-funk: dsf*
+                                        *surround-funk#dsf*
 dsf                     Delete surrounding function
 
                                         *surround-funk: dsF*
-dsF                     Like |surround-funk: dsf|, but the function name is
+dsF                     Like |surround-funk#dsf|, but the function name is
                         delimited by any character not in
                         |g:surround_funk_legal_func_name_chars|
 
