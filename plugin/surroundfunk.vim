@@ -608,24 +608,6 @@ nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>operate_on_sur
 nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "change")<CR>
 nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
 nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "yank")<CR>
-<<<<<<< HEAD:plugin/surround-funk.vim
-nnoremap <silent> <Plug>PasteFunctionAroundFunction :<C-U>call <SID>repeatable_paste("small", "func", "PasteFunctionAroundFunction")<CR>
-nnoremap <silent> <Plug>PasteFunctionAroundFUNCTION :<C-U>call <SID>repeatable_paste("big", "func", "PasteFunctionAroundFUNCTION")<CR>
-nnoremap <silent> <Plug>PasteFunctionAroundWord :<C-U>call <SID>repeatable_paste("small", "word", "PasteFunctionAroundWord")<CR>
-nnoremap <silent> <Plug>PasteFunctionAroundWORD :<C-U>call <SID>repeatable_paste("big", "word", "PasteFunctionAroundWORD")<CR>
-
-if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings != 0
-    nmap dsf <Plug>DeleteSurroundingFunction
-    nmap dsF <Plug>DeleteSurroundingFUNCTION
-    nmap csf <Plug>ChangeSurroundingFunction
-    nmap csF <Plug>ChangeSurroundingFUNCTION
-    nmap ysf <Plug>YankSurroundingFunction
-    nmap ysF <Plug>YankSurroundingFUNCTION
-    nmap gsf <Plug>PasteFunctionAroundFunction
-    nmap gsF <Plug>PasteFunctionAroundFUNCTION
-    nmap gsw <Plug>PasteFunctionAroundWord
-    nmap gsW <Plug>PasteFunctionAroundWORD
-=======
 
 " " maybe keep these and expose them according to user g:flag
 " nnoremap <silent> <Plug>GripFunctionAroundFunction :<C-U>call <SID>repeatable_grip("small", "func", "GripFunctionAroundFunction")<CR>
