@@ -121,7 +121,9 @@ csf: Like 'dsf' but start instert mode where the opening parenthesis of the
 csF: Like 'csf', but the function name is delimited by any character not in 
      'g:surround_funk_legal_func_name_chars' (see below)
 
-ysf: Yank surrounding function ysF: Like 'ysf', but the function name is
+ysf: Yank surrounding function 
+
+ysF: Like 'ysf', but the function name is
      delimited by any character not in 'g:surround_funk_legal_func_name_chars'
      (see below)
 ```
@@ -177,7 +179,7 @@ np.outerfunc(innerfunc(arg1), arg2, arg3)
 ### Gripping a text object or motion with a function
 
 If you have tpope's excellent [repeat.vim
-plugin](https://github.com/tpope/vim-repeat), then the following commands are
+plugin](https://github.com/tpope/vim-repeat), then the following command is
 repeatable with the dot command.
 
 To prevent these mappings from being generated, and define your own see
@@ -185,8 +187,8 @@ To prevent these mappings from being generated, and define your own see
 [below](#turn-off-automatic-creation-of-normal-mode-mappings).
 
 ```
-gs: Grip (i.e wrap/encompass) any text object or motion with with the function
-    in the unnamed register.
+gs: Grip (i.e wrap/encompass) any text object or motion with the function in
+    the unnamed register.
 ```
 
 In the example below, with the cursor anywhere with a `^` symbol, you can do
@@ -388,8 +390,8 @@ First, check if the bug is already known by seeing whether it's listed on the
 [surround-funk todo list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/todo.md).
 
 If it's not there, then please raise a [new
-issue](https://github.com/Matt-A-Bennett/surround-funk.vim/issues) so I can fix
-it (or submit a pull request). To make it easier, you can use the following
+issue](https://github.com/Matt-A-Bennett/surround-funk.vim/issues) (or submit a
+pull request) so I can fix it. To make it easier, you can use the following
 template (If multi-line was broken, you could show me something like this):
 
 ---
