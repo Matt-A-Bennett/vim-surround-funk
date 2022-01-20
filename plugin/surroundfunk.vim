@@ -97,7 +97,7 @@ endfunction
 "{{{- searchpair2 -------------------------------------------------------------
 function! s:searchpair2(start, middle, end, flag)
     " like vim's builtin searchpair(), but find the {middle} even when it's in
-    " a nested stat-end pair
+    " a nested start-end pair
      let [l, c]  = s:searchpairpos2(a:start, a:middle, a:end, a:flag)
      if l > 0 || c > 0
          call cursor(l, c)
