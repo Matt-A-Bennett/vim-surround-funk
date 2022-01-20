@@ -1,6 +1,6 @@
-*surround-funk.txt* (v2.0.0) Delete, change and yank a surrounding
-function along with its additional arguments. Then 'grip' a word or function
-with the surrounding function.
+*surround-funk.txt* (v2.0.0) Delete, change and yank a surrounding function
+call along with its additional arguments. Then 'grip' a word or function call
+with the surrounding function call.
 
 License: Same terms as Vim itself (see |license|)
 
@@ -10,16 +10,16 @@ This plugin is only available if 'compatible' is not set.
 INTRODUCTION                                    *surround-funk*
 
 This was inspired by tpope's |surround| plugin and allows you to delete, change
-and yank a surrounding function along with its additional arguments. With the
-surrounding function in the unnamed register, you can 'grip' a word or another
-function with it. 'Gripping' will wrap/encompass a word or function with the
-one you have in the unnamed register (see below).
+and yank a surrounding function call along with its additional arguments. With
+the surrounding function call in the unnamed register, you can 'grip' a word or
+another function call with it. 'Gripping' will wrap/encompass a word or
+function call with the one you have in the unnamed register (see below).
 
 
 USAGE
 
 
-WHAT IS A SURROUNDING FUNCTION?
+WHAT IS A SURROUNDING FUNCTION CALL?
 
 Below, the * symbols show what would be deleted (or yanked) with the dsf (or
 ysf) command. The ^ symbols show where the cursor can be when issuing the
@@ -73,7 +73,7 @@ sF                      Where the name of the function (e.g. np.outerfunc) is
                         np.outerfunc(arg1, arg2, arg3)
                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   
-                        multi-line functions also work:
+                        multi-line function calls also work:
 
                         *************               ***************
                         np.outerfunc(innerfunc(arg1),   
@@ -81,7 +81,7 @@ sF                      Where the name of the function (e.g. np.outerfunc) is
                         ^^^^^^^^^^^^^               ^^^^^^^^^^^^^^^
 
 
-DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION
+DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION CALL
 
 If you have tpope's excellent repeat.vim plugin, then the dsf and dsF commands
 are repeatable with the dot command (see |single-repeat|).
@@ -90,7 +90,7 @@ To prevent these mappings from being generated, and define your own custom
 ones, see |g:surround_funk_create_mappings| below.
 
                                         *surround-funk#dsf*
-dsf                     Delete surrounding function
+dsf                     Delete surrounding function call
 
                                         *surround-funk#dsF*
 dsF                     Like dsf, but the function name is delimited by any
@@ -99,7 +99,7 @@ dsF                     Like dsf, but the function name is delimited by any
 
                                         *surround-funk#csf*
 csf                     Like dsf but start instert mode where the opening
-                        parenthesis of the changed function used to be.
+                        parenthesis of the changed function call used to be.
 
                                         *surround-funk#csF*
 csF                     Like csf, but the function name is delimited by any
@@ -107,7 +107,7 @@ csF                     Like csf, but the function name is delimited by any
                         |g:surround_funk_legal_func_name_chars|
 
                                         *surround-funk#ysf*
-ysf                     Yank surrounding function
+ysf                     Yank surrounding function call
 
                                         *surround-funk#ysF*
 ysF                     Like ysf, but the function name is delimited by any
@@ -154,8 +154,8 @@ iN                      Alias of aN
 
 
 For example, with the cursor anywhere indicated by the ^ symbols, doing |vif|
-will visually select the entire function, indicated by the * symbols (to
-include the 'np.' part of the function, use |viF|):
+will visually select the entire function call, indicated by the * symbols (to
+include the 'np.' part of the function's name, use |viF|):
 
        **************************************
     np.outerfunc(innerfunc(arg1), arg2, arg3)
@@ -170,7 +170,7 @@ To select just the function's name, use |vin| (again, use |viN| to include the
        ^^^^^^^^^^               ^^^^^^^^^^^^^
 
 
-GRIPPING A TEXT OBJECT OR MOTION WITH A FUNCTION
+GRIPPING A TEXT OBJECT OR MOTION WITH A FUNCTION CALL
 
 If you have tpope's excellent repeat.vim plugin, then the following command is
 repeatable with the dot command (see |single-repeat|).
@@ -180,25 +180,27 @@ To prevent this mapping from being generated, and define your own, see
 
                                         *surround-funk#gs*
 gs                     Grip (i.e wrap/encompass) any text object or motion with
-                       with the function in the unnamed register.
+                       with the function call in the unnamed register.
 
 
 In the example below, with the cursor anywhere with a ^ symbol, you can do ysF
-to 'yank the surrounding function' (which is all the stuff with * above it):
+to 'yank the surrounding function call' (which is all the stuff with * above
+it):
 
     *************               *************
     np.outerfunc(innerfunc(arg1), arg2, arg3)
     ^^^^^^^^^^^^^               ^^^^^^^^^^^^^
 
 
-Then go to some other function (or just a word) (the cursor can be anywhere in
-this case):
+Then go to some other function call (or just a word) (the cursor can be
+anywhere in this case):
 
     os.lonelyfunc(argA, argB)
     ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-And do gsiF or gsaF to 'grip/surround' the lonely function with the yanked one:
+And do gsiF or gsaF to 'grip/surround' the lonely function call with the yanked
+one:
 
     *************                         *************
     np.outerfunc(os.lonelyfunc(argA, argB), arg2, arg3)
@@ -218,7 +220,7 @@ and grip/surround it with gsiw:
     ^
 
 
-You could also grip a multi-line function (again using gsiF or gsaF):
+You could also grip a multi-line function call (again using gsiF or gsaF):
 
     **************      *******
     os.multi_line(argA(),

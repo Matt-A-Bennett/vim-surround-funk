@@ -2,20 +2,20 @@
 
 This was inspired by tpope's [surround.vim
 plugin](https://github.com/tpope/vim-surround) and allows you to delete, change
-and yank a surrounding function along with its additional arguments. With the
-surrounding function in the unnamed register, you can 'grip' a word or another
-function with it. 'Gripping' will wrap/encompass a word or function with the
-one you have in the unnamed register (see below).
+and yank a surrounding function call along with its additional arguments. With
+the surrounding function call in the unnamed register, you can 'grip' a word or
+another function call with it. 'Gripping' will wrap/encompass a word or
+function call with the one you have in the unnamed register (see below).
 
 ## Table of contents
 * [Feature Demos](#feature-demos)
-    * [Commands for stripping functions and gripping other objects](#commands-for-stripping-functions-and-gripping-other-objects)
+    * [Commands for stripping function calls and gripping other objects](#commands-for-stripping-function-calls-and-gripping-other-objects)
     * [Text objects for function body and name](#text-objects-for-function-body-and-name)
 * [Usage](#usage)
-    * [What is a surrounding function?](#what-is-a-surrounding-function)
-    * [Deleting, changing and yanking a surrounding function](#deleting-changing-and-yanking-a-surrounding-function)
+    * [What is a surrounding function call?](#what-is-a-surrounding-function-call)
+    * [Deleting, changing and yanking a surrounding function call](#deleting-changing-and-yanking-a-surrounding-function-call)
     * [Text objects](#text-objects)
-    * [Gripping a text object or motion with a function](#gripping-a-text-object-or-motion-with-a-function)
+    * [Gripping a text object or motion with a function call](#gripping-a-text-object-or-motion-with-a-function-call)
     * [Settings](#settings)
         * [Turn off automatic creation of mappings](#turn-off-automatic-creation-of-mappings)
         * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
@@ -26,7 +26,7 @@ one you have in the unnamed register (see below).
 * [License](#license)
 
 ## Feature demos
-### Commands for stripping functions and gripping other objects
+### Commands for stripping function calls and gripping other objects
 ![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/operator_1100_775_annotated.gif)
          
 ### Text objects for function body and name
@@ -37,7 +37,7 @@ one you have in the unnamed register (see below).
 (Everything in this section can also be found in Vim's help docs with `:help
 surround-funk`, or just `:help funk`)
 
-### What is a surrounding function?
+### What is a surrounding function call?
 
 Below, the `*` symbols show what would be deleted (or yanked) with the `dsf`
 (or `ysf`) command. The `^` symbols show where the cursor can be when issuing
@@ -62,7 +62,7 @@ np.outerfunc(arg1)
 np.outerfunc(arg1, arg2, arg3)
    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-# multi-line functions also work:
+# multi-line function calls also work:
 
    **********               ***************
 np.outerfunc(innerfunc(arg1),   
@@ -91,7 +91,7 @@ np.outerfunc(arg1)
 np.outerfunc(arg1, arg2, arg3)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-# multi-line functions also work:
+# multi-line function calls also work:
 
 *************               ***************
 np.outerfunc(innerfunc(arg1),   
@@ -99,7 +99,7 @@ np.outerfunc(innerfunc(arg1),
 ^^^^^^^^^^^^^               ^^^^^^^^^^^^^^^
 ```                                       
 
-### Deleting, changing and yanking a surrounding function
+### Deleting, changing and yanking a surrounding function call
 
 If you have tpope's excellent [repeat.vim
 plugin](https://github.com/tpope/vim-repeat), then the `dsf` and `dsF` commands
@@ -110,7 +110,7 @@ ones, see `g:surround_funk_create_mappings`
 [below](#turn-off-automatic-creation-of-normal-mode-mappings).
 
 ```
-dsf: Delete surrounding function
+dsf: Delete surrounding function call
 
 dsF: Like 'dsf', but the function name is delimited by any character not in 
      'g:surround_funk_legal_func_name_chars' (see below)
@@ -121,11 +121,10 @@ csf: Like 'dsf' but start instert mode where the opening parenthesis of the
 csF: Like 'csf', but the function name is delimited by any character not in 
      'g:surround_funk_legal_func_name_chars' (see below)
 
-ysf: Yank surrounding function 
+ysf: Yank surrounding function call 
 
-ysF: Like 'ysf', but the function name is
-     delimited by any character not in 'g:surround_funk_legal_func_name_chars'
-     (see below)
+ysF: Like 'ysf', but the function name is delimited by any character not in
+     'g:surround_funk_legal_func_name_chars' (see below)
 ```
 
 ### Text objects
@@ -158,8 +157,8 @@ iN: Alias of 'aN'
 ```
 
 For example, with the cursor anywhere indicated by the `^` symbols, doing `vif`
-will visually select the entire function, indicated by the `*` symbols (to
-include the `np.` part of the function, use `viF`):
+will visually select the entire function call, indicated by the `*` symbols (to
+include the `np.` part of the function name, use `viF`):
 
 ```
    **************************************
@@ -176,7 +175,7 @@ np.outerfunc(innerfunc(arg1), arg2, arg3)
    ^^^^^^^^^^               ^^^^^^^^^^^^^
 ```
 
-### Gripping a text object or motion with a function
+### Gripping a text object or motion with a function call
 
 If you have tpope's excellent [repeat.vim
 plugin](https://github.com/tpope/vim-repeat), then the following command is
@@ -187,13 +186,13 @@ To prevent these mappings from being generated, and define your own see
 [below](#turn-off-automatic-creation-of-normal-mode-mappings).
 
 ```
-gs: Grip (i.e wrap/encompass) any text object or motion with the function in
-    the unnamed register.
+gs: Grip (i.e wrap/encompass) any text object or motion with the function call
+    in the unnamed register.
 ```
 
 In the example below, with the cursor anywhere with a `^` symbol, you can do
-`ysF` to 'yank the surrounding function' (which is all the stuff with `*` above
-it):
+`ysF` to 'yank the surrounding function call' (which is all the stuff with `*`
+above it):
 
 ```
 *************               *************
@@ -201,16 +200,16 @@ np.outerfunc(innerfunc(arg1), arg2, arg3)
 ^^^^^^^^^^^^^               ^^^^^^^^^^^^^
 ```
 
-Then go to some other function (or just a word) (the cursor can be anywhere in
-this case)
+Then go to some other function call (or just a word) (the cursor can be
+anywhere in this case)
 
 ```
 os.lonelyfunc(argA, argB)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
 
-And do `gsiF` or `gsaF` to 'grip/surround' the lonely function with the yanked
-one:
+And do `gsiF` or `gsaF` to 'grip/surround' the lonely function call with the
+yanked one:
 
 ```
 *************                         *************
@@ -233,7 +232,7 @@ np.outerfunc(MeNext, arg2, arg3)
 ^
 ```
 
-You could also grip a multi-line function (again using `gsiF` or `gsaF`):
+You could also grip a multi-line function call (again using `gsiF` or `gsaF`):
 
 ```
 **************      *******
