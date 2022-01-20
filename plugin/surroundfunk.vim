@@ -68,7 +68,7 @@ endfunction
 "{{{- searchpairpos2 ----------------------------------------------------------
 function! s:searchpairpos2(start, middle, end, flags)
     " like vim's builtin searchpairpos(), but find the {middle} even when it's
-    " in a nested stat-end pair
+    " in a nested start-end pair
     let [_, l_orig, c_orig, _] = getpos('.')
     if a:flags =~# 'b'
         let f1 = 'bw'
