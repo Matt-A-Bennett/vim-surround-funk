@@ -9,8 +9,8 @@ one you have in the unnamed register (see below).
 
 ## Table of contents
 * [Feature Demos](#feature-demos)
-    * [Text objects for function body and name](#text-objects-for-function-body-and-name)
     * [Commands for stripping functions and gripping other objects](#commands-for-stripping-functions-and-gripping-other-objects)
+    * [Text objects for function body and name](#text-objects-for-function-body-and-name)
 * [Usage](#usage)
     * [What is a surrounding function?](#what-is-a-surrounding-function)
     * [Deleting, changing and yanking a surrounding function](#deleting-changing-and-yanking-a-surrounding-function)
@@ -26,12 +26,12 @@ one you have in the unnamed register (see below).
 * [License](#license)
 
 ## Feature demos
-### Text objects for function body and name
-![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/textobjects_1100_775_annotated.gif)
-
 ### Commands for stripping functions and gripping other objects
 ![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/operator_1100_775_annotated.gif)
          
+### Text objects for function body and name
+![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/textobjects_1100_775_annotated.gif)
+
 ## Usage
 
 (Everything in this section can also be found in Vim's help docs with `:help
