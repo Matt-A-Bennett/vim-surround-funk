@@ -27,10 +27,10 @@ function call with the one you have in the unnamed register (see below).
 
 ## Feature demos
 ### Commands for stripping function calls and gripping other objects
-![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/operator_1100_775_annotated.gif)
+![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/vim-surround-funk/operator_1100_775_annotated.gif)
          
 ### Text objects for function body and name
-![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/textobjects_1100_775_annotated.gif)
+![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/vim-surround-funk/textobjects_1100_775_annotated.gif)
 
 ## Usage
 
