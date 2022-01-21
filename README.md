@@ -1,6 +1,6 @@
-# surround-funk.vim
+# vim-surround-funk
 
-This was inspired by tpope's [surround.vim
+This was inspired by tpope's [vim-surround
 plugin](https://github.com/tpope/vim-surround) and allows you to delete, change
 and yank a surrounding function call along with its additional arguments. With
 the surrounding function call in the unnamed register, you can 'grip' a word or
@@ -271,12 +271,12 @@ For reference, the default mappings are as follows:
 
 ```vim
 " normal mode
-nmap dsf <Plug>DeleteSurroundingFunction
-nmap dsF <Plug>DeleteSurroundingFUNCTION
-nmap csf <Plug>ChangeSurroundingFunction
-nmap csF <Plug>ChangeSurroundingFUNCTION
-nmap ysf <Plug>YankSurroundingFunction
-nmap ysF <Plug>YankSurroundingFUNCTION
+nmap <silent> dsf <Plug>DeleteSurroundingFunction
+nmap <silent> dsF <Plug>DeleteSurroundingFUNCTION
+nmap <silent> csf <Plug>ChangeSurroundingFunction
+nmap <silent> csF <Plug>ChangeSurroundingFUNCTION
+nmap <silent> ysf <Plug>YankSurroundingFunction
+nmap <silent> ysF <Plug>YankSurroundingFUNCTION
 
 " visual mode
 xmap <silent> af <Plug>SelectWholeFunction
@@ -356,25 +356,25 @@ Use your favorite plugin manager.
 - [Vim-plug][vim-plug]
 
     ```vim
-    Plug 'Matt-A-Bennett/surround-funk.vim'
+    Plug 'Matt-A-Bennett/vim-surround-funk'
     ```
 
 - [NeoBundle][neobundle]
 
     ```vim
-    NeoBundle 'Matt-A-Bennett/surround-funk.vim'
+    NeoBundle 'Matt-A-Bennett/vim-surround-funk'
     ```
 
 - [Vundle][vundle]
 
     ```vim
-    Plugin 'Matt-A-Bennett/surround-funk.vim'
+    Plugin 'Matt-A-Bennett/vim-surround-funk'
     ```
 
 - [Pathogen][pathogen]
 
     ```sh
-    git clone git://github.com/Matt-A-Bennett/surround-funk.vim.git ~/.vim/bundle/surround-funk.vim
+    git clone git://github.com/Matt-A-Bennett/vim-surround-funk.git ~/.vim/bundle/vim-surround-funk
     ```
 
 [neobundle]: https://github.com/Shougo/neobundle.vim
@@ -386,10 +386,10 @@ Use your favorite plugin manager.
 
 ### Report a bug
 First, check if the bug is already known by seeing whether it's listed on the
-[surround-funk todo list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/todo.md).
+[surround-funk todo list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/vim-surround-funk/todo.md).
 
 If it's not there, then please raise a [new
-issue](https://github.com/Matt-A-Bennett/surround-funk.vim/issues) (or submit a
+issue](https://github.com/Matt-A-Bennett/vim-surround-funk/issues) (or submit a
 pull request) so I can fix it. To make it easier, you can use the following
 template (If multi-line was broken, you could show me something like this):
 
@@ -431,12 +431,12 @@ st.std(arg1)  <---
 
 ### Request a feature
 First, check if the feature is already planned by looking at the 
-[surround-funk todo list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/todo.md).
+[surround-funk todo list](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/vim-surround-funk/todo.md).
 
 If it's not there, then please raise a [new
-issue](https://github.com/Matt-A-Bennett/surround-funk.vim/issues) describing what
+issue](https://github.com/Matt-A-Bennett/vim-surround-funk/issues) describing what
 you would like and I'll see what I can do! If you would like to submit a pull
-request, then do so (please let me know this is your plan first in a [new issue](https://github.com/Matt-A-Bennett/surround-funk.vim/issues)).
+request, then do so (please let me know this is your plan first in a [new issue](https://github.com/Matt-A-Bennett/vim-surround-funk/issues)).
 
 ## License
  Copyright (c) Matthew Bennett. Distributed under the same terms as Vim itself.
