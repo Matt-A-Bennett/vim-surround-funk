@@ -3,9 +3,10 @@
 This was inspired by tpope's [vim-surround
 plugin](https://github.com/tpope/vim-surround) and allows you to delete, change
 and yank a surrounding function call along with its additional arguments. With
-the surrounding function call in the unnamed register, you can 'grip' a word or
-another function call with it. 'Gripping' will wrap/encompass a word or
-function call with the one you have in the unnamed register (see below).
+the surrounding function call in the unnamed register, you can 'grip' any text
+object with it (including a different function call, see below). 'Gripping'
+will wrap/encompass a word or function call with the one you have in the
+unnamed register (see below).
 
 *N.B. This plugin was formerly called surround-funk.vim, but was renamed to be
 more consistent with tpope's vim-surround.*
