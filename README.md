@@ -27,6 +27,7 @@ more consistent with tpope's vim-surround.*
     * [Report a bug](#report-a-bug)
     * [Request a feature](#request-a-feature)
 * [Installation](#installation)
+* [Related plugins](#related-plugins)
 * [License](#license)
 
 ## Feature demos
@@ -442,6 +443,9 @@ issue](https://github.com/Matt-A-Bennett/vim-surround-funk/issues) describing wh
 you would like and I'll see what I can do! If you would like to submit a pull
 request, then do so (please let me know this is your plan first in a [new issue](https://github.com/Matt-A-Bennett/vim-surround-funk/issues)).
 
+## Related plugins
+ - [vim-surround](https://github.com/tpope/vim-surround)
+ - [vim-sandwich](https://github.com/machakann/vim-sandwich)
 ## License
  Copyright (c) Matthew Bennett. Distributed under the same terms as Vim itself.
  See `:help license`.
