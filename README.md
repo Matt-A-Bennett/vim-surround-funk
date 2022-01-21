@@ -7,6 +7,9 @@ the surrounding function call in the unnamed register, you can 'grip' a word or
 another function call with it. 'Gripping' will wrap/encompass a word or
 function call with the one you have in the unnamed register (see below).
 
+*N.B. This plugin was formerly called surround-funk.vim, but was renamed to be
+more consistent with tpope's vim-surround.*
+
 ## Table of contents
 * [Feature Demos](#feature-demos)
     * [Commands for stripping function calls and gripping other objects](#commands-for-stripping-function-calls-and-gripping-other-objects)
