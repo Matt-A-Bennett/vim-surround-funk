@@ -276,34 +276,34 @@ For reference, the default mappings are as follows:
 
 ```vim
 " normal mode
-nmap <silent> dsf <Plug>DeleteSurroundingFunction
-nmap <silent> dsF <Plug>DeleteSurroundingFUNCTION
-nmap <silent> csf <Plug>ChangeSurroundingFunction
-nmap <silent> csF <Plug>ChangeSurroundingFUNCTION
-nmap <silent> ysf <Plug>YankSurroundingFunction
-nmap <silent> ysF <Plug>YankSurroundingFUNCTION
+nmap <silent> dsf <Plug>(DeleteSurroundingFunction)
+nmap <silent> dsF <Plug>(DeleteSurroundingFUNCTION)
+nmap <silent> csf <Plug>(ChangeSurroundingFunction)
+nmap <silent> csF <Plug>(ChangeSurroundingFUNCTION)
+nmap <silent> ysf <Plug>(YankSurroundingFunction)
+nmap <silent> ysF <Plug>(YankSurroundingFUNCTION)
 
 " visual mode
-xmap <silent> af <Plug>SelectWholeFunction
-omap <silent> af <Plug>SelectWholeFunction
-xmap <silent> aF <Plug>SelectWholeFUNCTION
-omap <silent> aF <Plug>SelectWholeFUNCTION
-xmap <silent> if <Plug>SelectWholeFunction
-omap <silent> if <Plug>SelectWholeFunction
-xmap <silent> iF <Plug>SelectWholeFUNCTION
-omap <silent> iF <Plug>SelectWholeFUNCTION
-xmap <silent> an <Plug>SelectFunctionName
-omap <silent> an <Plug>SelectFunctionName
-xmap <silent> aN <Plug>SelectFunctionNAME
-omap <silent> aN <Plug>SelectFunctionNAME
-xmap <silent> in <Plug>SelectFunctionName
-omap <silent> in <Plug>SelectFunctionName
-xmap <silent> iN <Plug>SelectFunctionNAME
-omap <silent> iN <Plug>SelectFunctionNAME
+xmap <silent> af <Plug>(SelectWholeFunction)
+omap <silent> af <Plug>(SelectWholeFunction)
+xmap <silent> aF <Plug>(SelectWholeFUNCTION)
+omap <silent> aF <Plug>(SelectWholeFUNCTION)
+xmap <silent> if <Plug>(SelectWholeFunction)
+omap <silent> if <Plug>(SelectWholeFunction)
+xmap <silent> iF <Plug>(SelectWholeFUNCTION)
+omap <silent> iF <Plug>(SelectWholeFUNCTION)
+xmap <silent> an <Plug>(SelectFunctionName)
+omap <silent> an <Plug>(SelectFunctionName)
+xmap <silent> aN <Plug>(SelectFunctionNAME)
+omap <silent> aN <Plug>(SelectFunctionNAME)
+xmap <silent> in <Plug>(SelectFunctionName)
+omap <silent> in <Plug>(SelectFunctionName)
+xmap <silent> iN <Plug>(SelectFunctionNAME)
+omap <silent> iN <Plug>(SelectFunctionNAME)
 
 " operator pending mode
-nmap <silent> gs <Plug>GripSurroundObject
-vmap <silent> gs <Plug>GripSurroundObject
+nmap <silent> gs <Plug>(GripSurroundObject)
+vmap <silent> gs <Plug>(GripSurroundObject)
 ```
 
 #### Specify what characters are allowed in a function name

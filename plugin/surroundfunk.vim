@@ -593,70 +593,70 @@ endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- define plug function calls ----------------------------------------------
-xnoremap <silent> <Plug>SelectWholeFunction :<C-U>call surroundfunk#visually_select_whole_func("small")<CR>
-onoremap <silent> <Plug>SelectWholeFunction :<C-U>call surroundfunk#visually_select_whole_func("small")<CR>
-xnoremap <silent> <Plug>SelectWholeFUNCTION :<C-U>call surroundfunk#visually_select_whole_func("big")<CR>
-onoremap <silent> <Plug>SelectWholeFUNCTION :<C-U>call surroundfunk#visually_select_whole_func("big")<CR>
-xnoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
-onoremap <silent> <Plug>SelectFunctionName :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
-xnoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
-onoremap <silent> <Plug>SelectFunctionNAME :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
+xnoremap <silent> <Plug>(SelectWholeFunction) :<C-U>call surroundfunk#visually_select_whole_func("small")<CR>
+onoremap <silent> <Plug>(SelectWholeFunction) :<C-U>call surroundfunk#visually_select_whole_func("small")<CR>
+xnoremap <silent> <Plug>(SelectWholeFUNCTION) :<C-U>call surroundfunk#visually_select_whole_func("big")<CR>
+onoremap <silent> <Plug>(SelectWholeFUNCTION) :<C-U>call surroundfunk#visually_select_whole_func("big")<CR>
+xnoremap <silent> <Plug>(SelectFunctionName) :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+onoremap <silent> <Plug>(SelectFunctionName) :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+xnoremap <silent> <Plug>(SelectFunctionNAME) :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
+onoremap <silent> <Plug>(SelectFunctionNAME) :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
 
-nnoremap <silent> <Plug>DeleteSurroundingFunction :<C-U>call <SID>repeatable_delete("small", "delete", "DeleteSurroundingFunction")<CR>
-nnoremap <silent> <Plug>DeleteSurroundingFUNCTION :<C-U>call <SID>repeatable_delete("big", "delete", "DeleteSurroundingFunction")<CR>
-nnoremap <silent> <Plug>ChangeSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "change")<CR>
-nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "change")<CR>
-nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
-nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "yank")<CR>
+nnoremap <silent> <Plug>(DeleteSurroundingFunction) :<C-U>call <SID>repeatable_delete("small", "delete", "DeleteSurroundingFunction")<CR>
+nnoremap <silent> <Plug>(DeleteSurroundingFUNCTION) :<C-U>call <SID>repeatable_delete("big", "delete", "DeleteSurroundingFunction")<CR>
+nnoremap <silent> <Plug>(ChangeSurroundingFunction) :<C-U>call <SID>operate_on_surrounding_func("small", "change")<CR>
+nnoremap <silent> <Plug>(ChangeSurroundingFUNCTION) :<C-U>call <SID>operate_on_surrounding_func("big", "change")<CR>
+nnoremap <silent> <Plug>(YankSurroundingFunction) :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
+nnoremap <silent> <Plug>(YankSurroundingFUNCTION) :<C-U>call <SID>operate_on_surrounding_func("big", "yank")<CR>
 
 " " maybe keep these and expose them according to user g:flag
-" nnoremap <silent> <Plug>GripFunctionAroundFunction :<C-U>call <SID>repeatable_grip("small", "func", "GripFunctionAroundFunction")<CR>
-" nnoremap <silent> <Plug>GripFunctionAroundFUNCTION :<C-U>call <SID>repeatable_grip("big", "func", "GripFunctionAroundFUNCTION")<CR>
-" nnoremap <silent> <Plug>GripFunctionAroundWord :<C-U>call <SID>repeatable_grip("small", "word", "GripFunctionAroundWord")<CR>
-" nnoremap <silent> <Plug>GripFunctionAroundWORD :<C-U>call <SID>repeatable_grip("big", "word", "GripFunctionAroundWORD")<CR>
+" nnoremap <silent> <Plug>(GripFunctionAroundFunction) :<C-U>call <SID>repeatable_grip("small", "func", "GripFunctionAroundFunction")<CR>
+" nnoremap <silent> <Plug>(GripFunctionAroundFUNCTION) :<C-U>call <SID>repeatable_grip("big", "func", "GripFunctionAroundFUNCTION")<CR>
+" nnoremap <silent> <Plug>(GripFunctionAroundWord) :<C-U>call <SID>repeatable_grip("small", "word", "GripFunctionAroundWord")<CR>
+" nnoremap <silent> <Plug>(GripFunctionAroundWORD) :<C-U>call <SID>repeatable_grip("big", "word", "GripFunctionAroundWORD")<CR>
 
-nnoremap <silent> <Plug>GripSurroundObject :set operatorfunc=<SID>grip_surround_object<CR>g@
-vnoremap <silent> <Plug>GripSurroundObject :<C-U>call <SID>grip_surround_object(visualmode())<CR>
+nnoremap <silent> <Plug>(GripSurroundObject) :set operatorfunc=<SID>grip_surround_object<CR>g@
+vnoremap <silent> <Plug>(GripSurroundObject) :<C-U>call <SID>grip_surround_object(visualmode())<CR>
 "}}}---------------------------------------------------------------------------
 
 "{{{- create maps and text objects --------------------------------------------
 if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings != 0
 
     " normal mode
-    nmap <silent> dsf <Plug>DeleteSurroundingFunction
-    nmap <silent> dsF <Plug>DeleteSurroundingFUNCTION
-    nmap <silent> csf <Plug>ChangeSurroundingFunction
-    nmap <silent> csF <Plug>ChangeSurroundingFUNCTION
-    nmap <silent> ysf <Plug>YankSurroundingFunction
-    nmap <silent> ysF <Plug>YankSurroundingFUNCTION
+    nmap <silent> dsf <Plug>(DeleteSurroundingFunction)
+    nmap <silent> dsF <Plug>(DeleteSurroundingFUNCTION)
+    nmap <silent> csf <Plug>(ChangeSurroundingFunction)
+    nmap <silent> csF <Plug>(ChangeSurroundingFUNCTION)
+    nmap <silent> ysf <Plug>(YankSurroundingFunction)
+    nmap <silent> ysF <Plug>(YankSurroundingFUNCTION)
 
     " visual mode
-    xmap <silent> af <Plug>SelectWholeFunction
-    omap <silent> af <Plug>SelectWholeFunction
-    xmap <silent> aF <Plug>SelectWholeFUNCTION
-    omap <silent> aF <Plug>SelectWholeFUNCTION
-    xmap <silent> if <Plug>SelectWholeFunction
-    omap <silent> if <Plug>SelectWholeFunction
-    xmap <silent> iF <Plug>SelectWholeFUNCTION
-    omap <silent> iF <Plug>SelectWholeFUNCTION
-    xmap <silent> an <Plug>SelectFunctionName
-    omap <silent> an <Plug>SelectFunctionName
-    xmap <silent> aN <Plug>SelectFunctionNAME
-    omap <silent> aN <Plug>SelectFunctionNAME
-    xmap <silent> in <Plug>SelectFunctionName
-    omap <silent> in <Plug>SelectFunctionName
-    xmap <silent> iN <Plug>SelectFunctionNAME
-    omap <silent> iN <Plug>SelectFunctionNAME
+    xmap <silent> af <Plug>(SelectWholeFunction)
+    omap <silent> af <Plug>(SelectWholeFunction)
+    xmap <silent> aF <Plug>(SelectWholeFUNCTION)
+    omap <silent> aF <Plug>(SelectWholeFUNCTION)
+    xmap <silent> if <Plug>(SelectWholeFunction)
+    omap <silent> if <Plug>(SelectWholeFunction)
+    xmap <silent> iF <Plug>(SelectWholeFUNCTION)
+    omap <silent> iF <Plug>(SelectWholeFUNCTION)
+    xmap <silent> an <Plug>(SelectFunctionName)
+    omap <silent> an <Plug>(SelectFunctionName)
+    xmap <silent> aN <Plug>(SelectFunctionNAME)
+    omap <silent> aN <Plug>(SelectFunctionNAME)
+    xmap <silent> in <Plug>(SelectFunctionName)
+    omap <silent> in <Plug>(SelectFunctionName)
+    xmap <silent> iN <Plug>(SelectFunctionNAME)
+    omap <silent> iN <Plug>(SelectFunctionNAME)
 
     " operator pending mode
-    nmap <silent> gs <Plug>GripSurroundObject
-    vmap <silent> gs <Plug>GripSurroundObject
+    nmap <silent> gs <Plug>(GripSurroundObject)
+    vmap <silent> gs <Plug>(GripSurroundObject)
 
     " " maybe keep these and expose them according to user g:flag
-    " nmap gsf <Plug>PasteFunctionAroundFunction
-    " nmap gsF <Plug>PasteFunctionAroundFUNCTION
-    " nmap gsw <Plug>PasteFunctionAroundWord
-    " nmap gsW <Plug>PasteFunctionAroundWORD
+    " nmap gsf <Plug>(PasteFunctionAroundFunction)
+    " nmap gsF <Plug>(PasteFunctionAroundFUNCTION)
+    " nmap gsw <Plug>(PasteFunctionAroundWord)
+    " nmap gsW <Plug>(PasteFunctionAroundWORD)
 endif
 "}}}---------------------------------------------------------------------------
 
