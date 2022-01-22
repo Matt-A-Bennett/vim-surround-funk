@@ -353,10 +353,10 @@ g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.', '#', '@']
 
 
 
-CONTRIBUTION GUIDELINES
+CONTRIBUTION GUIDELINES                                                 *funk2*
 
 
-REPORT A BUG
+REPORT A BUG                                                          *funk2.1*
 
 First, check if the bug is already known by seeing whether it's listed on the
 surround-funk todo list (jump there: |funk3|).
@@ -394,7 +394,7 @@ github so I can fix it. To make it easier, you can use the following template
 
 
 
-REQUEST A FEATURE
+REQUEST A FEATURE                                                     *funk2.2*
 
 First, check if the feature is already planned by looking at the 
 surround-funk todo list (jump there: |funk3|).
