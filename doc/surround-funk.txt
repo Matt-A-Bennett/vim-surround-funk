@@ -7,7 +7,7 @@ License: Same terms as Vim itself (see |license|)
 This plugin is only available if 'compatible' is not set.
 
 
-INTRODUCTION                                    *surround-funk*
+SURROUND-FUNK                                   *surround-funk* *funk*
 
 This was inspired by tpope's |surround| plugin and allows you to delete, change
 and yank a surrounding function call along with its additional arguments. With
@@ -16,10 +16,31 @@ another function call with it. 'Gripping' will wrap/encompass a word or
 function call with the one you have in the unnamed register (see below).
 
 
-USAGE
+TABLE OF CONTENTS
+
+1. Usage                                                            |funk1|
+    1.1 What is a surrounding function call?                        |funk1.1|
+    1.2 Deleting, changing and yanking a surrounding function call  |funk1.2|
+    1.3 Text objects                                                |funk1.3|
+    1.4 Gripping a text object or motion with a function call       |funk1.4|
+    1.5 Settings                                                    |funk1.5|
+        1.5.1 Prevent automatic creation of mappings                |funk1.5.1|
+        1.5.2 Specify characters allowed in a function name         |funk1.5.2|
+2. Contribution guidelines                                          |funk2|
+    2.1 Report a bug                                                |funk2.1|
+    2.2 Request a feature                                           |funk2.2|
+3. Todo list                                                        |funk3|
+    3.1 Major                                                       |funk3.1|
+    3.2 Minor                                                       |funk3.2|
+    3.3 Patches                                                     |funk3.3|
+    3.4 Bugs                                                        |funk3.4|
+4. Related plugins                                                  |funk4|
 
 
-WHAT IS A SURROUNDING FUNCTION CALL?
+USAGE                                                                   *funk1*
+
+
+WHAT IS A SURROUNDING FUNCTION CALL?                                  *funk1.1*
 
 Below, the * symbols show what would be deleted (or yanked) with the dsf (or
 ysf) command. The ^ symbols show where the cursor can be when issuing the
@@ -81,7 +102,7 @@ sF                      Where the name of the function (e.g. np.outerfunc) is
                         ^^^^^^^^^^^^^               ^^^^^^^^^^^^^^^
 
 
-DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION CALL
+DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION CALL            *funk1.2*
 
 If you have tpope's excellent repeat.vim plugin, then the dsf and dsF commands
 are repeatable with the dot command (see |single-repeat|).
@@ -115,7 +136,7 @@ ysF                     Like ysf, but the function name is delimited by any
                         |g:surround_funk_legal_func_name_chars|
 
 
-TEXT OBJECTS
+TEXT OBJECTS                                                          *funk1.3*
 
 The following text objects are made available by |surround-funk|:
 
@@ -170,7 +191,7 @@ To select just the function's name, use |vin| (again, use |viN| to include the
        ^^^^^^^^^^               ^^^^^^^^^^^^^
 
 
-GRIPPING A TEXT OBJECT OR MOTION WITH A FUNCTION CALL
+GRIPPING A TEXT OBJECT OR MOTION WITH A FUNCTION CALL                 *funk1.4*
 
 If you have tpope's excellent repeat.vim plugin, then the following command is
 repeatable with the dot command (see |single-repeat|).
@@ -236,7 +257,9 @@ To get:
                                *************
 
 
-SETTINGS
+SETTINGS                                                              *funk1.5*
+
+PREVENT AUTOMATIC CREATION OF MAPPINGS                              *funk1.5.1*
 
                                    *g:surround_funk_create_mappings*
 By default |surround-funk| creates the above mappings. If you would rather it
@@ -285,6 +308,7 @@ N.B. If you're worried about remapping the core vim command |gs|, done't be -
 it literally does nothing.
 
 
+SPECIFY CHARACTERS ALLOWED IN A FUNCTION NAME                       *funk1.5.2*
 
                                 *g:surround_funk_legal_func_name_chars*
 By default the |surround-funk| plugin defines any vim word character
@@ -326,3 +350,101 @@ g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.', '#', '@']
           *********     **********      **********
     ...), pd@mean(), np2.my#func(), 8np/my._func(), ...
           ^^^^^^^^^     ^^^^^^^^^^      ^^^^^^^^^^
+
+
+
+CONTRIBUTION GUIDELINES
+
+
+REPORT A BUG
+
+First, check if the bug is already known by seeing whether it's listed on the
+surround-funk todo list (jump there: |funk3|).
+
+If it's not there, then please raise a new issue (or submit a pull request) on
+github so I can fix it. To make it easier, you can use the following template
+(If multi-line was broken, you could show me something like this):
+
+
+    Command used: `dsF`
+
+    Reproducible example (with arrows showing where the cursor was, in this case,
+    the 'e' in 'mean'):
+
+    np.mean(st.std(arg1),     <---
+              arg2, arg3)
+
+      ^
+      |
+
+    Result:
+
+    np.mean(st.std(arg1),     <---
+      arg2, ar
+
+    ^
+    |
+
+    Expected:
+
+    st.std(arg1)  <---
+              
+    ^
+    |
+
+
+
+REQUEST A FEATURE
+
+First, check if the feature is already planned by looking at the 
+surround-funk todo list (jump there: |funk3|).
+
+If it's not there, then please raise a new issue describing what you would like
+and I'll see what I can do! If you would like to submit a pull request, then do
+so (please let me know this is your plan first in a new issue).
+
+
+TODO LIST                                                               *funk3*
+
+
+MAJOR                                                                 *funk3.1*
+
+- [x] Integrate with repeat.vim
+- [x] Have `gs` commands operate on any motion (constrained to a single line?)
+
+
+MINOR                                                                 *funk3.2*
+
+- [x] Rewrite so we don't rely on tons of `exe norm!` commands
+- [x] Fix big bug 1
+- [x] Let users provide a list of legal function name characters
+- [x] Allow users to define their own maps
+- [x] Allow multi-line functions
+- [x] Add `daf` and `dif` text objects
+- [x] Add `dan` and `din` text object for the function name(?)
+- [x] Allow yanking into a named register
+- [ ] Some languages (e.g. Miranda family) don't use parentheses for function
+      calls... I wonder if I could broaden the plugin to work on those too?
+
+
+PATCHES                                                               *funk3.3*
+
+- [x] Fix small bug 1
+
+
+BUGS                                                                  *funk3.4*
+                                                                         
+Big Bugs                                                            
+1. `gs` commands mess up sometimes: see testing.vim                 
+
+Small Bugs                                                          
+1. `ysf` and `ysF` remove a line above if applied to function on last line of
+   file 
+
+
+RELATED PLUGINS                                                         *funk4*
+
+|surround| is a plugin is a tool for dealing with pairs of "surroundings."
+
+|sandwich| is a set of operator and textobject plugins to add/delete/replace
+           surroundings of a sandwiched textobject, like (foo), "bar".
