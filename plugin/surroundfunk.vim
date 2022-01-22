@@ -283,14 +283,10 @@ function! s:get_func_markers(word_size)
     " get a list of list each list contains the line and column positions of
     " one of the four key function markers (see top of file for explanation of
     " these function markers)
-    let [l_start, c_start] = s:get_start_of_func_position(a:word_size)
-    let [l_open, c_open] = s:get_func_open_paren_position()
-    let [l_trail, c_trail] = s:get_start_of_trailing_args_position()
-    let [l_close, c_close] = s:get_end_of_func_position()
-    return [[l_start, c_start],
-           \[l_open, c_open],
-           \[l_trail, c_trail],
-           \[l_close, c_close]]
+    let s:start_pos = s:get_start_of_func_position(a:word_size)
+    let s:open_pos = s:get_func_open_paren_position()
+    let s:trail_pos = s:get_start_of_trailing_args_position()
+    let s:close_pos = get_end_of_func_position()
 endfunction
 "}}}---------------------------------------------------------------------------
 
@@ -348,51 +344,48 @@ endfunction
 
 "{{{- extract_func_name_and_open_paren ----------------------------------------
 function! s:extract_func_name_and_open_paren(word_size)
-    let [start_pos, open_pos, _, _] = s:get_func_markers(a:word_size)
-    let str = getline(start_pos[0])
-    return s:extract_substrings(str, [[start_pos[1], open_pos[1]]]) 
+    let str = getline(s:start_pos[0])
+    return s:extract_substrings(str, [[s:start_pos[1], s:open_pos[1]]]) 
 endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- extract_online_args -----------------------------------------------------
 function! s:extract_online_args(word_size)
-    let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
-    let str = getline(start_pos[0])
-    if open_pos[0] != trail_pos[0]
+    let str = getline(s:start_pos[0])
+    if s:open_pos[0] != s:trail_pos[0]
         return ['', ['']]
-    elseif open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
-        return s:extract_substrings(str, [[trail_pos[1], close_pos[1]]]) 
+    elseif s:open_pos[0] == s:trail_pos[0] && s:trail_pos[0] == s:close_pos[0]
+        return s:extract_substrings(str, [[s:trail_pos[1], s:close_pos[1]]]) 
     else
-        return s:extract_substrings(str, [[trail_pos[1], -1]]) 
+        return s:extract_substrings(str, [[s:trail_pos[1], -1]]) 
     end
 endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- extract_offline_args ----------------------------------------------------
 function! s:extract_offline_args(word_size)
-    let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
-    if open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
+    if s:open_pos[0] == s:trail_pos[0] && s:trail_pos[0] == s:close_pos[0]
         return ['', ['']]
     endif
     let results = []
     let intervening = []
-    if open_pos[0] == trail_pos[0]
-        let trail_pos[1] = 1
+    if s:open_pos[0] == s:trail_pos[0]
+        let s:trail_pos[1] = 1
         let skip = 1
     else 
         let skip = 0
     endif
-    " this loop will only happen if close_pos[0] != trail_pos[0]
-    for l in range(trail_pos[0]+skip, close_pos[0]-1)
+    " this loop will only happen if s:close_pos[0] != s:trail_pos[0]
+    for l in range(s:trail_pos[0]+skip, s:close_pos[0]-1)
         let str = getline(l)
         if len(str) == 0
             let [result, rm2] = ['', '']
         else
-            let [result, rm2] = s:extract_substrings(str, [[trail_pos[1], -1]]) 
+            let [result, rm2] = s:extract_substrings(str, [[s:trail_pos[1], -1]]) 
         endif
         call add(results, result)
         call add(intervening, rm2[0])
-        let trail_pos[1] = 1
+        let s:trail_pos[1] = 1
     endfor
     return [results, intervening]
 endfunction
@@ -400,27 +393,25 @@ endfunction
 
 "{{{- extract_last_line_with_closing_paren ------------------------------------
 function! s:extract_last_line_with_closing_paren(word_size)
-    let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
     " grab from start of line to close
-    if open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
+    if s:open_pos[0] == s:trail_pos[0] && s:trail_pos[0] == s:close_pos[0]
         return ['', ['']]
     endif
-    if trail_pos[0] != close_pos[0]
-        let trail_pos[1] = 1
+    if s:trail_pos[0] != s:close_pos[0]
+        let s:trail_pos[1] = 1
     endif
-    let str = getline(close_pos[0])
-    return s:extract_substrings(str, [[trail_pos[1], close_pos[1]]]) 
+    let str = getline(s:close_pos[0])
+    return s:extract_substrings(str, [[s:trail_pos[1], s:close_pos[1]]]) 
 endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- extract_func_parts ------------------------------------------------------
 function! s:extract_func_parts(word_size)
-    let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
     let parts = {}
     let parts['func_name']         = [['', ['']], 0]
     let parts['online_args']       = [['', ['']], 0]
-    let parts['offline_args']      = [['', ['']], close_pos[0]-1 > open_pos[0]]
-    let parts['last']              = [['', ['']], close_pos[0]-open_pos[0]]
+    let parts['offline_args']      = [['', ['']], s:close_pos[0]-1 > s:open_pos[0]]
+    let parts['last']              = [['', ['']], s:close_pos[0]-s:open_pos[0]]
     let parts['func_name'][0]      = s:extract_func_name_and_open_paren(a:word_size)
     let parts['online_args'][0]    = s:extract_online_args(a:word_size)
     let parts['offline_args'][0]   = s:extract_offline_args(a:word_size)
@@ -431,10 +422,9 @@ endfunction
 
 "{{{- parts2string ----------------------------------------------------------
 function! s:parts2string(parts, word_size)
-    let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
-    if open_pos[0] == trail_pos[0] && trail_pos[0] == close_pos[0]
+    if s:open_pos[0] == s:trail_pos[0] && s:trail_pos[0] == s:close_pos[0]
         let str = getline('.')
-        let [result, removed] = s:extract_substrings(str, [[start_pos[1], open_pos[1]], [trail_pos[1], close_pos[1]]]) 
+        let [result, removed] = s:extract_substrings(str, [[s:start_pos[1], s:open_pos[1]], [s:trail_pos[1], s:close_pos[1]]]) 
         let [rm1, rm2] = [removed[0], removed[1]]
         let rm1 = [rm1]
         let rm2 = [rm2]
@@ -524,11 +514,11 @@ endfunction
 
 "{{{- operate_on_surrounding_func ---------------------------------------------
 function! s:operate_on_surrounding_func(word_size, operation)
-    let [start_pos, open_pos, trail_pos, close_pos] = s:get_func_markers(a:word_size)
+    call s:get_func_markers(a:word_size)
     let parts = s:extract_func_parts(a:word_size)
     let [result, rm1, rm2] = s:parts2string(parts, a:word_size)
     call setreg('"', rm1[0].rm2)
-    call cursor(start_pos[0], start_pos[1])
+    call cursor(s:start_pos[0], s:start_pos[1])
     if a:operation =~ 'delete\|change'
         call setline('.', result)
     endif
