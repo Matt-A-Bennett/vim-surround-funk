@@ -293,22 +293,6 @@ function! s:get_func_markers(word_size)
            \[l_close, c_close]]
 endfunction
 "}}}---------------------------------------------------------------------------
-
-" " maybe keep these and expose them according to user g:flag
-""{{{- get_word_markers --------------------------------------------------------
-"function! s:get_word_markers(word_size)
-"    " get list containing the line and column positions of the word - using the
-"    " <s:legal_func_name_chars> if marking a 'big word'
-"    if a:word_size ==# 'small'
-"        let [l_start, c_start] = searchpos('\<', 'b', line('.'))
-"        let [l_close, c_close] = searchpos('\>', '', line('.'))
-"    elseif a:word_size ==# 'big'
-"        let [l_start, c_start] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
-"        let [l_close, c_close] = searchpos('\('.s:legal_func_name_chars.'\)\@<!\|$', '', line('.'))
-"    endif
-"    return [[l_start, c_start], [l_close, c_close-1]]
-"endfunction
-""}}}---------------------------------------------------------------------------
 "}}}---------------------------------------------------------------------------
 
 "--------------------------------- Extract ------------------------------------
@@ -609,12 +593,6 @@ nnoremap <silent> <Plug>ChangeSurroundingFUNCTION :<C-U>call <SID>operate_on_sur
 nnoremap <silent> <Plug>YankSurroundingFunction :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
 nnoremap <silent> <Plug>YankSurroundingFUNCTION :<C-U>call <SID>operate_on_surrounding_func("big", "yank")<CR>
 
-" " maybe keep these and expose them according to user g:flag
-" nnoremap <silent> <Plug>GripFunctionAroundFunction :<C-U>call <SID>repeatable_grip("small", "func", "GripFunctionAroundFunction")<CR>
-" nnoremap <silent> <Plug>GripFunctionAroundFUNCTION :<C-U>call <SID>repeatable_grip("big", "func", "GripFunctionAroundFUNCTION")<CR>
-" nnoremap <silent> <Plug>GripFunctionAroundWord :<C-U>call <SID>repeatable_grip("small", "word", "GripFunctionAroundWord")<CR>
-" nnoremap <silent> <Plug>GripFunctionAroundWORD :<C-U>call <SID>repeatable_grip("big", "word", "GripFunctionAroundWORD")<CR>
-
 nnoremap <silent> <Plug>GripSurroundObject :set operatorfunc=<SID>grip_surround_object<CR>g@
 vnoremap <silent> <Plug>GripSurroundObject :<C-U>call <SID>grip_surround_object(visualmode())<CR>
 "}}}---------------------------------------------------------------------------
@@ -652,11 +630,6 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     nmap <silent> gs <Plug>GripSurroundObject
     vmap <silent> gs <Plug>GripSurroundObject
 
-    " " maybe keep these and expose them according to user g:flag
-    " nmap gsf <Plug>PasteFunctionAroundFunction
-    " nmap gsF <Plug>PasteFunctionAroundFUNCTION
-    " nmap gsw <Plug>PasteFunctionAroundWord
-    " nmap gsW <Plug>PasteFunctionAroundWORD
 endif
 "}}}---------------------------------------------------------------------------
 
