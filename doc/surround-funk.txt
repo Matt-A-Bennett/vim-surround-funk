@@ -275,12 +275,12 @@ And map them to something different with:
 For reference, the default mappings are as follows:
 
     " normal mode
-    nmap dsf <Plug>(DeleteSurroundingFunction)
-    nmap dsF <Plug>(DeleteSurroundingFUNCTION)
-    nmap csf <Plug>(ChangeSurroundingFunction)
-    nmap csF <Plug>(ChangeSurroundingFUNCTION)
-    nmap ysf <Plug>(YankSurroundingFunction)
-    nmap ysF <Plug>(YankSurroundingFUNCTION)
+    nmap <silent> dsf <Plug>(DeleteSurroundingFunction)
+    nmap <silent> dsF <Plug>(DeleteSurroundingFUNCTION)
+    nmap <silent> csf <Plug>(ChangeSurroundingFunction)
+    nmap <silent> csF <Plug>(ChangeSurroundingFUNCTION)
+    nmap <silent> ysf <Plug>(YankSurroundingFunction)
+    nmap <silent> ysF <Plug>(YankSurroundingFUNCTION)
 
     " visual mode
     xmap <silent> af <Plug>(SelectWholeFunction)
