@@ -3,9 +3,13 @@
 This was inspired by tpope's [vim-surround
 plugin](https://github.com/tpope/vim-surround) and allows you to delete, change
 and yank a surrounding function call along with its additional arguments. With
-the surrounding function call in the unnamed register, you can 'grip' a word or
-another function call with it. 'Gripping' will wrap/encompass a word or
-function call with the one you have in the unnamed register (see below).
+the surrounding function call in the unnamed register, you can 'grip' any text
+object with it (including a different function call, see below). 'Gripping'
+will wrap/encompass a word or function call with the one you have in the
+unnamed register (see below).
+
+*N.B. This plugin was formerly called surround-funk.vim, but was renamed to be
+more consistent with tpope's vim-surround.*
 
 ## Table of contents
 * [Feature Demos](#feature-demos)
@@ -23,14 +27,15 @@ function call with the one you have in the unnamed register (see below).
     * [Report a bug](#report-a-bug)
     * [Request a feature](#request-a-feature)
 * [Installation](#installation)
+* [Related plugins](#related-plugins)
 * [License](#license)
 
 ## Feature demos
 ### Commands for stripping function calls and gripping other objects
-![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/operator_1100_775_annotated.gif)
+![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/vim-surround-funk/operator_1100_775_annotated.gif)
          
 ### Text objects for function body and name
-![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/surround-funk.vim/textobjects_1100_775_annotated.gif)
+![demo](https://github.com/Matt-A-Bennett/vim_plugin_external_docs/blob/master/vim-surround-funk/textobjects_1100_775_annotated.gif)
 
 ## Usage
 
@@ -264,41 +269,41 @@ let g:surround_funk_create_mappings = 0
 And map them to something different with:
 
 ```vim
-nmap <your-map-here> <Plug><OperationToMap>
+nmap <your-map-here> <Plug>(<OperationToMap>)
 ```
 
 For reference, the default mappings are as follows:
 
 ```vim
 " normal mode
-nmap <silent> dsf <Plug>DeleteSurroundingFunction
-nmap <silent> dsF <Plug>DeleteSurroundingFUNCTION
-nmap <silent> csf <Plug>ChangeSurroundingFunction
-nmap <silent> csF <Plug>ChangeSurroundingFUNCTION
-nmap <silent> ysf <Plug>YankSurroundingFunction
-nmap <silent> ysF <Plug>YankSurroundingFUNCTION
+nmap <silent> dsf <Plug>(DeleteSurroundingFunction)
+nmap <silent> dsF <Plug>(DeleteSurroundingFUNCTION)
+nmap <silent> csf <Plug>(ChangeSurroundingFunction)
+nmap <silent> csF <Plug>(ChangeSurroundingFUNCTION)
+nmap <silent> ysf <Plug>(YankSurroundingFunction)
+nmap <silent> ysF <Plug>(YankSurroundingFUNCTION)
 
 " visual mode
-xmap <silent> af <Plug>SelectWholeFunction
-omap <silent> af <Plug>SelectWholeFunction
-xmap <silent> aF <Plug>SelectWholeFUNCTION
-omap <silent> aF <Plug>SelectWholeFUNCTION
-xmap <silent> if <Plug>SelectWholeFunction
-omap <silent> if <Plug>SelectWholeFunction
-xmap <silent> iF <Plug>SelectWholeFUNCTION
-omap <silent> iF <Plug>SelectWholeFUNCTION
-xmap <silent> an <Plug>SelectFunctionName
-omap <silent> an <Plug>SelectFunctionName
-xmap <silent> aN <Plug>SelectFunctionNAME
-omap <silent> aN <Plug>SelectFunctionNAME
-xmap <silent> in <Plug>SelectFunctionName
-omap <silent> in <Plug>SelectFunctionName
-xmap <silent> iN <Plug>SelectFunctionNAME
-omap <silent> iN <Plug>SelectFunctionNAME
+xmap <silent> af <Plug>(SelectWholeFunction)
+omap <silent> af <Plug>(SelectWholeFunction)
+xmap <silent> aF <Plug>(SelectWholeFUNCTION)
+omap <silent> aF <Plug>(SelectWholeFUNCTION)
+xmap <silent> if <Plug>(SelectWholeFunction)
+omap <silent> if <Plug>(SelectWholeFunction)
+xmap <silent> iF <Plug>(SelectWholeFUNCTION)
+omap <silent> iF <Plug>(SelectWholeFUNCTION)
+xmap <silent> an <Plug>(SelectFunctionName)
+omap <silent> an <Plug>(SelectFunctionName)
+xmap <silent> aN <Plug>(SelectFunctionNAME)
+omap <silent> aN <Plug>(SelectFunctionNAME)
+xmap <silent> in <Plug>(SelectFunctionName)
+omap <silent> in <Plug>(SelectFunctionName)
+xmap <silent> iN <Plug>(SelectFunctionNAME)
+omap <silent> iN <Plug>(SelectFunctionNAME)
 
 " operator pending mode
-nmap <silent> gs <Plug>GripSurroundObject
-vmap <silent> gs <Plug>GripSurroundObject
+nmap <silent> gs <Plug>(GripSurroundObject)
+vmap <silent> gs <Plug>(GripSurroundObject)
 ```
 
 #### Specify what characters are allowed in a function name
@@ -438,6 +443,9 @@ issue](https://github.com/Matt-A-Bennett/vim-surround-funk/issues) describing wh
 you would like and I'll see what I can do! If you would like to submit a pull
 request, then do so (please let me know this is your plan first in a [new issue](https://github.com/Matt-A-Bennett/vim-surround-funk/issues)).
 
+## Related plugins
+ - [vim-surround](https://github.com/tpope/vim-surround)
+ - [vim-sandwich](https://github.com/machakann/vim-sandwich)
 ## License
  Copyright (c) Matthew Bennett. Distributed under the same terms as Vim itself.
  See `:help license`.
