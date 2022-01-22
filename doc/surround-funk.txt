@@ -1,5 +1,5 @@
 *surround-funk.txt* (v2.0.0) Delete, change and yank a surrounding function
-call along with its additional arguments. Then 'grip' a word or function call
+call along with its additional arguments. Then 'grip' a text object or motion
 with the surrounding function call.
 
 License: Same terms as Vim itself (see |license|)
