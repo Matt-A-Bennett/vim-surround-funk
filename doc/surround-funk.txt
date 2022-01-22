@@ -7,7 +7,7 @@ License: Same terms as Vim itself (see |license|)
 This plugin is only available if 'compatible' is not set.
 
 
-SURROUND-FUNK                                   *surround-funk*
+SURROUND-FUNK                                   *surround-funk* *funk*
 
 This was inspired by tpope's |surround| plugin and allows you to delete, change
 and yank a surrounding function call along with its additional arguments. With
