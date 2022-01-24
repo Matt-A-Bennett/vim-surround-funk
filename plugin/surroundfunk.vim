@@ -553,12 +553,12 @@ endfunction
 
 "{{{- grip_surround_object_no_paste -------------------------------------------
 function! s:grip_surround_object_no_paste(type)
-    let [start_pos, close_pos] = s:get_motion(a:type)
-    let str = getline(start_pos[0])
     let func = input('function: ')
     if func ==# ''
         return
     endif
+    let [start_pos, close_pos] = s:get_motion(a:type)
+    let str = getline(start_pos[0])
     let func_line = s:insert_substrings(str, [[func.'(', start_pos[1], '<']])
     call setline(start_pos[0], func_line)
     if start_pos[0] == close_pos[0]
