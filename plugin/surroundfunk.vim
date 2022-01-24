@@ -16,7 +16,7 @@
 "======================== EXPLANATION OF THE APPROACH =========================
 
 "{{{---------------------------------------------------------------------------
-" The following 'function markers' are found in the current line:
+" The following 'function markers' are found:
 "      
 "    np.outer(os.inner(arg1    <----- 1a, 1b, 2
 "                  arg2, arg3),  <--- 3
@@ -31,8 +31,8 @@
 
 "    1a 1b   2         4      3   
 "
-" Then we can delete/yank bewteen them, and paste the pieces around markers
-" found for a different function
+" Then we can use them to define text objects, delete/yank bewteen them, and
+" store the pieces for later gripping of any text object or motion.
 "}}}---------------------------------------------------------------------------
 
 "================================== SETUP =====================================
@@ -172,6 +172,9 @@ endfunction
 
 "{{{- get_motion --------------------------------------------------------------
 function! s:get_motion(type)
+    " after an operator pending command, the line and column coordinates of the
+    " start and end positions of whatever text object or motion is given is
+    " found
     if a:type ==? 'v' || a:type ==# "\<C-V>"
         let [_, l_start, c_start, _] = getpos("'<")
         let [_, l_end, c_end, _] = getpos("'>")
@@ -191,7 +194,7 @@ endfunction
 
 "------------------------------- Get Markers ----------------------------------
 "{{{---------------------------------------------------------------------------
-"{{{- get_func_open_paren_position --------------------------------------------
+"{{{- get_func_open_paren_position (marker 2) ---------------------------------
 function! s:get_func_open_paren_position()
     let [_, l_orig, c_orig, _] = getpos('.')
     " move forward to one of function's parentheses (unless already on one)
@@ -206,17 +209,18 @@ function! s:get_func_open_paren_position()
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- move_to_func_open_paren -------------------------------------------------
+"{{{- move_to_func_open_paren (marker 2) --------------------------------------
 function! s:move_to_func_open_paren()
     let [l, c] = s:get_func_open_paren_position()
     call cursor(l, c)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- get_start_of_func_position ----------------------------------------------
+"{{{- get_start_of_func_position (marker 1) -----------------------------------
 function! s:get_start_of_func_position(word_size)
     let [_, l_orig, c_orig, _] = getpos('.')
     call s:move_to_func_open_paren()
+    " move back to the start of the function name
     if a:word_size ==# 'small'
         let [l, c] = searchpos('\<', 'b', line('.'))
     elseif a:word_size ==# 'big'
@@ -227,14 +231,14 @@ function! s:get_start_of_func_position(word_size)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- move_to_start_of_func ---------------------------------------------------
+"{{{- move_to_start_of_func (marker 1) ----------------------------------------
 function! s:move_to_start_of_func(word_size)
     let [l, c] = s:get_start_of_func_position(a:word_size)
     call cursor(l, c)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- get_end_of_func_position ------------------------------------------------
+"{{{- get_end_of_func_position (marker 4) -------------------------------------
 function! s:get_end_of_func_position()
     let [_, l_orig, c_orig, _] = getpos('.')
     call s:move_to_func_open_paren()
@@ -244,14 +248,14 @@ function! s:get_end_of_func_position()
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- move_to_end_of_func -----------------------------------------------------
+"{{{- move_to_end_of_func (marker 4) ------------------------------------------
 function! s:move_to_end_of_func()
     let [l, c] = s:get_end_of_func_position()
     call cursor(l, c)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- get_start_of_trailing_args_position -------------------------------------
+"{{{- get_start_of_trailing_args_position (marker 3) --------------------------
 function! s:get_start_of_trailing_args_position()
     let [_, l_orig, c_orig, _] = getpos('.')
     call s:move_to_func_open_paren()
@@ -271,14 +275,14 @@ function! s:get_start_of_trailing_args_position()
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- move_to_start_of_trailing_args ------------------------------------------
+"{{{- move_to_start_of_trailing_args (marker 3) -------------------------------
 function! s:move_to_start_of_trailing_args()
     let [l, c] = s:get_start_of_trailing_args_position()
     call cursor(l, c)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- get_func_markers --------------------------------------------------------
+"{{{- get_func_markers (markers 1-4) -----------------------------------------
 function! s:get_func_markers(word_size)
     " expose the line and column positions of each of the four key function
     " markers (see top of file for explanation of these function markers)
@@ -295,7 +299,7 @@ endfunction
 "{{{- extract_substring -------------------------------------------------------
 function! s:extract_substring(str, c1, c2)
     " remove the characters ranging from <c1> to <c2> (inclusive) from <str>
-    " returns: the original with characters removed
+    " returns: the original string with characters removed
     "          the removed characters as a string
     let [c1, c2] = [a:c1, a:c2]
     let chars = s:string2list(a:str)
@@ -307,6 +311,11 @@ endfunction
 
 "{{{- extract_substrings ------------------------------------------------------
 function! s:extract_substrings(str, deletion_ranges)
+    " extract a set of strings out of <str>
+    " <deletion_ranges> is a list of lists where each sublist contains the
+    " range (inclusive) to extract
+    " returns: the original string with characters removed
+    "          the removed characters as a list of strings
     let removed = []
     let result = a:str
     let offset = 0
@@ -334,6 +343,9 @@ endfunction
 
 "{{{- extract_online_args -----------------------------------------------------
 function! s:extract_online_args(word_size)
+    " the 'online args' are any arguments appearing on the same line as the
+    " function opening parenthesis.
+    " this will include the closing parenthesis if the function is on one line
     let str = getline(s:start_pos[0])
     if s:open_pos[0] != s:trail_pos[0]
         return ['', ['']]
@@ -347,6 +359,8 @@ endfunction
 
 "{{{- extract_offline_args ----------------------------------------------------
 function! s:extract_offline_args(word_size)
+    " the 'offline args' are any args that appear on a separate line to both
+    " the function's opening and closing parentheses
     if s:open_pos[0] == s:trail_pos[0] && s:trail_pos[0] == s:close_pos[0]
         return ['', ['']]
     endif
@@ -376,7 +390,8 @@ endfunction
 
 "{{{- extract_last_line_with_closing_paren ------------------------------------
 function! s:extract_last_line_with_closing_paren(word_size)
-    " grab from start of line to close
+    " in the case of a multiline function call, here we get the last line of
+    " args up to and including the closing parenthesis
     if s:open_pos[0] == s:trail_pos[0] && s:trail_pos[0] == s:close_pos[0]
         return ['', ['']]
     endif
@@ -390,6 +405,7 @@ endfunction
 
 "{{{- extract_func_parts ------------------------------------------------------
 function! s:extract_func_parts(word_size)
+    " package all the functions parts into a nested list structure
     let parts = {}
     let parts['func_name']         = [['', ['']], 0]
     let parts['online_args']       = [['', ['']], 0]
@@ -403,8 +419,13 @@ function! s:extract_func_parts(word_size)
 endfunction
 "}}}---------------------------------------------------------------------------
 
-"{{{- parts2string ----------------------------------------------------------
+"{{{- parts2string ------------------------------------------------------------
 function! s:parts2string(parts, word_size)
+    " take the nested list structure from extract_func_parts() and join the
+    " parts together to make 3 strings:
+    " a 'part removed beofore'
+    " a 'part removed after'
+    " the result after the parts were removed
     if s:open_pos[0] == s:trail_pos[0] && s:trail_pos[0] == s:close_pos[0]
         let str = getline('.')
         let [result, removed] = s:extract_substrings(str, [[s:start_pos[1], s:open_pos[1]], [s:trail_pos[1], s:close_pos[1]]]) 
@@ -468,6 +489,8 @@ endfunction
 
 "{{{- insert_substrings_and_split_line ----------------------------------------
 function! s:insert_substrings_and_split_line(l, insertion_list)
+    " the same as insert_substrings() but a newline is made immediately after
+    " each insertion
     if a:l ==# '.'
         let l = line('.')
     else
@@ -497,6 +520,7 @@ endfunction
 
 "{{{- operate_on_surrounding_func ---------------------------------------------
 function! s:operate_on_surrounding_func(word_size, operation)
+    " copy and optionally delete all the parts of a function
     call s:get_func_markers(a:word_size)
     let parts = s:extract_func_parts(a:word_size)
     let [result, rm1, rm2] = s:parts2string(parts, a:word_size)
@@ -529,6 +553,8 @@ endfunction
 
 "{{{- grip_surround_object ----------------------------------------------------
 function! s:grip_surround_object(type)
+    " surround any text object or motion with a previously yanked/deleted
+    " function call 
     if !exists("s:surroundfunk_func_parts")
         return
     endif
@@ -556,6 +582,8 @@ endfunction
 
 "{{{- grip_surround_object_no_paste -------------------------------------------
 function! s:grip_surround_object_no_paste(type)
+    " surround any text object or motion with a function call to be specified
+    " at the command line prompt
     let func = input('function: ')
     if func ==# ''
         return
