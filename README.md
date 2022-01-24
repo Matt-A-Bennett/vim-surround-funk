@@ -335,6 +335,7 @@ nmap <silent> gs <Plug>(GripSurroundObject)
 vmap <silent> gs <Plug>(GripSurroundObject)
 nmap <silent> gS <Plug>(GripSurroundObjectNoPaste)
 vmap <silent> gS <Plug>(GripSurroundObjectNoPaste)
+```
 
 #### Specify what characters are allowed in a function name
 
