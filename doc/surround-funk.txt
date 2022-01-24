@@ -278,6 +278,7 @@ For example, doing gSaF on this line:
 and entering 'np.mean' at the prompt will yield the following with the cursor
 (in insert mode) indicated by the ^ symbol:
 
+
     ********                         *
     np.mean(os.lonelyfunc(argA, argB))
                                      ^
