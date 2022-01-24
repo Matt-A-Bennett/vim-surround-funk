@@ -9,7 +9,7 @@
 "
 "
 " Author:       Matthew Bennett
-" Version:      2.0.1
+" Version:      2.1.1
 " License:      Same as Vim's (see :help license)
 "
 "
@@ -551,6 +551,27 @@ function! s:grip_surround_object(type)
 endfunction
 "}}}---------------------------------------------------------------------------
 
+"{{{- grip_surround_object_no_paste -------------------------------------------
+function! s:grip_surround_object_no_paste(type)
+    let func = input('function: ')
+    if func ==# ''
+        return
+    endif
+    let [start_pos, close_pos] = s:get_motion(a:type)
+    let str = getline(start_pos[0])
+    let func_line = s:insert_substrings(str, [[func.'(', start_pos[1], '<']])
+    call setline(start_pos[0], func_line)
+    if start_pos[0] == close_pos[0]
+        let offset = len(func)+2
+    else
+        let offset = 1
+    endif
+    call cursor(close_pos[0], close_pos[1]+offset)
+    normal! i)
+    startinsert
+endfunction
+"}}}---------------------------------------------------------------------------
+
 "======================= CREATE MAPS AND TEXT OBJECTS =========================
 
 "{{{- make maps repeatable ----------------------------------------------------
@@ -579,6 +600,9 @@ nnoremap <silent> <Plug>(YankSurroundingFUNCTION) :<C-U>call <SID>operate_on_sur
 
 nnoremap <silent> <Plug>(GripSurroundObject) :set operatorfunc=<SID>grip_surround_object<CR>g@
 vnoremap <silent> <Plug>(GripSurroundObject) :<C-U>call <SID>grip_surround_object(visualmode())<CR>
+nnoremap <silent> <Plug>(GripSurroundObjectNoPaste) :set operatorfunc=<SID>grip_surround_object_no_paste<CR>g@
+vnoremap <silent> <Plug>(GripSurroundObjectNoPaste) :<C-U>call <SID>grip_surround_object_no_paste(visualmode())<CR>
+
 "}}}---------------------------------------------------------------------------
 
 "{{{- create maps and text objects --------------------------------------------
@@ -613,6 +637,8 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     " operator pending mode
     nmap <silent> gs <Plug>(GripSurroundObject)
     vmap <silent> gs <Plug>(GripSurroundObject)
+    nmap <silent> gS <Plug>(GripSurroundObjectNoPaste)
+    vmap <silent> gS <Plug>(GripSurroundObjectNoPaste)
 
 endif
 "}}}---------------------------------------------------------------------------

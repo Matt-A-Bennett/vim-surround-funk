@@ -20,6 +20,8 @@ more consistent with tpope's vim-surround.*
     * [Deleting, changing and yanking a surrounding function call](#deleting-changing-and-yanking-a-surrounding-function-call)
     * [Text objects](#text-objects)
     * [Gripping a text object or motion with a function call](#gripping-a-text-object-or-motion-with-a-function-call)
+        * [Gripping with function call in unnamed register](#gripping-with-function-call-in-unnamed-register)
+        * [Gripping with a new function call](#gripping-with-a-new-function-call)
     * [Settings](#settings)
         * [Turn off automatic creation of mappings](#turn-off-automatic-creation-of-mappings)
         * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
@@ -182,6 +184,8 @@ np.outerfunc(innerfunc(arg1), arg2, arg3)
 
 ### Gripping a text object or motion with a function call
 
+#### Gripping with function call in unnamed register
+
 If you have tpope's excellent [repeat.vim
 plugin](https://github.com/tpope/vim-repeat), then the following command is
 repeatable with the dot command.
@@ -254,8 +258,33 @@ np.outerfunc(os.multi_line(argA(),
                 argB, argC), arg2, arg3)
                            *************
 ```
+#### Gripping with a new function call
+
+This one is pretty much the same as tpope's surround `ys<textobject>f` command:
+If `gS` is used, Vim prompts for a function name to insert. The target text
+will be wrapped in a function call. This command differs from the surround
+plugin in that after wrapping the target text, you are left in insert mode just
+before the closing parenthesis (in case you want to start adding trailing
+arguments).
+
+```
+gS: Grip (i.e wrap/encompass) any text object or motion with with a function
+    call to be specified on the command line
+```
+
+For example, doing `gSaF` on this line:
+
+    os.lonelyfunc(argA, argB)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+and entering 'np.mean' at the prompt will yield the following with the cursor
+(in insert mode) indicated by the `^` symbol:
+
+    np.mean(os.lonelyfunc(argA, argB))
+                                     ^
 
 ### Settings
+
 #### Turn off automatic creation of mappings
 
 By default surround-funk creates the above mappings. If you would
@@ -304,7 +333,8 @@ omap <silent> iN <Plug>(SelectFunctionNAME)
 " operator pending mode
 nmap <silent> gs <Plug>(GripSurroundObject)
 vmap <silent> gs <Plug>(GripSurroundObject)
-```
+nmap <silent> gS <Plug>(GripSurroundObjectNoPaste)
+vmap <silent> gS <Plug>(GripSurroundObjectNoPaste)
 
 #### Specify what characters are allowed in a function name
 

@@ -1,4 +1,4 @@
-*surround-funk.txt* (v2.0.1) Delete, change and yank a surrounding function
+*surround-funk.txt* (v2.1.1) Delete, change and yank a surrounding function
 call along with its additional arguments. Then 'grip' a text object or motion
 with the surrounding function call.
 
@@ -23,6 +23,8 @@ TABLE OF CONTENTS
     1.2 Deleting, changing and yanking a surrounding function call  |funk1.2|
     1.3 Text objects                                                |funk1.3|
     1.4 Gripping a text object or motion with a function call       |funk1.4|
+        1.4.1 Gripping with function call in unnamed register       |funk1.4.1|
+        1.4.2 Gripping with a new function call                     |funk1.4.2|
     1.5 Settings                                                    |funk1.5|
         1.5.1 Prevent automatic creation of mappings                |funk1.5.1|
         1.5.2 Specify characters allowed in a function name         |funk1.5.2|
@@ -188,6 +190,8 @@ To select just the function's name, use |vin| (again, use |viN| to include the
 
 GRIPPING A TEXT OBJECT OR MOTION WITH A FUNCTION CALL                 *funk1.4*
 
+GRIPPING WITH FUNCTION CALL IN UNNAMED REGISTER                     *funk1.4.1*
+
 If you have tpope's excellent repeat.vim plugin, then the following command is
 repeatable with the dot command (see |single-repeat|).
 
@@ -252,6 +256,32 @@ To get:
                                *************
 
 
+GRIPPING WITH A NEW FUNCTION CALL                                   *funk1.4.2*
+
+This one is pretty much the same as tpope's |surround| 'ys<textobject>f'
+command: If gS is used, Vim prompts for a function name to insert. The target
+text will be wrapped in a function call. This command differs from the
+|surround| plugin in that after wrapping the target text, you are left in
+insert mode just before the closing parenthesis (in case you want to start
+adding trailing arguments).
+
+                                        *surround-funk#gS*
+gS                     Grip (i.e wrap/encompass) any text object or motion with
+                       with a function call to be specified on the command line
+
+
+For example, doing gSaF on this line:
+
+    os.lonelyfunc(argA, argB)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+and entering 'np.mean' at the prompt will yield the following with the cursor
+(in insert mode) indicated by the ^ symbol:
+
+    np.mean(os.lonelyfunc(argA, argB))
+                                     ^
+
+
 SETTINGS                                                              *funk1.5*
 
 PREVENT AUTOMATIC CREATION OF MAPPINGS                              *funk1.5.1*
@@ -298,6 +328,8 @@ For reference, the default mappings are as follows:
     " operator pending mode
     nmap <silent> gs <Plug>(GripSurroundObject)
     vmap <silent> gs <Plug>(GripSurroundObject)
+    nmap <silent> gS <Plug>(GripSurroundObjectNoPaste)
+    vmap <silent> gS <Plug>(GripSurroundObjectNoPaste)
 
 N.B. If you're worried about remapping the core vim command |gs|, done't be -
 it literally does nothing.
