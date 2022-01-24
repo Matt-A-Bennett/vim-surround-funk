@@ -9,7 +9,7 @@
 "
 "
 " Author:       Matthew Bennett
-" Version:      2.1.0
+" Version:      2.1.1
 " License:      Same as Vim's (see :help license)
 "
 "
@@ -529,6 +529,9 @@ endfunction
 
 "{{{- grip_surround_object ----------------------------------------------------
 function! s:grip_surround_object(type)
+    if !exists("s:surroundfunk_func_parts")
+        return
+    endif
     let [start_pos, close_pos] = s:get_motion(a:type)
     let before = s:surroundfunk_func_parts[0][0]
     let after = s:surroundfunk_func_parts[1]

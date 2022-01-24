@@ -1,4 +1,4 @@
-*surround-funk.txt* (v2.1.0) Delete, change and yank a surrounding function
+*surround-funk.txt* (v2.1.1) Delete, change and yank a surrounding function
 call along with its additional arguments. Then 'grip' a text object or motion
 with the surrounding function call.
 
