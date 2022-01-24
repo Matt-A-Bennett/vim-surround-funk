@@ -274,14 +274,19 @@ gS: Grip (i.e wrap/encompass) any text object or motion with with a function
 
 For example, doing `gSaF` on this line:
 
-    os.lonelyfunc(argA, argB)
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
+```
+os.lonelyfunc(argA, argB)
+^^^^^^^^^^^^^^^^^^^^^^^^^
+```
 
 and entering 'np.mean' at the prompt will yield the following with the cursor
 (in insert mode) indicated by the `^` symbol:
 
-    np.mean(os.lonelyfunc(argA, argB))
-                                     ^
+```
+********                         *
+np.mean(os.lonelyfunc(argA, argB))
+                                 ^
+```
 
 ### Settings
 
