@@ -195,7 +195,7 @@ repeatable with the dot command.
 
 To prevent these mappings from being generated, and define your own see
 `g:surround_funk_create_mappings`
-[below](#turn-off-automatic-creation-of-normal-mode-mappings).
+[below](#turn-off-automatic-creation-of-mappings).
 
 ```
 gs : Grip (i.e wrap/encompass) any text object or motion with the function call
@@ -299,7 +299,7 @@ that makes these toggle commands last for one command only see
 
 To prevent these mappings from being generated, and define your own, see
 `g:surround_funk_create_mappings`
-[below](#turn-off-automatic-creation-of-normal-mode-mappings).
+[below](#turn-off-automatic-creation-of-mappings).
 
 
 ```
