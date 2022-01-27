@@ -44,6 +44,7 @@ endif
 let g:loaded_surround_funk = 1
 
 " use defaults if not defined by user
+
 if ! exists("g:surround_funk_legal_func_name_chars")
     let s:legal_func_name_chars = join(['\w', '\.'], '\|')
 else
@@ -648,31 +649,31 @@ endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- define plug function calls ----------------------------------------------
-xnoremap <silent> <Plug>(SelectWholeFunction) :<C-U>call surroundfunk#visually_select_whole_func("small")<CR>
-onoremap <silent> <Plug>(SelectWholeFunction) :<C-U>call surroundfunk#visually_select_whole_func("small")<CR>
-xnoremap <silent> <Plug>(SelectWholeFUNCTION) :<C-U>call surroundfunk#visually_select_whole_func("big")<CR>
-onoremap <silent> <Plug>(SelectWholeFUNCTION) :<C-U>call surroundfunk#visually_select_whole_func("big")<CR>
-xnoremap <silent> <Plug>(SelectFunctionName) :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
-onoremap <silent> <Plug>(SelectFunctionName) :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
-xnoremap <silent> <Plug>(SelectFunctionNAME) :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
-onoremap <silent> <Plug>(SelectFunctionNAME) :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
+xnoremap <silent> <Plug>(SelectWholeFunction)       :<C-U>call surroundfunk#visually_select_whole_func("small")<CR>
+onoremap <silent> <Plug>(SelectWholeFunction)       :<C-U>call surroundfunk#visually_select_whole_func("small")<CR>
+xnoremap <silent> <Plug>(SelectWholeFUNCTION)       :<C-U>call surroundfunk#visually_select_whole_func("big")<CR>
+onoremap <silent> <Plug>(SelectWholeFUNCTION)       :<C-U>call surroundfunk#visually_select_whole_func("big")<CR>
+xnoremap <silent> <Plug>(SelectFunctionName)        :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+onoremap <silent> <Plug>(SelectFunctionName)        :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+xnoremap <silent> <Plug>(SelectFunctionNAME)        :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
+onoremap <silent> <Plug>(SelectFunctionNAME)        :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
 
+nnoremap <silent> <Plug>(SwitchToParens)            :<C-U>call <SID>switch_default_parens('(')<CR>
+nnoremap <silent> <Plug>(SwitchToCurlyBraces)       :<C-U>call <SID>switch_default_parens('{')<CR>
+nnoremap <silent> <Plug>(SwitchToSquareBrackets)    :<C-U>call <SID>switch_default_parens('[')<CR>
+            
 nnoremap <silent> <Plug>(DeleteSurroundingFunction) :<C-U>call <SID>repeatable_delete("small", "delete", "DeleteSurroundingFunction")<CR>
 nnoremap <silent> <Plug>(DeleteSurroundingFUNCTION) :<C-U>call <SID>repeatable_delete("big", "delete", "DeleteSurroundingFunction")<CR>
 nnoremap <silent> <Plug>(ChangeSurroundingFunction) :<C-U>call <SID>operate_on_surrounding_func("small", "change")<CR>
 nnoremap <silent> <Plug>(ChangeSurroundingFUNCTION) :<C-U>call <SID>operate_on_surrounding_func("big", "change")<CR>
-nnoremap <silent> <Plug>(YankSurroundingFunction) :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
-nnoremap <silent> <Plug>(YankSurroundingFUNCTION) :<C-U>call <SID>operate_on_surrounding_func("big", "yank")<CR>
+nnoremap <silent> <Plug>(YankSurroundingFunction)   :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
+nnoremap <silent> <Plug>(YankSurroundingFUNCTION)   :<C-U>call <SID>operate_on_surrounding_func("big", "yank")<CR>
 
-nnoremap <silent> <Plug>(GripSurroundObject) :set operatorfunc=<SID>grip_surround_object<CR>g@
-vnoremap <silent> <Plug>(GripSurroundObject) :<C-U>call <SID>grip_surround_object(visualmode())<CR>
+nnoremap <silent> <Plug>(GripSurroundObject)        :set operatorfunc=<SID>grip_surround_object<CR>g@
+vnoremap <silent> <Plug>(GripSurroundObject)        :<C-U>call <SID>grip_surround_object(visualmode())<CR>
 nnoremap <silent> <Plug>(GripSurroundObjectNoPaste) :set operatorfunc=<SID>grip_surround_object_no_paste<CR>g@
 vnoremap <silent> <Plug>(GripSurroundObjectNoPaste) :<C-U>call <SID>grip_surround_object_no_paste(visualmode())<CR>
 
-nnoremap <silent> <Plug>(SwitchToParens) :<C-U>call <SID>switch_default_parens('(')<CR>
-nnoremap <silent> <Plug>(SwitchToCurlyBraces) :<C-U>call <SID>switch_default_parens('{')<CR>
-nnoremap <silent> <Plug>(SwitchToSquareBrackets) :<C-U>call <SID>switch_default_parens('[')<CR>
-            
 "}}}---------------------------------------------------------------------------
 
 "{{{- create maps and text objects --------------------------------------------
