@@ -633,7 +633,7 @@ function! s:grip_surround_object_no_paste(type)
         let offset = 1
     endif
     call cursor(close_pos[0], close_pos[1]+offset)
-    normal! i)
+    execute "normal! i".s:default_parens[1]
     startinsert
     call s:hot_switch()
 endfunction
