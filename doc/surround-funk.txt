@@ -1,4 +1,4 @@
-*surround-funk.txt* (v2.1.1) Delete, change and yank a surrounding function
+*surround-funk.txt* (v2.2.0) Delete, change and yank a surrounding function
 call along with its additional arguments. Then 'grip' a text object or motion
 with the surrounding function call.
 
@@ -18,26 +18,22 @@ function call with the one you have in the unnamed register (see below).
 
 TABLE OF CONTENTS
 
-1. Usage                                                            |funk1|
-    1.1 What is a surrounding function call?                        |funk1.1|
-    1.2 Deleting, changing and yanking a surrounding function call  |funk1.2|
-    1.3 Text objects                                                |funk1.3|
-    1.4 Gripping a text object or motion with a function call       |funk1.4|
-        1.4.1 Gripping with function call in unnamed register       |funk1.4.1|
-        1.4.2 Gripping with a new function call                     |funk1.4.2|
-    1.5 Settings                                                    |funk1.5|
-        1.5.1 Prevent automatic creation of mappings                |funk1.5.1|
-        1.5.2 Specify characters allowed in a function name         |funk1.5.2|
-2. Contribution guidelines                                          |funk2|
-    2.1 Report a bug                                                |funk2.1|
-    2.2 Request a feature                                           |funk2.2|
-3. Related plugins                                                  |funk3|
+1  What is a surrounding function call?                               |funk1|
+2  Deleting, changing and yanking a surrounding function call         |funk2|
+3  Text objects                                                       |funk3|
+4  Gripping a text object or motion with a function call              |funk4|
+    4.1  Gripping with function call in unnamed register              |funk4.1|
+    4.2  Gripping with a new function call                            |funk4.2|
+5  Toggle grip focus: '(' vs. '{' vs. '['                             |funk5|
+6  Settings                                                           |funk6|
+    6.1  Prevent automatic creation of mappings                       |funk6.1|
+    6.2  Specify characters allowed in a function name                |funk6.2|
+    6.3  Specify the default parenthesis type                         |funk6.3|
+    6.4  Make toggle grip last for one command each time              |funk6.4|
+7  Related plugins                                                    |funk7|
 
 
-USAGE                                                                   *funk1*
-
-
-WHAT IS A SURROUNDING FUNCTION CALL?                                  *funk1.1*
+WHAT IS A SURROUNDING FUNCTION CALL?                                  *funk1*
 
 Below, the * symbols show what would be deleted (or yanked) with the dsf (or
 ysf) command. The ^ symbols show where the cursor can be when issuing the
@@ -63,7 +59,7 @@ sf                      Where the name of the function (e.g. outerfunc) is a
                         np.outerfunc(arg1, arg2, arg3)
                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
   
-                        multi-line functions also work:
+                        multi-line function calls also work:
 
                            **********               ***************
                         np.outerfunc(innerfunc(arg1),   
@@ -99,7 +95,7 @@ sF                      Where the name of the function (e.g. np.outerfunc) is
                         ^^^^^^^^^^^^^               ^^^^^^^^^^^^^^^
 
 
-DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION CALL            *funk1.2*
+DELETING, CHANGING AND YANKING A SURROUNDING FUNCTION CALL            *funk2*
 
 If you have tpope's excellent repeat.vim plugin, then the dsf and dsF commands
 are repeatable with the dot command (see |single-repeat|).
@@ -107,38 +103,40 @@ are repeatable with the dot command (see |single-repeat|).
 To prevent these mappings from being generated, and define your own custom
 ones, see |g:surround_funk_create_mappings| below.
 
-                                        *surround-funk#dsf*
+
+                                        *surround-funk#dsf* *dsf*
 dsf                     Delete surrounding function call
 
-                                        *surround-funk#dsF*
+                                        *surround-funk#dsF* *dsF*
 dsF                     Like dsf, but the function name is delimited by any
                         character not in
                         |g:surround_funk_legal_func_name_chars|
 
-                                        *surround-funk#csf*
-csf                     Like dsf but start instert mode where the opening
+                                        *surround-funk#csf* *csf*
+csf                     Like dsf but start insert mode where the opening
                         parenthesis of the changed function call used to be.
 
-                                        *surround-funk#csF*
+                                        *surround-funk#csF* *csF*
 csF                     Like csf, but the function name is delimited by any
                         character not in
                         |g:surround_funk_legal_func_name_chars|
 
-                                        *surround-funk#ysf*
+                                        *surround-funk#ysf* *ysf*
 ysf                     Yank surrounding function call
 
-                                        *surround-funk#ysF*
+                                        *surround-funk#ysF* *ysF*
 ysF                     Like ysf, but the function name is delimited by any
                         character not in
                         |g:surround_funk_legal_func_name_chars|
 
 
-TEXT OBJECTS                                                          *funk1.3*
+TEXT OBJECTS                                                          *funk3*
 
-The following text objects are made available by |surround-funk|:
+The following text objects are made available by |surround-funk|.
 
 To prevent these mappings from being generated, and define your own, see
 |g:surround_funk_create_mappings| below.
+
 
                                         *surround-funk#af*
 af                      From the first letter of the function's name to the
@@ -170,7 +168,6 @@ in                      Alias of an
 iN                      Alias of aN
 
 
-
 For example, with the cursor anywhere indicated by the ^ symbols, doing |vif|
 will visually select the entire function call, indicated by the * symbols (to
 include the 'np.' part of the function's name, use |viF|):
@@ -188,15 +185,16 @@ To select just the function's name, use |vin| (again, use |viN| to include the
        ^^^^^^^^^^               ^^^^^^^^^^^^^
 
 
-GRIPPING A TEXT OBJECT OR MOTION WITH A FUNCTION CALL                 *funk1.4*
+GRIPPING A TEXT OBJECT OR MOTION WITH A FUNCTION CALL                 *funk4*
 
-GRIPPING WITH FUNCTION CALL IN UNNAMED REGISTER                     *funk1.4.1*
+GRIPPING WITH FUNCTION CALL IN UNNAMED REGISTER                     *funk4.1*
 
 If you have tpope's excellent repeat.vim plugin, then the following command is
 repeatable with the dot command (see |single-repeat|).
 
 To prevent this mapping from being generated, and define your own, see
 |g:surround_funk_create_mappings| below.
+
 
                                         *surround-funk#gs*
 gs                     Grip (i.e wrap/encompass) any text object or motion with
@@ -256,7 +254,7 @@ To get:
                                *************
 
 
-GRIPPING WITH A NEW FUNCTION CALL                                   *funk1.4.2*
+GRIPPING WITH A NEW FUNCTION CALL                                   *funk4.2*
 
 This one is pretty much the same as tpope's |surround| 'ys<textobject>f'
 command: If gS is used, Vim prompts for a function name to insert. The target
@@ -264,6 +262,7 @@ text will be wrapped in a function call. This command differs from the
 |surround| plugin in that after wrapping the target text, you are left in
 insert mode just before the closing parenthesis (in case you want to start
 adding trailing arguments).
+
 
                                         *surround-funk#gS*
 gS                     Grip (i.e wrap/encompass) any text object or motion with
@@ -284,9 +283,47 @@ and entering 'np.mean' at the prompt will yield the following with the cursor
                                      ^
 
 
-SETTINGS                                                              *funk1.5*
+TOGGLE GRIP FOCUS: '(' VS. '{' VS. '['                                *funk5*
 
-PREVENT AUTOMATIC CREATION OF MAPPINGS                              *funk1.5.1*
+The following text objects are made available by |surround-funk|. See |funk6.4|
+for a setting that makes these toggle commands last for one command only.
+
+To prevent these mappings from being generated, and define your own, see
+|g:surround_funk_create_mappings| below.
+
+
+                                        *surround-funk#g(* *g(*
+g(                     Make parentheses the focus of all future surround funk
+                       commands and text objects. 
+
+                                        *surround-funk#g{* *g{*
+g{                     Make curly braces the focus of all future surround funk
+                       commands and text objects. 
+
+                                        *surround-funk#g[* *g[*
+g[                     Make square brackets the focus of all future surround
+                       funk commands and text objects. 
+
+
+For example, if you want to work with latex function calls, you could do 'g{'
+to make curly braces the focus of surround funk. Then, 'dsF' would remove the
+part of the line indicated with * symbols. 
+
+
+    ***************       *
+    \documentclass{article} 
+    ^^^^^^^^^^^^^^^^^^^^^^^
+
+
+N.B, to include the backslash as part of the function name, you also need to add
+the following to your .vimrc |funk6.2|:
+
+    let g:surround_funk_legal_func_name_chars = ['[0-9]', '[A-Z]', '[a-z]', '_', '\.', '\\']
+
+
+SETTINGS                                                              *funk6*
+
+PREVENT AUTOMATIC CREATION OF MAPPINGS                              *funk6.1*
 
                                    *g:surround_funk_create_mappings*
 By default |surround-funk| creates the above mappings. If you would rather it
@@ -301,7 +338,7 @@ And map them to something different with:
 
 For reference, the default mappings are as follows:
 
-    " normal mode
+    " normal mode: delete/change/yank
     nmap <silent> dsf <Plug>(DeleteSurroundingFunction)
     nmap <silent> dsF <Plug>(DeleteSurroundingFUNCTION)
     nmap <silent> csf <Plug>(ChangeSurroundingFunction)
@@ -309,7 +346,12 @@ For reference, the default mappings are as follows:
     nmap <silent> ysf <Plug>(YankSurroundingFunction)
     nmap <silent> ysF <Plug>(YankSurroundingFUNCTION)
 
-    " visual mode
+    " normal mode: change default grip
+    nmap <silent> g( <Plug>(SwitchToParens)
+    nmap <silent> g{ <Plug>(SwitchToCurlyBraces)
+    nmap <silent> g[ <Plug>(SwitchToSquareBrackets)
+
+    " visual mode selections
     xmap <silent> af <Plug>(SelectWholeFunction)
     omap <silent> af <Plug>(SelectWholeFunction)
     xmap <silent> aF <Plug>(SelectWholeFUNCTION)
@@ -327,7 +369,7 @@ For reference, the default mappings are as follows:
     xmap <silent> iN <Plug>(SelectFunctionNAME)
     omap <silent> iN <Plug>(SelectFunctionNAME)
 
-    " operator pending mode
+    " operator pending mode: grip surround
     nmap <silent> gs <Plug>(GripSurroundObject)
     vmap <silent> gs <Plug>(GripSurroundObject)
     nmap <silent> gS <Plug>(GripSurroundObjectNoPaste)
@@ -337,7 +379,7 @@ N.B. If you're worried about remapping the core vim command |gs|, done't be -
 it literally does nothing.
 
 
-SPECIFY CHARACTERS ALLOWED IN A FUNCTION NAME                       *funk1.5.2*
+SPECIFY CHARACTERS ALLOWED IN A FUNCTION NAME                       *funk6.2*
 
                                 *g:surround_funk_legal_func_name_chars*
 By default the |surround-funk| plugin defines any vim word character
@@ -348,7 +390,7 @@ remove from, these groups.
 
 The default:
 
-g:surround_funk_legal_func_name_chars = ['[0-9]', '[A-Z]', '[a-z]', '_', '\.']
+    let g:surround_funk_legal_func_name_chars = ['[0-9]', '[A-Z]', '[a-z]', '_', '\.']
 
 
     will match function names like:
@@ -367,7 +409,7 @@ g:surround_funk_legal_func_name_chars = ['[0-9]', '[A-Z]', '[a-z]', '_', '\.']
 
 To make numbers illegal, and to introduce # and @ as legal characters, use:
 
-g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.', '#', '@']
+    let g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.', '#', '@']
 
 
     will match function names like:
@@ -381,9 +423,35 @@ g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.', '#', '@']
           ^^^^^^^^^     ^^^^^^^^^^      ^^^^^^^^^^
 
 
-RELATED PLUGINS                                                         *funk3*
+SPECIFY THE DEFAULT PARENTHESIS TYPE                                *funk6.3*
+
+By default, surround funk uses parentheses '(' and ')' to define function
+calls. To use curly braces '{' and '}' instead (for instance when working on
+latex documents) or square brackets '[' and ']', put the following in your
+.vimrc:
+
+    let g:surround_funk_default_parens = '{'
+
+or 
+
+    let g:surround_funk_default_parens = '['
+
+
+MAKE TOGGLE GRIP LAST FOR ONE COMMAND EACH TIME                     *funk6.4*
+
+By default, when using the |g(|, |g{|, and |g[| commands (see |funk5|) surround
+funk will remember the new setting. However, if you prefer that these commands
+only apply for one operation, before reverting to the default (see |funk6.3|)
+you should put the following in you .vimrc:
+
+    let g:surround_funk_default_hot_switch = 1
+
+
+RELATED PLUGINS                                                     *funk7*
 
 |surround| is a plugin is a tool for dealing with pairs of "surroundings."
 
 |sandwich| is a set of operator and textobject plugins to add/delete/replace
            surroundings of a sandwiched textobject, like (foo), "bar".
+
+
