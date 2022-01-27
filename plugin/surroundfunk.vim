@@ -12,9 +12,7 @@
 " Version:      2.1.1
 " License:      Same as Vim's (see :help license)
 "
-" hello[there[0], we[1]]
-" hello{there{0}, we{1}}
-" hello(there(0), we(1))
+"
 "======================== EXPLANATION OF THE APPROACH =========================
 
 "{{{---------------------------------------------------------------------------
@@ -59,6 +57,8 @@ elseif g:surround_funk_default_parens ==# '{'
 elseif g:surround_funk_default_parens ==# '['
     let s:default_parens = ['\[', ']']
 endif
+
+let s:orig_default_parens = s:default_parens
 
 "}}}---------------------------------------------------------------------------
 
@@ -201,6 +201,25 @@ function! s:get_motion(type)
 endfunction
 "}}}---------------------------------------------------------------------------
 
+"{{{- switch_default_parens ---------------------------------------------------
+function! s:switch_default_parens(paren)
+    if a:paren =~ '('
+        let s:default_parens = ['(', ')']
+    elseif a:paren =~ '{'
+        let s:default_parens = ['{', '}']
+    elseif a:paren =~ '\['
+        let s:default_parens = ['\[', ']']
+    endif
+endfunction
+"}}}---------------------------------------------------------------------------
+
+"{{{- hot_switch --------------------------------------------------------------
+function! s:hot_switch()
+    if exists("g:surround_funk_default_hot_switch") && g:surround_funk_default_hot_switch == 1
+        let s:default_parens = s:orig_default_parens
+    endif
+endfunction
+"}}}---------------------------------------------------------------------------
 "}}}---------------------------------------------------------------------------
 
 "------------------------------- Get Markers ----------------------------------
@@ -543,6 +562,7 @@ function! s:operate_on_surrounding_func(word_size, operation)
     if a:operation =~ 'change'
         startinsert
     endif
+    call s:hot_switch()
 endfunction
 "}}}---------------------------------------------------------------------------
 
@@ -551,6 +571,7 @@ function! surroundfunk#visually_select_func_name(word_size)
     call s:move_to_func_open_paren()
     normal! hv
     call s:move_to_start_of_func(a:word_size)
+    call s:hot_switch()
 endfunction
 "}}}---------------------------------------------------------------------------
 
@@ -559,6 +580,7 @@ function! surroundfunk#visually_select_whole_func(word_size)
     call s:move_to_end_of_func()
     normal! v
     call s:move_to_start_of_func(a:word_size)
+    call s:hot_switch()
 endfunction
 "}}}---------------------------------------------------------------------------
 
@@ -588,6 +610,7 @@ function! s:grip_surround_object(type)
         call append(close_pos[0], the_rest)
     endif
     call cursor(start_pos[0], start_pos[1])
+    call s:hot_switch()
 endfunction
 "}}}---------------------------------------------------------------------------
 
@@ -611,6 +634,7 @@ function! s:grip_surround_object_no_paste(type)
     call cursor(close_pos[0], close_pos[1]+offset)
     normal! i)
     startinsert
+    call s:hot_switch()
 endfunction
 "}}}---------------------------------------------------------------------------
 
@@ -645,6 +669,10 @@ vnoremap <silent> <Plug>(GripSurroundObject) :<C-U>call <SID>grip_surround_objec
 nnoremap <silent> <Plug>(GripSurroundObjectNoPaste) :set operatorfunc=<SID>grip_surround_object_no_paste<CR>g@
 vnoremap <silent> <Plug>(GripSurroundObjectNoPaste) :<C-U>call <SID>grip_surround_object_no_paste(visualmode())<CR>
 
+nnoremap <silent> <Plug>(SwitchToParens) :<C-U>call <SID>switch_default_parens('(')<CR>
+nnoremap <silent> <Plug>(SwitchToCurlyBraces) :<C-U>call <SID>switch_default_parens('{')<CR>
+nnoremap <silent> <Plug>(SwitchToSquareBrackets) :<C-U>call <SID>switch_default_parens('[')<CR>
+            
 "}}}---------------------------------------------------------------------------
 
 "{{{- create maps and text objects --------------------------------------------
@@ -681,6 +709,11 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     vmap <silent> gs <Plug>(GripSurroundObject)
     nmap <silent> gS <Plug>(GripSurroundObjectNoPaste)
     vmap <silent> gS <Plug>(GripSurroundObjectNoPaste)
+
+    " miscellaneous
+    nmap <silent> g(s <Plug>(SwitchToParens)
+    nmap <silent> g{s <Plug>(SwitchToCurlyBraces)
+    nmap <silent> g[s <Plug>(SwitchToSquareBrackets)
 
 endif
 "}}}---------------------------------------------------------------------------
