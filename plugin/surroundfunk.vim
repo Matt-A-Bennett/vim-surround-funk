@@ -678,7 +678,7 @@ nnoremap <silent> <Plug>(SwitchToSquareBrackets) :<C-U>call <SID>switch_default_
 "{{{- create maps and text objects --------------------------------------------
 if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings != 0
 
-    " normal mode
+    " normal mode: delete/change/yank
     nmap <silent> dsf <Plug>(DeleteSurroundingFunction)
     nmap <silent> dsF <Plug>(DeleteSurroundingFUNCTION)
     nmap <silent> csf <Plug>(ChangeSurroundingFunction)
@@ -686,7 +686,12 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     nmap <silent> ysf <Plug>(YankSurroundingFunction)
     nmap <silent> ysF <Plug>(YankSurroundingFUNCTION)
 
-    " visual mode
+    " normal mode: change default grip
+    nmap <silent> g( <Plug>(SwitchToParens)
+    nmap <silent> g{ <Plug>(SwitchToCurlyBraces)
+    nmap <silent> g[ <Plug>(SwitchToSquareBrackets)
+
+    " visual mode selections
     xmap <silent> af <Plug>(SelectWholeFunction)
     omap <silent> af <Plug>(SelectWholeFunction)
     xmap <silent> aF <Plug>(SelectWholeFUNCTION)
@@ -704,16 +709,11 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     xmap <silent> iN <Plug>(SelectFunctionNAME)
     omap <silent> iN <Plug>(SelectFunctionNAME)
 
-    " operator pending mode
+    " operator pending mode: grip surround
     nmap <silent> gs <Plug>(GripSurroundObject)
     vmap <silent> gs <Plug>(GripSurroundObject)
     nmap <silent> gS <Plug>(GripSurroundObjectNoPaste)
     vmap <silent> gS <Plug>(GripSurroundObjectNoPaste)
-
-    " miscellaneous
-    nmap <silent> g(s <Plug>(SwitchToParens)
-    nmap <silent> g{s <Plug>(SwitchToCurlyBraces)
-    nmap <silent> g[s <Plug>(SwitchToSquareBrackets)
 
 endif
 "}}}---------------------------------------------------------------------------
