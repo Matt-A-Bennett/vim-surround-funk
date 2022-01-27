@@ -22,7 +22,7 @@ more consistent with tpope's vim-surround.*
     * [Gripping a text object or motion with a function call](#gripping-a-text-object-or-motion-with-a-function-call)
         * [Gripping with function call in unnamed register](#gripping-with-function-call-in-unnamed-register)
         * [Gripping with a new function call](#gripping-with-a-new-function-call)
-    * [Toggle grip focus: `(` vs. `{` vs. `[`](#Toggle-grip-focus-vs-vs)
+    * [Toggle grip focus: `(` vs. `{` vs. `[`](#toggle-grip-focus--vs--vs-)
     * [Settings](#settings)
         * [Turn off automatic creation of mappings](#turn-off-automatic-creation-of-mappings)
         * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
@@ -303,15 +303,12 @@ To prevent these mappings from being generated, and define your own, see
 
 
 ```
-                                        *surround-funk#g(* *g(*
 g( : Make parentheses the focus of all future surround funk commands and text
      objects. 
 
-                                        *surround-funk#g{* *g{*
 g{ : Make curly braces the focus of all future surround funk commands and text
      objects. 
 
-                                        *surround-funk#g[* *g[*
 g[ : Make square brackets the focus of all future surround funk commands and
      text objects. 
 ```
@@ -457,7 +454,7 @@ let g:surround_funk_default_parens = '['
 #### Make toggle grip last for one command each time
 
 By default, when using the `g(`, `g{`, and `g[` commands (see
-[here](#Toggle-grip-focus-vs-vs)) surround funk will remember the new setting.
+[here](#toggle-grip-focus--vs--vs-)) surround funk will remember the new setting.
 However, if you prefer that these commands only apply for one operation, before
 reverting to the default (see [here](#specify-the-default-parenthesis-type))
 you should put the following in you .vimrc:
