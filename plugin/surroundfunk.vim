@@ -12,7 +12,9 @@
 " Version:      2.1.1
 " License:      Same as Vim's (see :help license)
 "
-"
+" hello[there[0], we[1]]
+" hello{there{0}, we{1}}
+" hello(there(0), we(1))
 "======================== EXPLANATION OF THE APPROACH =========================
 
 "{{{---------------------------------------------------------------------------
@@ -45,10 +47,19 @@ let g:loaded_surround_funk = 1
 
 " use defaults if not defined by user
 if ! exists("g:surround_funk_legal_func_name_chars")
-    let g:surround_funk_legal_func_name_chars = ['\w', '\.']
+    let s:surround_funk_legal_func_name_chars = join(['\w', '\.'], '\|')
+else
+    let s:legal_func_name_chars = join(g:surround_funk_legal_func_name_chars, '\|')
 endif
 
-let s:legal_func_name_chars = join(g:surround_funk_legal_func_name_chars, '\|')
+if ! exists("g:surround_funk_default_parens") || g:surround_funk_default_parens ==# '('
+    let s:default_parens = ['(', ')']
+elseif g:surround_funk_default_parens ==# '{'
+    let s:default_parens = ['{', '}']
+elseif g:surround_funk_default_parens ==# '['
+    let s:default_parens = ['\[', ']']
+endif
+
 "}}}---------------------------------------------------------------------------
 
 "=============================== FOUNDATIONS ==================================
@@ -142,26 +153,26 @@ endfunction
 " line)...
 function! s:is_cursor_on_func()
     let [_, _, c_orig, _] = getpos('.')
-    if s:get_char_under_cursor() =~ '(\|)'
+    if index(s:default_parens, s:get_char_under_cursor()) >= 0
         return 1
     endif
     let chars = s:string2list('.')
     let right = chars[col("."):]
-    let on_func_name = s:get_char_under_cursor() =~ s:legal_func_name_chars.'\|('
+    let on_func_name = s:get_char_under_cursor() =~ s:legal_func_name_chars.'\|'.s:default_parens[0]
     let open_paren_count = 0
     let close_paren_count = 0
     for char in right
-        if on_func_name && char !~ s:legal_func_name_chars.'\|('
+        if on_func_name && char !~ s:legal_func_name_chars.'\|'.s:default_parens[0]
             let on_func_name = 0
         endif
-        if char ==# '('
+        if char ==# s:default_parens[0]
             if on_func_name
                 call cursor('.', c_orig)
                 return 1
             endif
             " maybe jump to the matching ')' at this point to speed things up
             let open_paren_count+=1
-        elseif char ==# '('
+        elseif char ==# s:default_parens[0]
             let close_paren_count+=1
         endif
     endfor
@@ -198,10 +209,10 @@ endfunction
 function! s:get_func_open_paren_position()
     let [_, l_orig, c_orig, _] = getpos('.')
     " move forward to one of function's parentheses (unless already on one)
-    call search('(\|)', 'c')
+    call search(s:default_parens[0].'\|'.s:default_parens[1], 'c')
     " if we're on the closing parenthesis, move to other side
-    if s:get_char_under_cursor() ==# ')'
-        call searchpair('(','',')', 'b')
+    if s:get_char_under_cursor() ==# s:default_parens[1]
+        call searchpair(s:default_parens[0], '', s:default_parens[1], 'b')
     endif
     let [_, l, c, _] = getpos('.')
     call cursor(l_orig, c_orig)
@@ -242,7 +253,7 @@ endfunction
 function! s:get_end_of_func_position()
     let [_, l_orig, c_orig, _] = getpos('.')
     call s:move_to_func_open_paren()
-    let [l, c] = searchpairpos('(','',')')
+    let [l, c] = searchpairpos(s:default_parens[0], '', s:default_parens[1])
     call cursor(l_orig, c_orig)
     return [l, c]
 endfunction
@@ -259,13 +270,13 @@ endfunction
 function! s:get_start_of_trailing_args_position()
     let [_, l_orig, c_orig, _] = getpos('.')
     call s:move_to_func_open_paren()
-    let [l, c] = s:searchpairpos2('(', ')', ')', '')
+    let [l, c] = s:searchpairpos2(s:default_parens[0], s:default_parens[1], s:default_parens[1], '')
     call cursor(l_orig, c_orig)
     if l < 0 || c < 0
         return s:get_end_of_func_position()
     elseif l == line('.') && c == col('.')
         return s:get_end_of_func_position()
-    elseif s:get_char_at_pos(l, c) ==# ')'
+    elseif s:get_char_at_pos(l, c) ==# s:default_parens[1]
         let [l, c] = [l, c+1]
     endif
     if s:get_char_at_pos(l, c) ==# ''
@@ -590,7 +601,7 @@ function! s:grip_surround_object_no_paste(type)
     endif
     let [start_pos, close_pos] = s:get_motion(a:type)
     let str = getline(start_pos[0])
-    let func_line = s:insert_substrings(str, [[func.'(', start_pos[1], '<']])
+    let func_line = s:insert_substrings(str, [[func.s:default_parens[0], start_pos[1], '<']])
     call setline(start_pos[0], func_line)
     if start_pos[0] == close_pos[0]
         let offset = len(func)+2
