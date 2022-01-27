@@ -353,7 +353,7 @@ nmap <your-map-here> <Plug>(<OperationToMap>)
 For reference, the default mappings are as follows:
 
 ```vim
-" normal mode
+" normal mode: delete/change/yank
 nmap <silent> dsf <Plug>(DeleteSurroundingFunction)
 nmap <silent> dsF <Plug>(DeleteSurroundingFUNCTION)
 nmap <silent> csf <Plug>(ChangeSurroundingFunction)
@@ -361,7 +361,12 @@ nmap <silent> csF <Plug>(ChangeSurroundingFUNCTION)
 nmap <silent> ysf <Plug>(YankSurroundingFunction)
 nmap <silent> ysF <Plug>(YankSurroundingFUNCTION)
 
-" visual mode
+" normal mode: change default grip
+nmap <silent> g( <Plug>(SwitchToParens)
+nmap <silent> g{ <Plug>(SwitchToCurlyBraces)
+nmap <silent> g[ <Plug>(SwitchToSquareBrackets)
+
+" visual mode selections
 xmap <silent> af <Plug>(SelectWholeFunction)
 omap <silent> af <Plug>(SelectWholeFunction)
 xmap <silent> aF <Plug>(SelectWholeFUNCTION)
@@ -379,7 +384,7 @@ omap <silent> in <Plug>(SelectFunctionName)
 xmap <silent> iN <Plug>(SelectFunctionNAME)
 omap <silent> iN <Plug>(SelectFunctionNAME)
 
-" operator pending mode
+" operator pending mode: grip surround
 nmap <silent> gs <Plug>(GripSurroundObject)
 vmap <silent> gs <Plug>(GripSurroundObject)
 nmap <silent> gS <Plug>(GripSurroundObjectNoPaste)
