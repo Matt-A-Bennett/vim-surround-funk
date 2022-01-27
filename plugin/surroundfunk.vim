@@ -45,7 +45,7 @@ let g:loaded_surround_funk = 1
 
 " use defaults if not defined by user
 if ! exists("g:surround_funk_legal_func_name_chars")
-    let s:surround_funk_legal_func_name_chars = join(['\w', '\.'], '\|')
+    let s:legal_func_name_chars = join(['\w', '\.'], '\|')
 else
     let s:legal_func_name_chars = join(g:surround_funk_legal_func_name_chars, '\|')
 endif
