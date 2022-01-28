@@ -75,7 +75,10 @@ function! s:checks()
     endif
 endfunction
 
-autocmd BufEnter * call <SID>checks()
+augroup surround_funk_checks
+    autocmd!
+    autocmd BufEnter * call <SID>checks()
+augroup END
 "}}}---------------------------------------------------------------------------
 
 "=============================== FOUNDATIONS ==================================
