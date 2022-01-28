@@ -44,7 +44,6 @@ endif
 let g:loaded_surround_funk = 1
 
 " use defaults if not defined by user
-
 function! s:checks()
     if ! exists("b:surround_funk_legal_func_name_chars")
         if ! exists("g:surround_funk_legal_func_name_chars")
