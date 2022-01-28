@@ -53,7 +53,7 @@ function! s:checks()
             let b:surround_funk_legal_func_name_chars = join(g:surround_funk_legal_func_name_chars, '\|')
         endif
     else     
-        if type(b:surround_funk_legal_func_name_chars) == 3 " is it a list?
+        if type(b:surround_funk_legal_func_name_chars) == type([]) " is it a list?
             let b:surround_funk_legal_func_name_chars = join(b:surround_funk_legal_func_name_chars, '\|')
         endif
     endif
