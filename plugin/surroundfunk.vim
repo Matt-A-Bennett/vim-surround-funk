@@ -45,24 +45,37 @@ let g:loaded_surround_funk = 1
 
 " use defaults if not defined by user
 
-if ! exists("g:surround_funk_legal_func_name_chars")
-    let s:legal_func_name_chars = join(['\w', '\.'], '\|')
-else
-    let s:legal_func_name_chars = join(g:surround_funk_legal_func_name_chars, '\|')
-endif
+function! s:checks()
+    if ! exists("b:surround_funk_legal_func_name_chars")
+        if ! exists("g:surround_funk_legal_func_name_chars")
+            let b:surround_funk_legal_func_name_chars = join(['\w', '\.'], '\|')
+        else
+            let b:surround_funk_legal_func_name_chars = join(g:surround_funk_legal_func_name_chars, '\|')
+        endif
+    else     
+        if type(b:surround_funk_legal_func_name_chars) == 3 " is it a list?
+            let b:surround_funk_legal_func_name_chars = join(b:surround_funk_legal_func_name_chars, '\|')
+        endif
+    endif
 
-" if ! exists("b:surround_funk_default_parens") || b:surround_funk_default_parens ==# '('
-"     let s:default_parens = ['(', ')']
-" elseif b:surround_funk_default_parens ==# '{'
-"     let s:default_parens = ['{', '}']
-" elseif b:surround_funk_default_parens ==# '['
-"     let s:default_parens = ['\[', ']']
-" endif
+    if ! exists("b:surround_funk_default_parens")
+        if ! exists("g:surround_funk_default_parens")
+            let b:surround_funk_default_parens = '('
+        else
+            let b:surround_funk_default_parens = g:surround_funk_default_parens
+        endif
+    endif
 
-if ! exists("b:surround_funk_default_parens")
-    let b:surround_funk_default_parens = '('
-endif
+    if ! exists("b:surround_funk_default_hot_switch")
+        if ! exists("g:surround_funk_default_hot_switch")
+            let b:surround_funk_default_hot_switch = 0
+        else 
+            let b:surround_funk_default_hot_switch = g:surround_funk_default_hot_switch
+        endif
+    endif
+endfunction
 
+autocmd BufEnter * call <SID>checks()
 "}}}---------------------------------------------------------------------------
 
 "=============================== FOUNDATIONS ==================================
@@ -161,11 +174,11 @@ function! s:is_cursor_on_func()
     endif
     let chars = s:string2list('.')
     let right = chars[col("."):]
-    let on_func_name = s:get_char_under_cursor() =~ s:legal_func_name_chars.'\|'.s:default_parens[0]
+    let on_func_name = s:get_char_under_cursor() =~ b:surround_funk_legal_func_name_chars.'\|'.s:default_parens[0]
     let open_paren_count = 0
     let close_paren_count = 0
     for char in right
-        if on_func_name && char !~ s:legal_func_name_chars.'\|'.s:default_parens[0]
+        if on_func_name && char !~ b:surround_funk_legal_func_name_chars.'\|'.s:default_parens[0]
             let on_func_name = 0
         endif
         if char ==# s:default_parens[0]
@@ -237,7 +250,7 @@ function! s:get_start_of_func_position(word_size)
     if a:word_size ==# 'small'
         let [l, c] = searchpos('\<', 'b', line('.'))
     elseif a:word_size ==# 'big'
-        let [l, c] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
+        let [l, c] = searchpos('\('.b:surround_funk_legal_func_name_chars.'\)\@<!', 'b', line('.'))
     endif
     call cursor(l_orig, c_orig)
     return [l, c]
@@ -559,7 +572,7 @@ endfunction
 "{{{- hot_switch --------------------------------------------------------------
 function! s:hot_switch()
     if exists("b:orig_surround_funk_default_parens")
-        if exists("b:surround_funk_default_hot_switch") && b:surround_funk_default_hot_switch == 1
+        if b:surround_funk_default_hot_switch == 1
             let b:surround_funk_default_parens = b:orig_surround_funk_default_parens
         endif
     endif
