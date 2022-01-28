@@ -51,21 +51,23 @@ else
     let s:legal_func_name_chars = join(g:surround_funk_legal_func_name_chars, '\|')
 endif
 
-if ! exists("g:surround_funk_default_parens") || g:surround_funk_default_parens ==# '('
-    let s:default_parens = ['(', ')']
-elseif g:surround_funk_default_parens ==# '{'
-    let s:default_parens = ['{', '}']
-elseif g:surround_funk_default_parens ==# '['
-    let s:default_parens = ['\[', ']']
-endif
+" if ! exists("b:surround_funk_default_parens") || b:surround_funk_default_parens ==# '('
+"     let s:default_parens = ['(', ')']
+" elseif b:surround_funk_default_parens ==# '{'
+"     let s:default_parens = ['{', '}']
+" elseif b:surround_funk_default_parens ==# '['
+"     let s:default_parens = ['\[', ']']
+" endif
 
-let s:orig_default_parens = s:default_parens
+if ! exists("b:surround_funk_default_parens")
+    let b:surround_funk_default_parens = '('
+endif
 
 "}}}---------------------------------------------------------------------------
 
 "=============================== FOUNDATIONS ==================================
 
-"----------------------------- Helper functions -------------------------------
+"----------------------------- Helper Functions -------------------------------
 "{{{---------------------------------------------------------------------------
 "{{{- is_greater_or_lesser ----------------------------------------------------
 function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
@@ -199,26 +201,6 @@ function! s:get_motion(type)
         let c_end = len(getline(l_end))
     endif
     return [[l_start, c_start], [l_end, c_end]]
-endfunction
-"}}}---------------------------------------------------------------------------
-
-"{{{- switch_default_parens ---------------------------------------------------
-function! s:switch_default_parens(paren)
-    if a:paren =~ '('
-        let s:default_parens = ['(', ')']
-    elseif a:paren =~ '{'
-        let s:default_parens = ['{', '}']
-    elseif a:paren =~ '\['
-        let s:default_parens = ['\[', ']']
-    endif
-endfunction
-"}}}---------------------------------------------------------------------------
-
-"{{{- hot_switch --------------------------------------------------------------
-function! s:hot_switch()
-    if exists("g:surround_funk_default_hot_switch") && g:surround_funk_default_hot_switch == 1
-        let s:default_parens = s:orig_default_parens
-    endif
 endfunction
 "}}}---------------------------------------------------------------------------
 "}}}---------------------------------------------------------------------------
@@ -547,10 +529,49 @@ endfunction
 "}}}---------------------------------------------------------------------------
 "}}}---------------------------------------------------------------------------
 
+"----------------------------- Switch Defaults --------------------------------
+"{{{---------------------------------------------------------------------------
+"{{{- switch_default_parens ---------------------------------------------------
+function! s:switch_default_parens(paren)
+    if a:paren =~ '('
+        let s:default_parens = ['(', ')']
+    elseif a:paren =~ '{'
+        let s:default_parens = ['{', '}']
+    elseif a:paren =~ '\['
+        let s:default_parens = ['\[', ']']
+    endif
+endfunction
+"}}}---------------------------------------------------------------------------
+
+"{{{- switch_buffer_default_parens --------------------------------------------
+function! s:switch_buffer_default_parens(paren)
+    let b:orig_surround_funk_default_parens = b:surround_funk_default_parens
+    let b:surround_funk_default_parens = a:paren
+endfunction
+"}}}---------------------------------------------------------------------------
+
+"{{{- cold_switch -------------------------------------------------------------
+function! s:cold_switch()
+    call s:switch_default_parens(b:surround_funk_default_parens)
+endfunction
+"}}}---------------------------------------------------------------------------
+
+"{{{- hot_switch --------------------------------------------------------------
+function! s:hot_switch()
+    if exists("b:orig_surround_funk_default_parens")
+        if exists("b:surround_funk_default_hot_switch") && b:surround_funk_default_hot_switch == 1
+            let b:surround_funk_default_parens = b:orig_surround_funk_default_parens
+        endif
+    endif
+endfunction
+"}}}---------------------------------------------------------------------------
+"}}}---------------------------------------------------------------------------
+
 "========================== PERFORM THE OPERATIONS ============================
 
 "{{{- operate_on_surrounding_func ---------------------------------------------
 function! s:operate_on_surrounding_func(word_size, operation)
+    call s:cold_switch()
     " copy and optionally delete all the parts of a function
     call s:get_func_markers(a:word_size)
     let parts = s:extract_func_parts(a:word_size)
@@ -569,6 +590,7 @@ endfunction
 
 "{{{- visually_select_func_name -----------------------------------------------
 function! surroundfunk#visually_select_func_name(word_size)
+    call s:cold_switch()
     call s:move_to_func_open_paren()
     normal! hv
     call s:move_to_start_of_func(a:word_size)
@@ -578,6 +600,7 @@ endfunction
 
 "{{{- visually_select_whole_func ----------------------------------------------
 function! surroundfunk#visually_select_whole_func(word_size)
+    call s:cold_switch()
     call s:move_to_end_of_func()
     normal! v
     call s:move_to_start_of_func(a:word_size)
@@ -587,6 +610,7 @@ endfunction
 
 "{{{- grip_surround_object ----------------------------------------------------
 function! s:grip_surround_object(type)
+    call s:cold_switch()
     " surround any text object or motion with a previously yanked/deleted
     " function call 
     if !exists("s:surroundfunk_func_parts")
@@ -617,6 +641,7 @@ endfunction
 
 "{{{- grip_surround_object_no_paste -------------------------------------------
 function! s:grip_surround_object_no_paste(type)
+    call s:cold_switch()
     " surround any text object or motion with a function call to be specified
     " at the command line prompt
     let func = input('function: ')
@@ -658,9 +683,9 @@ onoremap <silent> <Plug>(SelectFunctionName)        :<C-U>call surroundfunk#visu
 xnoremap <silent> <Plug>(SelectFunctionNAME)        :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
 onoremap <silent> <Plug>(SelectFunctionNAME)        :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
 
-nnoremap <silent> <Plug>(SwitchToParens)            :<C-U>call <SID>switch_default_parens('(')<CR>
-nnoremap <silent> <Plug>(SwitchToCurlyBraces)       :<C-U>call <SID>switch_default_parens('{')<CR>
-nnoremap <silent> <Plug>(SwitchToSquareBrackets)    :<C-U>call <SID>switch_default_parens('[')<CR>
+nnoremap <silent> <Plug>(SwitchToParens)            :<C-U>call <SID>switch_buffer_default_parens('(')<CR>
+nnoremap <silent> <Plug>(SwitchToCurlyBraces)       :<C-U>call <SID>switch_buffer_default_parens('{')<CR>
+nnoremap <silent> <Plug>(SwitchToSquareBrackets)    :<C-U>call <SID>switch_buffer_default_parens('[')<CR>
             
 nnoremap <silent> <Plug>(DeleteSurroundingFunction) :<C-U>call <SID>repeatable_delete("small", "delete", "DeleteSurroundingFunction")<CR>
 nnoremap <silent> <Plug>(DeleteSurroundingFUNCTION) :<C-U>call <SID>repeatable_delete("big", "delete", "DeleteSurroundingFunction")<CR>
