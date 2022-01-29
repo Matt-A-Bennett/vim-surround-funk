@@ -674,7 +674,11 @@ function! s:grip_surround_object_no_paste(type)
         let offset = 1
     endif
     call cursor(close_pos[0], close_pos[1]+offset)
-    execute "normal! i".s:default_parens[1]
+    if &virtualedit =~# 'all\|onemore' || col(".") < col("$")-1
+        execute "normal! i".s:default_parens[1]
+    else
+        execute "normal! a".s:default_parens[1]
+    endif
     startinsert
     call s:hot_switch()
 endfunction
