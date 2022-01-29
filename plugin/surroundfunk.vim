@@ -9,7 +9,7 @@
 "
 "
 " Author:       Matthew Bennett
-" Version:      2.1.1
+" Version:      2.1.2
 " License:      Same as Vim's (see :help license)
 "
 "
@@ -598,7 +598,11 @@ function! s:grip_surround_object_no_paste(type)
         let offset = 1
     endif
     call cursor(close_pos[0], close_pos[1]+offset)
-    normal! i)
+    if &virtualedit =~# 'all\|onemore' || col(".") < col("$")-1
+        normal! i)
+    else
+        normal! a)
+    endif
     startinsert
 endfunction
 "}}}---------------------------------------------------------------------------
