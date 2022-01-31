@@ -28,8 +28,9 @@ TABLE OF CONTENTS
 6  Settings                                                           |funk6|
     6.1  Prevent automatic creation of mappings                       |funk6.1|
     6.2  Specify characters allowed in a function name                |funk6.2|
-    6.3  Specify the default parenthesis type                         |funk6.3|
+    6.3  Specify the default parenthesis type per filetype            |funk6.3|
     6.4  Make toggle grip last for one command each time              |funk6.4|
+    6.5  Overriding global defaults for individual filetypes          |funk6.5|
 7  Related plugins                                                    |funk7|
 
 
@@ -285,8 +286,8 @@ and entering 'np.mean' at the prompt will yield the following with the cursor
 
 TOGGLE GRIP FOCUS: '(' VS. '{' VS. '['                                *funk5*
 
-The following text objects are made available by |surround-funk|. See |funk6.4|
-for a setting that makes these toggle commands last for one command only.
+See |funk6.4| for a setting that makes these toggle commands last for one
+command only before returning to their default.
 
 To prevent these mappings from being generated, and define your own, see
 |g:surround_funk_create_mappings| below.
@@ -386,7 +387,8 @@ By default the |surround-funk| plugin defines any vim word character
 ([0-9A-Za-z_]) and any period symbols as valid parts of a function's name.
 These characters are used to find the function name when using the capitalised
 (e.g. |dsF|, but not |dsf|) versions of the above commands. You can add to, or
-remove from, these groups.
+remove from, these groups (see |funk6.5| to configure this setting differently
+for different filetypes).
 
 The default:
 
@@ -423,12 +425,14 @@ To make numbers illegal, and to introduce # and @ as legal characters, use:
           ^^^^^^^^^     ^^^^^^^^^^      ^^^^^^^^^^
 
 
-SPECIFY THE DEFAULT PARENTHESIS TYPE                                *funk6.3*
+SPECIFY THE DEFAULT PARENTHESIS TYPE PER FILETYPE                   *funk6.3*
 
+                                *g:surround_funk_default_parens*
 By default, surround funk uses parentheses '(' and ')' to define function
 calls. To use curly braces '{' and '}' instead (for instance when working on
 latex documents) or square brackets '[' and ']', put the following in your
-.vimrc:
+.vimrc (see |funk6.5| to configure this setting differently for different
+filetypes):
 
     let g:surround_funk_default_parens = '{'
 
@@ -437,14 +441,44 @@ or
     let g:surround_funk_default_parens = '['
 
 
+
 MAKE TOGGLE GRIP LAST FOR ONE COMMAND EACH TIME                     *funk6.4*
 
+                                *g:surround_funk_default_hot_switch*
 By default, when using the |g(|, |g{|, and |g[| commands (see |funk5|) surround
 funk will remember the new setting. However, if you prefer that these commands
 only apply for one operation, before reverting to the default (see |funk6.3|)
-you should put the following in you .vimrc:
+you should put the following in your .vimrc (see |funk6.5| to configure this
+setting differently for different filetypes):
 
     let g:surround_funk_default_hot_switch = 1
+
+
+OVERRIDING GLOBAL DEFAULTS FOR INDIVIDUAL FILETYPES                   *funk6.5*
+
+Global defaults can be overridden for individual filetypes by setting a buffer
+default in an |augroup|. For example, suppose you wanted the global defaults to
+use square brackets, for function names not to contain numbers, and for hot
+switching to be on. You can do this wit the following in your vimrc:
+
+    let g:surround_funk_default_parens = '['
+    let g:surround_funk_default_hot_switch = 1
+    let g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.']
+
+
+But for python files, you would prefer to use parentheses instead of square
+brackets, and not to have hot-switching. For tex files, you want curly braces,
+no hot-switching, and for function names to include a '\' character:
+
+    augroup surround_funk
+        autocmd!
+        autocmd FileType python let b:surround_funk_default_parens = '('
+        autocmd FileType python let b:surround_funk_default_hot_switch = 0
+
+        autocmd FileType tex let b:surround_funk_default_parens = '{'
+        autocmd FileType tex let b:surround_funk_default_hot_switch = 0
+        autocmd FileType tex let b:surround_funk_legal_func_name_chars = ['[0-9]', '[A-Z]', '[a-z]', '_', '\.', '\\']
+    augroup END
 
 
 RELATED PLUGINS                                                     *funk7*

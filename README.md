@@ -24,10 +24,11 @@ more consistent with tpope's vim-surround.*
         * [Gripping with a new function call](#gripping-with-a-new-function-call)
     * [Toggle grip focus: `(` vs. `{` vs. `[`](#toggle-grip-focus--vs--vs-)
     * [Settings](#settings)
-        * [Turn off automatic creation of mappings](#turn-off-automatic-creation-of-mappings)
+        * [Prevent automatic creation of mappings](#prevent-automatic-creation-of-mappings)
         * [Specify what characters are allowed in a function name](#specify-what-characters-are-allowed-in-a-function-name)
         * [Specify the default parenthesis type](#specify-the-default-parenthesis-type)
         * [Make toggle grip last for one command each time](#make-toggle-grip-last-for-one-command-each-time)
+        * [Overriding global defaults for individual filetypes](#overriding-global-defaults-for-individual-filetypes)
 * [Installation](#installation)
 * [Contribution guidelines](#contribution-guidelines)
     * [Report a bug](#report-a-bug)
@@ -334,7 +335,7 @@ let g:surround_funk_legal_func_name_chars = ['[0-9]', '[A-Z]', '[a-z]', '_', '\.
 
 ### Settings
 
-#### Turn off automatic creation of mappings
+#### Prevent automatic creation of mappings
 
 By default surround-funk creates the above mappings. If you would
 rather it didn't do this (for instance if you already have those key
@@ -397,7 +398,9 @@ By default the 'surround-funk' plugin defines any vim word character
 (`[0-9A-Za-z_]`) and any period symbols as valid parts of a function's name.
 These characters are used to find the function name when using the capitalised
 (e.g. `dsF`, but not `dsf`) versions of the above commands. You can add to, or
-remove from, these groups.
+remove from, these groups (see
+(#overriding-global-defaults-for-individual-filetypes) to configure this
+setting differently for different filetypes).
 
 The default:
 
@@ -443,7 +446,8 @@ will match function names like:
 By default, surround funk uses parentheses `(` and `)` to define function
 calls. To use curly braces `{` and `}` instead (for instance when working on
 latex documents) or square brackets `[` and `]`, put the following in your
-.vimrc:
+.vimrc (see (#overriding-global-defaults-for-individual-filetypes) to configure
+this setting differently for different filetypes):
 
 ```vim
 let g:surround_funk_default_parens = '{'
@@ -459,13 +463,44 @@ let g:surround_funk_default_parens = '['
 #### Make toggle grip last for one command each time
 
 By default, when using the `g(`, `g{`, and `g[` commands (see
-[here](#toggle-grip-focus--vs--vs-)) surround funk will remember the new setting.
-However, if you prefer that these commands only apply for one operation, before
-reverting to the default (see [here](#specify-the-default-parenthesis-type))
-you should put the following in you .vimrc:
+[here](#toggle-grip-focus--vs--vs-)) surround funk will remember the new
+setting. However, if you prefer that these commands only apply for one
+operation ('hot switching'), before reverting to the default (see
+[here](#specify-the-default-parenthesis-type)) you should put the following in
+your .vimrc (see (#overriding-global-defaults-for-individual-filetypes) to
+configure this setting differently for different filetypes):
 
 ```vim
 let g:surround_funk_default_hot_switch = 1
+```
+
+#### Overriding global defaults for individual filetypes
+
+Global defaults can be overridden for individual filetypes by setting a buffer
+default in an `augroup`. For example, suppose you wanted the global defaults to
+use square brackets, for function names not to contain numbers, and for hot
+switching to be on. You can do this wit the following in your vimrc:
+
+```vim
+let g:surround_funk_default_parens = '['
+let g:surround_funk_default_hot_switch = 1
+let g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.']
+```
+
+But for python files, you would prefer to use parentheses instead of square
+brackets, and not to have hot-switching. For tex files, you want curly braces,
+no hot-switching, and for function names to include a `\` character:
+
+```vim
+augroup surround_funk
+    autocmd!
+    autocmd FileType python let b:surround_funk_default_parens = '('
+    autocmd FileType python let b:surround_funk_default_hot_switch = 0
+
+    autocmd FileType tex let b:surround_funk_default_parens = '{'
+    autocmd FileType tex let b:surround_funk_default_hot_switch = 0
+    autocmd FileType tex let b:surround_funk_legal_func_name_chars = ['[0-9]', '[A-Z]', '[a-z]', '_', '\.', '\\']
+augroup END
 ```
 
 ## Installation
