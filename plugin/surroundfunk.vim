@@ -9,7 +9,7 @@
 "
 "
 " Author:       Matthew Bennett
-" Version:      2.1.3
+" Version:      2.2.0
 " License:      Same as Vim's (see :help license)
 "
 "
@@ -37,23 +37,53 @@
 
 "================================== SETUP =====================================
 
-"{{{---------------------------------------------------------------------------
+"{{{- guard against reloading -------------------------------------------------
 if exists("g:loaded_surround_funk") || &cp || v:version < 700
     finish
 endif
 let g:loaded_surround_funk = 1
+"}}}---------------------------------------------------------------------------
 
-" use defaults if not defined by user
-if ! exists("g:surround_funk_legal_func_name_chars")
-    let g:surround_funk_legal_func_name_chars = ['\w', '\.']
-endif
+"{{{- prioritise buffer settings, then global settings, then defaults ---------
+function! s:checks()
+    if ! exists("b:surround_funk_legal_func_name_chars")
+        if ! exists("g:surround_funk_legal_func_name_chars")
+            let b:surround_funk_legal_func_name_chars = join(['\w', '\.'], '\|')
+        else
+            let b:surround_funk_legal_func_name_chars = join(g:surround_funk_legal_func_name_chars, '\|')
+        endif
+    else     
+        if type(b:surround_funk_legal_func_name_chars) == type([]) " is it a list?
+            let b:surround_funk_legal_func_name_chars = join(b:surround_funk_legal_func_name_chars, '\|')
+        endif
+    endif
 
-let s:legal_func_name_chars = join(g:surround_funk_legal_func_name_chars, '\|')
+    if ! exists("b:surround_funk_default_parens")
+        if ! exists("g:surround_funk_default_parens")
+            let b:surround_funk_default_parens = '('
+        else
+            let b:surround_funk_default_parens = g:surround_funk_default_parens
+        endif
+    endif
+
+    if ! exists("b:surround_funk_default_hot_switch")
+        if ! exists("g:surround_funk_default_hot_switch")
+            let b:surround_funk_default_hot_switch = 0
+        else 
+            let b:surround_funk_default_hot_switch = g:surround_funk_default_hot_switch
+        endif
+    endif
+endfunction
+
+augroup surround_funk_checks
+    autocmd!
+    autocmd BufEnter * call <SID>checks()
+augroup END
 "}}}---------------------------------------------------------------------------
 
 "=============================== FOUNDATIONS ==================================
 
-"----------------------------- Helper functions -------------------------------
+"----------------------------- Helper Functions -------------------------------
 "{{{---------------------------------------------------------------------------
 "{{{- is_greater_or_lesser ----------------------------------------------------
 function! s:is_greater_or_lesser(v1, v2, greater_or_lesser)
@@ -142,26 +172,26 @@ endfunction
 " line)...
 function! s:is_cursor_on_func()
     let [_, _, c_orig, _] = getpos('.')
-    if s:get_char_under_cursor() =~ '(\|)'
+    if index(s:default_parens, s:get_char_under_cursor()) >= 0
         return 1
     endif
     let chars = s:string2list('.')
     let right = chars[col("."):]
-    let on_func_name = s:get_char_under_cursor() =~ s:legal_func_name_chars.'\|('
+    let on_func_name = s:get_char_under_cursor() =~ b:surround_funk_legal_func_name_chars.'\|'.s:default_parens[0]
     let open_paren_count = 0
     let close_paren_count = 0
     for char in right
-        if on_func_name && char !~ s:legal_func_name_chars.'\|('
+        if on_func_name && char !~ b:surround_funk_legal_func_name_chars.'\|'.s:default_parens[0]
             let on_func_name = 0
         endif
-        if char ==# '('
+        if char ==# s:default_parens[0]
             if on_func_name
                 call cursor('.', c_orig)
                 return 1
             endif
             " maybe jump to the matching ')' at this point to speed things up
             let open_paren_count+=1
-        elseif char ==# '('
+        elseif char ==# s:default_parens[0]
             let close_paren_count+=1
         endif
     endfor
@@ -189,7 +219,6 @@ function! s:get_motion(type)
     return [[l_start, c_start], [l_end, c_end]]
 endfunction
 "}}}---------------------------------------------------------------------------
-
 "}}}---------------------------------------------------------------------------
 
 "------------------------------- Get Markers ----------------------------------
@@ -198,10 +227,10 @@ endfunction
 function! s:get_func_open_paren_position()
     let [_, l_orig, c_orig, _] = getpos('.')
     " move forward to one of function's parentheses (unless already on one)
-    call search('(\|)', 'c')
+    call search(s:default_parens[0].'\|'.s:default_parens[1], 'c')
     " if we're on the closing parenthesis, move to other side
-    if s:get_char_under_cursor() ==# ')'
-        call searchpair('(','',')', 'b')
+    if s:get_char_under_cursor() ==# s:default_parens[1]
+        call searchpair(s:default_parens[0], '', s:default_parens[1], 'b')
     endif
     let [_, l, c, _] = getpos('.')
     call cursor(l_orig, c_orig)
@@ -224,7 +253,7 @@ function! s:get_start_of_func_position(word_size)
     if a:word_size ==# 'small'
         let [l, c] = searchpos('\<', 'b', line('.'))
     elseif a:word_size ==# 'big'
-        let [l, c] = searchpos('\('.s:legal_func_name_chars.'\)\@<!', 'b', line('.'))
+        let [l, c] = searchpos('\('.b:surround_funk_legal_func_name_chars.'\)\@<!', 'b', line('.'))
     endif
     call cursor(l_orig, c_orig)
     return [l, c]
@@ -242,7 +271,7 @@ endfunction
 function! s:get_end_of_func_position()
     let [_, l_orig, c_orig, _] = getpos('.')
     call s:move_to_func_open_paren()
-    let [l, c] = searchpairpos('(','',')')
+    let [l, c] = searchpairpos(s:default_parens[0], '', s:default_parens[1])
     call cursor(l_orig, c_orig)
     return [l, c]
 endfunction
@@ -259,13 +288,13 @@ endfunction
 function! s:get_start_of_trailing_args_position()
     let [_, l_orig, c_orig, _] = getpos('.')
     call s:move_to_func_open_paren()
-    let [l, c] = s:searchpairpos2('(', ')', ')', '')
+    let [l, c] = s:searchpairpos2(s:default_parens[0], s:default_parens[1], s:default_parens[1], '')
     call cursor(l_orig, c_orig)
     if l < 0 || c < 0
         return s:get_end_of_func_position()
     elseif l == line('.') && c == col('.')
         return s:get_end_of_func_position()
-    elseif s:get_char_at_pos(l, c) ==# ')'
+    elseif s:get_char_at_pos(l, c) ==# s:default_parens[1]
         let [l, c] = [l, c+1]
     endif
     if s:get_char_at_pos(l, c) ==# ''
@@ -516,10 +545,49 @@ endfunction
 "}}}---------------------------------------------------------------------------
 "}}}---------------------------------------------------------------------------
 
+"----------------------------- Switch Defaults --------------------------------
+"{{{---------------------------------------------------------------------------
+"{{{- switch_default_parens ---------------------------------------------------
+function! s:switch_default_parens(paren)
+    if a:paren =~ '('
+        let s:default_parens = ['(', ')']
+    elseif a:paren =~ '{'
+        let s:default_parens = ['{', '}']
+    elseif a:paren =~ '\['
+        let s:default_parens = ['\[', ']']
+    endif
+endfunction
+"}}}---------------------------------------------------------------------------
+
+"{{{- switch_buffer_default_parens --------------------------------------------
+function! s:switch_buffer_default_parens(paren)
+    let b:orig_surround_funk_default_parens = b:surround_funk_default_parens
+    let b:surround_funk_default_parens = a:paren
+endfunction
+"}}}---------------------------------------------------------------------------
+
+"{{{- cold_switch -------------------------------------------------------------
+function! s:cold_switch()
+    call s:switch_default_parens(b:surround_funk_default_parens)
+endfunction
+"}}}---------------------------------------------------------------------------
+
+"{{{- hot_switch --------------------------------------------------------------
+function! s:hot_switch()
+    if exists("b:orig_surround_funk_default_parens")
+        if b:surround_funk_default_hot_switch == 1
+            let b:surround_funk_default_parens = b:orig_surround_funk_default_parens
+        endif
+    endif
+endfunction
+"}}}---------------------------------------------------------------------------
+"}}}---------------------------------------------------------------------------
+
 "========================== PERFORM THE OPERATIONS ============================
 
 "{{{- operate_on_surrounding_func ---------------------------------------------
 function! s:operate_on_surrounding_func(word_size, operation)
+    call s:cold_switch()
     " copy and optionally delete all the parts of a function
     call s:get_func_markers(a:word_size)
     let parts = s:extract_func_parts(a:word_size)
@@ -538,27 +606,33 @@ function! s:operate_on_surrounding_func(word_size, operation)
     if a:operation =~ 'change'
         startinsert
     endif
+    call s:hot_switch()
 endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- visually_select_func_name -----------------------------------------------
 function! surroundfunk#visually_select_func_name(word_size)
+    call s:cold_switch()
     call s:move_to_func_open_paren()
     normal! hv
     call s:move_to_start_of_func(a:word_size)
+    call s:hot_switch()
 endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- visually_select_whole_func ----------------------------------------------
 function! surroundfunk#visually_select_whole_func(word_size)
+    call s:cold_switch()
     call s:move_to_end_of_func()
     normal! v
     call s:move_to_start_of_func(a:word_size)
+    call s:hot_switch()
 endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- grip_surround_object ----------------------------------------------------
 function! s:grip_surround_object(type)
+    call s:cold_switch()
     " surround any text object or motion with a previously yanked/deleted
     " function call 
     if !exists("s:surroundfunk_func_parts")
@@ -583,11 +657,13 @@ function! s:grip_surround_object(type)
         call append(close_pos[0], the_rest)
     endif
     call cursor(start_pos[0], start_pos[1])
+    call s:hot_switch()
 endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- grip_surround_object_no_paste -------------------------------------------
 function! s:grip_surround_object_no_paste(type)
+    call s:cold_switch()
     " surround any text object or motion with a function call to be specified
     " at the command line prompt
     let func = input('function: ')
@@ -596,7 +672,7 @@ function! s:grip_surround_object_no_paste(type)
     endif
     let [start_pos, close_pos] = s:get_motion(a:type)
     let str = getline(start_pos[0])
-    let func_line = s:insert_substrings(str, [[func.'(', start_pos[1], '<']])
+    let func_line = s:insert_substrings(str, [[func.s:default_parens[0], start_pos[1], '<']])
     call setline(start_pos[0], func_line)
     if start_pos[0] == close_pos[0]
         let offset = len(func)+2
@@ -605,11 +681,12 @@ function! s:grip_surround_object_no_paste(type)
     endif
     call cursor(close_pos[0], close_pos[1]+offset)
     if &virtualedit =~# 'all\|onemore' || col(".") < col("$")-1
-        normal! i)
+        execute "normal! i".s:default_parens[1]
     else
-        normal! a)
+        execute "normal! a".s:default_parens[1]
     endif
     startinsert
+    call s:hot_switch()
 endfunction
 "}}}---------------------------------------------------------------------------
 
@@ -623,24 +700,28 @@ endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- define plug function calls ----------------------------------------------
-xnoremap <silent> <Plug>(SelectWholeFunction) :<C-U>call surroundfunk#visually_select_whole_func("small")<CR>
-onoremap <silent> <Plug>(SelectWholeFunction) :<C-U>call surroundfunk#visually_select_whole_func("small")<CR>
-xnoremap <silent> <Plug>(SelectWholeFUNCTION) :<C-U>call surroundfunk#visually_select_whole_func("big")<CR>
-onoremap <silent> <Plug>(SelectWholeFUNCTION) :<C-U>call surroundfunk#visually_select_whole_func("big")<CR>
-xnoremap <silent> <Plug>(SelectFunctionName) :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
-onoremap <silent> <Plug>(SelectFunctionName) :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
-xnoremap <silent> <Plug>(SelectFunctionNAME) :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
-onoremap <silent> <Plug>(SelectFunctionNAME) :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
+xnoremap <silent> <Plug>(SelectWholeFunction)       :<C-U>call surroundfunk#visually_select_whole_func("small")<CR>
+onoremap <silent> <Plug>(SelectWholeFunction)       :<C-U>call surroundfunk#visually_select_whole_func("small")<CR>
+xnoremap <silent> <Plug>(SelectWholeFUNCTION)       :<C-U>call surroundfunk#visually_select_whole_func("big")<CR>
+onoremap <silent> <Plug>(SelectWholeFUNCTION)       :<C-U>call surroundfunk#visually_select_whole_func("big")<CR>
+xnoremap <silent> <Plug>(SelectFunctionName)        :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+onoremap <silent> <Plug>(SelectFunctionName)        :<C-U>call surroundfunk#visually_select_func_name("small")<CR>
+xnoremap <silent> <Plug>(SelectFunctionNAME)        :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
+onoremap <silent> <Plug>(SelectFunctionNAME)        :<C-U>call surroundfunk#visually_select_func_name("big")<CR>
 
+nnoremap <silent> <Plug>(SwitchToParens)            :<C-U>call <SID>switch_buffer_default_parens('(')<CR>
+nnoremap <silent> <Plug>(SwitchToCurlyBraces)       :<C-U>call <SID>switch_buffer_default_parens('{')<CR>
+nnoremap <silent> <Plug>(SwitchToSquareBrackets)    :<C-U>call <SID>switch_buffer_default_parens('[')<CR>
+            
 nnoremap <silent> <Plug>(DeleteSurroundingFunction) :<C-U>call <SID>repeatable_delete("small", "delete", "DeleteSurroundingFunction")<CR>
 nnoremap <silent> <Plug>(DeleteSurroundingFUNCTION) :<C-U>call <SID>repeatable_delete("big", "delete", "DeleteSurroundingFunction")<CR>
 nnoremap <silent> <Plug>(ChangeSurroundingFunction) :<C-U>call <SID>operate_on_surrounding_func("small", "change")<CR>
 nnoremap <silent> <Plug>(ChangeSurroundingFUNCTION) :<C-U>call <SID>operate_on_surrounding_func("big", "change")<CR>
-nnoremap <silent> <Plug>(YankSurroundingFunction) :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
-nnoremap <silent> <Plug>(YankSurroundingFUNCTION) :<C-U>call <SID>operate_on_surrounding_func("big", "yank")<CR>
+nnoremap <silent> <Plug>(YankSurroundingFunction)   :<C-U>call <SID>operate_on_surrounding_func("small", "yank")<CR>
+nnoremap <silent> <Plug>(YankSurroundingFUNCTION)   :<C-U>call <SID>operate_on_surrounding_func("big", "yank")<CR>
 
-nnoremap <silent> <Plug>(GripSurroundObject) :set operatorfunc=<SID>grip_surround_object<CR>g@
-vnoremap <silent> <Plug>(GripSurroundObject) :<C-U>call <SID>grip_surround_object(visualmode())<CR>
+nnoremap <silent> <Plug>(GripSurroundObject)        :set operatorfunc=<SID>grip_surround_object<CR>g@
+vnoremap <silent> <Plug>(GripSurroundObject)        :<C-U>call <SID>grip_surround_object(visualmode())<CR>
 nnoremap <silent> <Plug>(GripSurroundObjectNoPaste) :set operatorfunc=<SID>grip_surround_object_no_paste<CR>g@
 vnoremap <silent> <Plug>(GripSurroundObjectNoPaste) :<C-U>call <SID>grip_surround_object_no_paste(visualmode())<CR>
 
@@ -649,7 +730,7 @@ vnoremap <silent> <Plug>(GripSurroundObjectNoPaste) :<C-U>call <SID>grip_surroun
 "{{{- create maps and text objects --------------------------------------------
 if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings != 0
 
-    " normal mode
+    " normal mode: delete/change/yank
     nmap <silent> dsf <Plug>(DeleteSurroundingFunction)
     nmap <silent> dsF <Plug>(DeleteSurroundingFUNCTION)
     nmap <silent> csf <Plug>(ChangeSurroundingFunction)
@@ -657,7 +738,12 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     nmap <silent> ysf <Plug>(YankSurroundingFunction)
     nmap <silent> ysF <Plug>(YankSurroundingFUNCTION)
 
-    " visual mode
+    " normal mode: change default grip
+    nmap <silent> g( <Plug>(SwitchToParens)
+    nmap <silent> g{ <Plug>(SwitchToCurlyBraces)
+    nmap <silent> g[ <Plug>(SwitchToSquareBrackets)
+
+    " visual mode selections
     xmap <silent> af <Plug>(SelectWholeFunction)
     omap <silent> af <Plug>(SelectWholeFunction)
     xmap <silent> aF <Plug>(SelectWholeFUNCTION)
@@ -675,7 +761,7 @@ if !exists("g:surround_funk_create_mappings") || g:surround_funk_create_mappings
     xmap <silent> iN <Plug>(SelectFunctionNAME)
     omap <silent> iN <Plug>(SelectFunctionNAME)
 
-    " operator pending mode
+    " operator pending mode: grip surround
     nmap <silent> gs <Plug>(GripSurroundObject)
     vmap <silent> gs <Plug>(GripSurroundObject)
     nmap <silent> gS <Plug>(GripSurroundObjectNoPaste)
