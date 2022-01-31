@@ -459,16 +459,17 @@ OVERRIDING GLOBAL DEFAULTS FOR INDIVIDUAL FILETYPES                   *funk6.5*
 Global defaults can be overridden for individual filetypes by setting a buffer
 default in an |augroup|. For example, suppose you wanted the global defaults to
 use square brackets, for function names not to contain numbers, and for hot
-switching to be on. You can do this wit the following in your vimrc:
+switching to be on. You can do this with the following in your vimrc:
 
     let g:surround_funk_default_parens = '['
     let g:surround_funk_default_hot_switch = 1
     let g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.']
 
 
-But for python files, you would prefer to use parentheses instead of square
-brackets, and not to have hot-switching. For tex files, you want curly braces,
-no hot-switching, and for function names to include a '\' character:
+But now suppose that for python files, you would prefer to use parentheses
+instead of square brackets, and not to have hot-switching. For tex files, you
+want curly braces, no hot-switching, and for function names to include  numbers
+again and also a '\' character:
 
     augroup surround_funk
         autocmd!

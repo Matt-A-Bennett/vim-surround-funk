@@ -399,7 +399,7 @@ By default the 'surround-funk' plugin defines any vim word character
 These characters are used to find the function name when using the capitalised
 (e.g. `dsF`, but not `dsf`) versions of the above commands. You can add to, or
 remove from, these groups (see
-(#overriding-global-defaults-for-individual-filetypes) to configure this
+[here](#overriding-global-defaults-for-individual-filetypes) to configure this
 setting differently for different filetypes).
 
 The default:
@@ -446,8 +446,8 @@ will match function names like:
 By default, surround funk uses parentheses `(` and `)` to define function
 calls. To use curly braces `{` and `}` instead (for instance when working on
 latex documents) or square brackets `[` and `]`, put the following in your
-.vimrc (see (#overriding-global-defaults-for-individual-filetypes) to configure
-this setting differently for different filetypes):
+.vimrc (see [here](#overriding-global-defaults-for-individual-filetypes) to
+configure this setting differently for different filetypes):
 
 ```vim
 let g:surround_funk_default_parens = '{'
@@ -467,8 +467,8 @@ By default, when using the `g(`, `g{`, and `g[` commands (see
 setting. However, if you prefer that these commands only apply for one
 operation ('hot switching'), before reverting to the default (see
 [here](#specify-the-default-parenthesis-type)) you should put the following in
-your .vimrc (see (#overriding-global-defaults-for-individual-filetypes) to
-configure this setting differently for different filetypes):
+your .vimrc (see [here](#overriding-global-defaults-for-individual-filetypes)
+to configure this setting differently for different filetypes):
 
 ```vim
 let g:surround_funk_default_hot_switch = 1
@@ -479,7 +479,7 @@ let g:surround_funk_default_hot_switch = 1
 Global defaults can be overridden for individual filetypes by setting a buffer
 default in an `augroup`. For example, suppose you wanted the global defaults to
 use square brackets, for function names not to contain numbers, and for hot
-switching to be on. You can do this wit the following in your vimrc:
+switching to be on. You can do this with the following in your vimrc:
 
 ```vim
 let g:surround_funk_default_parens = '['
@@ -487,9 +487,11 @@ let g:surround_funk_default_hot_switch = 1
 let g:surround_funk_legal_func_name_chars = ['[A-Z]', '[a-z]', '_', '\.']
 ```
 
-But for python files, you would prefer to use parentheses instead of square
-brackets, and not to have hot-switching. For tex files, you want curly braces,
-no hot-switching, and for function names to include a `\` character:
+But now suppose that for python files, you would prefer to use parentheses
+instead of square brackets, and not to have hot-switching. For tex files, you
+want curly braces, no hot-switching, and for function names to include numbers
+again and also a `\`
+character:
 
 ```vim
 augroup surround_funk
