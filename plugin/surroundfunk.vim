@@ -724,7 +724,6 @@ nnoremap <silent> <Plug>(GripSurroundObject)        :set operatorfunc=<SID>grip_
 vnoremap <silent> <Plug>(GripSurroundObject)        :<C-U>call <SID>grip_surround_object(visualmode())<CR>
 nnoremap <silent> <Plug>(GripSurroundObjectNoPaste) :set operatorfunc=<SID>grip_surround_object_no_paste<CR>g@
 vnoremap <silent> <Plug>(GripSurroundObjectNoPaste) :<C-U>call <SID>grip_surround_object_no_paste(visualmode())<CR>
-
 "}}}---------------------------------------------------------------------------
 
 "{{{- create maps and text objects --------------------------------------------
