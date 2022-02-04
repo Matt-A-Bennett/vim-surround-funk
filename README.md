@@ -34,6 +34,7 @@ more consistent with tpope's vim-surround.*
     * [Report a bug](#report-a-bug)
     * [Request a feature](#request-a-feature)
 * [Related plugins](#related-plugins)
+* [My other plugins](#my-other-plugins)
 * [License](#license)
 
 ## Feature demos
@@ -597,6 +598,12 @@ request, then do so (please let me know this is your plan first in a [new issue]
 ## Related plugins
  - [vim-surround](https://github.com/tpope/vim-surround)
  - [vim-sandwich](https://github.com/machakann/vim-sandwich)
+## My other plugins
+ - [vim-surround-funk](https://github.com/Matt-A-Bennett/vim-surround-funk):  A
+   Vim plugin to manipulate function calls 
+ - [vim-visual-history](https://github.com/Matt-A-Bennett/vim-visual-history):
+   A Vim plugin that keeps a traversable record of previous visual selections
+                       
 ## License
  Copyright (c) Matthew Bennett. Distributed under the same terms as Vim itself.
  See `:help license`.
