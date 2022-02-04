@@ -119,7 +119,7 @@ are repeatable with the dot command.
 
 To prevent these mappings from being generated, and define your own custom
 ones, see `g:surround_funk_create_mappings`
-[below](#turn-off-automatic-creation-of-normal-mode-mappings).
+[below](#prevent-automatic-creation-of-normal-mode-mappings).
 
 ```
 dsf : Delete surrounding function call
@@ -145,7 +145,7 @@ The following text objects are made available by surround-funk:
 
 To prevent these mappings from being generated, and define your own, see
 `g:surround_funk_create_mappings`
-[below](#turn-off-automatic-creation-of-normal-mode-mappings).
+[below](#prevent-automatic-creation-of-normal-mode-mappings).
 
 ```
 af : From the first letter of the function's name to the closing parenthesis of
@@ -197,7 +197,7 @@ repeatable with the dot command.
 
 To prevent these mappings from being generated, and define your own see
 `g:surround_funk_create_mappings`
-[below](#turn-off-automatic-creation-of-mappings).
+[below](#prevent-automatic-creation-of-mappings).
 
 ```
 gs : Grip (i.e wrap/encompass) any text object or motion with the function call
@@ -301,7 +301,7 @@ that makes these toggle commands last for one command only see
 
 To prevent these mappings from being generated, and define your own, see
 `g:surround_funk_create_mappings`
-[below](#turn-off-automatic-creation-of-mappings).
+[below](#prevent-automatic-creation-of-mappings).
 
 
 ```
