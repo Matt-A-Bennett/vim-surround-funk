@@ -9,7 +9,7 @@
 "
 "
 " Author:       Matthew Bennett
-" Version:      2.2.0
+" Version:      2.2.1
 " License:      Same as Vim's (see :help license)
 "
 "
@@ -587,106 +587,126 @@ endfunction
 
 "{{{- operate_on_surrounding_func ---------------------------------------------
 function! s:operate_on_surrounding_func(word_size, operation)
-    call s:cold_switch()
-    " copy and optionally delete all the parts of a function
-    call s:get_func_markers(a:word_size)
-    let parts = s:extract_func_parts(a:word_size)
-    let [result, rm1, rm2] = s:parts2string(parts, a:word_size)
-    call setreg('"', rm1[0].rm2)
-    call cursor(s:start_pos[0], s:start_pos[1])
-    if a:operation =~ 'delete\|change'
-        " hacky... for test 12/24/36 AND 44/45/46 to pass
-        if len(parts['offline_args'][0][0]) == 0 && parts['last'][1] > 1
-            call setline('.', parts['func_name'][0][0])
-            call setline(line('.')+parts['last'][1], parts['last'][0][0])
-        else
-            call setline('.', result)
+    try
+        call s:cold_switch()
+        " copy and optionally delete all the parts of a function
+        call s:get_func_markers(a:word_size)
+        let parts = s:extract_func_parts(a:word_size)
+        let [result, rm1, rm2] = s:parts2string(parts, a:word_size)
+        call setreg('"', rm1[0].rm2)
+        call cursor(s:start_pos[0], s:start_pos[1])
+        if a:operation =~ 'delete\|change'
+            " hacky... for test 12/24/36 AND 44/45/46 to pass
+            if len(parts['offline_args'][0][0]) == 0 && parts['last'][1] > 1
+                call setline('.', parts['func_name'][0][0])
+                call setline(line('.')+parts['last'][1], parts['last'][0][0])
+            else
+                call setline('.', result)
+            endif
         endif
-    endif
-    if a:operation =~ 'change'
-        startinsert
-    endif
-    call s:hot_switch()
+        if a:operation =~ 'change'
+            startinsert
+        endif
+        call s:hot_switch()
+    catch /.*/
+        echomsg 'surround-funk errored: '.v:exception
+    endtry
 endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- visually_select_func_name -----------------------------------------------
 function! surroundfunk#visually_select_func_name(word_size)
-    call s:cold_switch()
-    call s:move_to_func_open_paren()
-    normal! hv
-    call s:move_to_start_of_func(a:word_size)
-    call s:hot_switch()
+    try
+        call s:cold_switch()
+        call s:move_to_func_open_paren()
+        normal! hv
+        call s:move_to_start_of_func(a:word_size)
+        call s:hot_switch()
+    catch /.*/
+        echomsg 'surround-funk errored: '.v:exception
+    endtry
 endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- visually_select_whole_func ----------------------------------------------
 function! surroundfunk#visually_select_whole_func(word_size)
-    call s:cold_switch()
-    call s:move_to_end_of_func()
-    normal! v
-    call s:move_to_start_of_func(a:word_size)
-    call s:hot_switch()
+    try
+        call s:cold_switch()
+        call s:move_to_end_of_func()
+        normal! v
+        call s:move_to_start_of_func(a:word_size)
+        call s:hot_switch()
+    catch /.*/
+        echomsg 'surround-funk errored: '.v:exception
+    endtry
 endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- grip_surround_object ----------------------------------------------------
 function! s:grip_surround_object(type)
-    call s:cold_switch()
-    " surround any text object or motion with a previously yanked/deleted
-    " function call 
-    if !exists("s:surroundfunk_func_parts")
-        return
-    endif
-    let [start_pos, close_pos] = s:get_motion(a:type)
-    let before = s:surroundfunk_func_parts[0][0]
-    let after = s:surroundfunk_func_parts[1]
-    let str = getline(start_pos[0])
-    if start_pos[0] == close_pos[0] && len(after) == 1
-        let func_line = s:insert_substrings(str, [[before, start_pos[1], '<'],
-                    \[after[0], close_pos[1], '>']])
-        call setline(start_pos[0], func_line)
-    else
-        if start_pos[0] == close_pos[0]
-            let close_pos[1] += len(before)
+    try
+        call s:cold_switch()
+        " surround any text object or motion with a previously yanked/deleted
+        " function call 
+        if !exists("s:surroundfunk_func_parts")
+            return
         endif
-        let func_line = s:insert_substrings(str, [[before, start_pos[1], '<']])
-        call setline(start_pos[0], func_line)
-        call s:insert_substrings_and_split_line(close_pos[0], [[after[0], close_pos[1], '>']])
-        let the_rest = s:surroundfunk_func_parts[1][1:]
-        call append(close_pos[0], the_rest)
-    endif
-    call cursor(start_pos[0], start_pos[1])
-    call s:hot_switch()
+        let [start_pos, close_pos] = s:get_motion(a:type)
+        let before = s:surroundfunk_func_parts[0][0]
+        let after = s:surroundfunk_func_parts[1]
+        let str = getline(start_pos[0])
+        if start_pos[0] == close_pos[0] && len(after) == 1
+            let func_line = s:insert_substrings(str, [[before, start_pos[1], '<'],
+                        \[after[0], close_pos[1], '>']])
+            call setline(start_pos[0], func_line)
+        else
+            if start_pos[0] == close_pos[0]
+                let close_pos[1] += len(before)
+            endif
+            let func_line = s:insert_substrings(str, [[before, start_pos[1], '<']])
+            call setline(start_pos[0], func_line)
+            call s:insert_substrings_and_split_line(close_pos[0], [[after[0], close_pos[1], '>']])
+            let the_rest = s:surroundfunk_func_parts[1][1:]
+            call append(close_pos[0], the_rest)
+        endif
+        call cursor(start_pos[0], start_pos[1])
+        call s:hot_switch()
+    catch /.*/
+        echomsg 'surround-funk errored: '.v:exception
+    endtry
 endfunction
 "}}}---------------------------------------------------------------------------
 
 "{{{- grip_surround_object_no_paste -------------------------------------------
 function! s:grip_surround_object_no_paste(type)
-    call s:cold_switch()
-    " surround any text object or motion with a function call to be specified
-    " at the command line prompt
-    let func = input('function: ')
-    if func ==# ''
-        return
-    endif
-    let [start_pos, close_pos] = s:get_motion(a:type)
-    let str = getline(start_pos[0])
-    let func_line = s:insert_substrings(str, [[func.s:default_parens[0], start_pos[1], '<']])
-    call setline(start_pos[0], func_line)
-    if start_pos[0] == close_pos[0]
-        let offset = len(func)+2
-    else
-        let offset = 1
-    endif
-    call cursor(close_pos[0], close_pos[1]+offset)
-    if &virtualedit =~# 'all\|onemore' || col(".") < col("$")-1
-        execute "normal! i".s:default_parens[1]
-    else
-        execute "normal! a".s:default_parens[1]
-    endif
-    startinsert
-    call s:hot_switch()
+    try
+        call s:cold_switch()
+        " surround any text object or motion with a function call to be specified
+        " at the command line prompt
+        let func = input('function: ')
+        if func ==# ''
+            return
+        endif
+        let [start_pos, close_pos] = s:get_motion(a:type)
+        let str = getline(start_pos[0])
+        let func_line = s:insert_substrings(str, [[func.s:default_parens[0], start_pos[1], '<']])
+        call setline(start_pos[0], func_line)
+        if start_pos[0] == close_pos[0]
+            let offset = len(func)+2
+        else
+            let offset = 1
+        endif
+        call cursor(close_pos[0], close_pos[1]+offset)
+        if &virtualedit =~# 'all\|onemore' || col(".") < col("$")-1
+            execute "normal! i".s:default_parens[1]
+        else
+            execute "normal! a".s:default_parens[1]
+        endif
+        startinsert
+        call s:hot_switch()
+    catch /.*/
+        echomsg 'surround-funk errored: '.v:exception
+    endtry
 endfunction
 "}}}---------------------------------------------------------------------------
 
